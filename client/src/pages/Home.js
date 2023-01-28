@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+// import { useNavigate, useParams } from "react-router-dom";
 import { Card, FormField, Loader } from "../components";
 
 const RenderCards = ({ data, title }) => {
@@ -19,9 +19,14 @@ const Home = () => {
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState(null);
+  // const [image, setImage] = useState(null);
+
+  // const navigate = useNavigate();
+  // const { id } = useParams();
 
   // URL
   const getUrl = "http://localhost:8000/api/post";
+  // const getUrlByID = `http://localhost:8000/api/post/${id}`;
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -48,6 +53,32 @@ const Home = () => {
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  // const fetchPostByID = async () => {
+  //   setLoading(true);
+
+  //   try {
+  //     const response = await fetch(getUrlByID, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+
+  //     if (response.ok) {
+  //       const result = await response.json();
+  //       setImage(result.data.image);
+  //     }
+  //   } catch (err) {
+  //     alert(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchPostByID();
+  // }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSearchChange = (e) => {
     clearTimeout(searchTimeout);
@@ -108,7 +139,11 @@ const Home = () => {
                   title="No Search Results Found"
                 />
               ) : (
-                <RenderCards data={allPosts} title="No Posts Yet" />
+                <RenderCards
+                  data={allPosts}
+                  title="No Posts Yet"
+                  // onClick={() => navigate(`/post/${post._id}`)}
+                />
               )}
             </div>
           </>

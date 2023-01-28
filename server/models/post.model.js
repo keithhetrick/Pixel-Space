@@ -14,9 +14,20 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: [true, "Photo is needed"],
     },
+    userId: { type: mongoose.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
+
+// Add User as one-to-one relationship to the PostSchema model
+// PostSchema.virtual("user", {
+//   ref: "User",
+//   localField: "userId",
+//   foreignField: "_id",
+// });
+
+// PostSchema.set("toObject", { virtuals: true });
+// PostSchema.set("toJSON", { virtuals: true });
 
 const Post = mongoose.model("Post", PostSchema);
 

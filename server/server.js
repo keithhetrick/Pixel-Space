@@ -6,6 +6,7 @@ import connectDB from "./config/mongoose.config.js";
 
 import postRoutes from "./routes/post.routes.js";
 import dalleRoutes from "./routes/dalle.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(
 // ROUTES
 app.use("/", postRoutes);
 app.use("/", dalleRoutes);
+app.use("/", userRoutes);
 
 app.get("/", async (req, res) => {
   res.status(200).json({

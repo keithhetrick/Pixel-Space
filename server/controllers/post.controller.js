@@ -20,13 +20,15 @@ cloudinary.config({
 // CONTROLLERS
 export const createPost = async (req, res) => {
   try {
-    const { name, prompt, photo } = req.body;
+    const { name, prompt, photo, user } = req.body;
     const photoUrl = await cloudinary.uploader.upload(photo);
 
     const newPost = await Post.create({
       name,
       prompt,
       photo: photoUrl.url,
+      // user: req.user._id,
+      user,
     });
 
     res.status(200).json({ success: true, data: newPost });
