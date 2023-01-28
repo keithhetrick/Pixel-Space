@@ -165,8 +165,8 @@ const CreatePost = () => {
           <button
             type="button"
             onClick={generateImage}
-            // have hover effect on button hover via tailwind
-            className=" text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:bg-green-800  transition duration-200"
+            // have button move up slightly on hover
+            className=" text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:bg-green-800 hover:translate-y-[-1px] transition duration-200"
           >
             {generatingImg ? "Generating..." : "Generate"}
           </button>
@@ -189,7 +189,7 @@ const CreatePost = () => {
           </p>
           <button
             type="submit"
-            className="mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:bg-[#4d52e8]  transition duration-200"
+            className="mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:bg-[#4d52e8] hover:translate-y-[-1px] transition duration-200"
           >
             {loading ? "Sharing..." : "Share with the Community"}
           </button>

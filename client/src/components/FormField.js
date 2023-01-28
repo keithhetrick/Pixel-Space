@@ -21,7 +21,7 @@ const FormField = ({
           <button
             type="button"
             onClick={handleSurpriseMe}
-            className="font-semibold text-xs bg-[#ECECF1] py-1 px-2 rounded-[5px] text-black hover:bg-[#e3e4e9] transition duration-200"
+            className="font-semibold text-xs bg-[#ECECF1] py-1 px-2 rounded-[5px] text-black hover:bg-[#e3e4e9] hover:translate-y-[-0.5px] transition duration-200"
           >
             Surprise me
           </button>
