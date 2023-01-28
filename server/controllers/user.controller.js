@@ -70,14 +70,25 @@ export const updateUser = async (req, res) => {
       });
     }
 
-    // if (name) user.name = name;
-    // if (email) user.email = email;
-    // if (password) user.password = password;
-    // if (confirmPassword) user.confirmPassword = confirmPassword;
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.password = req.body.password || user.password;
+      user.confirmPassword = req.body.confirmPassword || user.confirmPassword;
+    }
 
-    await user.save();
+    const updatedUser = await user.save();
 
-    res.status(200).json({ success: true, data: user });
+    res.status(200).json({
+      success: true,
+      data: {
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        password: updatedUser.password,
+        confirmPassword: updatedUser.confirmPassword,
+      },
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
