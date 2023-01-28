@@ -18,33 +18,7 @@ cloudinary.config({
 });
 
 // CONTROLLERS
-export const getAllPosts = async (req, res) => {
-  try {
-    const posts = await Post.find({});
-
-    res.status(200).json({ success: true, data: posts });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Fetching posts failed, please try again",
-    });
-  }
-};
-
-// export const getPostById = async (req, res) => {
-//   try {
-//     const post = await Post.findById(req.params.id);
-
-//     res.status(200).json({ success: true, data: post });
-//   } catch (err) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Fetching post failed, please try again",
-//     });
-//   }
-// };
-
-export const postImage = async (req, res) => {
+export const createPost = async (req, res) => {
   try {
     const { name, prompt, photo } = req.body;
     const photoUrl = await cloudinary.uploader.upload(photo);
@@ -60,6 +34,64 @@ export const postImage = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Unable to create a post, please try again",
+    });
+  }
+};
+
+export const getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({});
+
+    res.status(200).json({ success: true, data: posts });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Fetching posts failed, please try again",
+    });
+  }
+};
+
+export const getPostById = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    res.status(200).json({ success: true, data: post });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Fetching post failed, please try again",
+    });
+  }
+};
+
+export const updatePostName = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { name },
+      { new: true }
+    );
+
+    res.status(200).json({ success: true, data: post });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Updating post failed, please try again",
+    });
+  }
+};
+
+export const deletePost = async (req, res) => {
+  try {
+    const post = await Post.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({ success: true, data: post });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Deleting post failed, please try again",
     });
   }
 };
