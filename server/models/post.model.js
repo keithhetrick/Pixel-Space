@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const PostSchema = new mongoose.Schema(
   {
@@ -14,20 +14,21 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: [true, "Photo is needed"],
     },
-    userId: { type: mongoose.Types.ObjectId, ref: "User" },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );
 
-// Add User as one-to-one relationship to the PostSchema model
-// PostSchema.virtual("user", {
-//   ref: "User",
-//   localField: "userId",
-//   foreignField: "_id",
-// });
-
-// PostSchema.set("toObject", { virtuals: true });
-// PostSchema.set("toJSON", { virtuals: true });
+// Add foreign Id from User as userId in the form of a one-to-one relationship to the PostSchema model
+PostSchema.virtual("user", {
+  ref: "User",
+  localField: "_id",
+  foreignField: "posts",
+  justOne: true,
+});
 
 const Post = mongoose.model("Post", PostSchema);
 

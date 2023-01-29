@@ -27,7 +27,6 @@ export const createPost = async (req, res) => {
       name,
       prompt,
       photo: photoUrl.url,
-      // user: req.user._id,
       user,
     });
 
@@ -94,6 +93,38 @@ export const deletePost = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Deleting post failed, please try again",
+    });
+  }
+};
+
+export const updatePostUser = async (req, res) => {
+  try {
+    const { user } = req.body;
+
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { user },
+      { new: true }
+    );
+
+    res.status(200).json({ success: true, data: post });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Updating post failed, please try again",
+    });
+  }
+};
+
+export const getPostUser = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id).populate("user");
+
+    res.status(200).json({ success: true, data: post.user });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Fetching user failed, please try again",
     });
   }
 };

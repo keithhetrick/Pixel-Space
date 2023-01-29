@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -25,10 +25,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "Confirm password is required"],
     },
-    posts: {
-      type: [mongoose.Types.ObjectId],
-      ref: "Post",
-    },
+    posts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
   },
   { timestamps: true }
 );
@@ -44,21 +46,6 @@ UserSchema.pre("save", async function (next) {
 //     this.password = await bcrypt.hash(this.password, 10);
 //     this.confirmPassword = undefined;
 //   }
-//   next();
-// });
-
-// Add Post as one-to-many relationship to the UserSchema
-// UserSchema.virtual("posts", {
-// ref: "Post",
-// localField: "_id",
-// foreignField: "userId",
-// });
-
-// UserSchema.set("toObject", { virtuals: true });
-// UserSchema.set("toJSON", { virtuals: true });
-
-// UserSchema.pre("insertMany", async function (next) {
-//   this.populate("posts");
 //   next();
 // });
 
