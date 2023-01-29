@@ -17,7 +17,7 @@ cloudinary.config({
   api_secret: CLOUDINARY_API_SECRET,
 });
 
-// CONTROLLERS
+// Create a new post
 export const createPost = async (req, res) => {
   try {
     const { name, prompt, photo, user } = req.body;
@@ -39,6 +39,7 @@ export const createPost = async (req, res) => {
   }
 };
 
+//
 export const getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find({});
@@ -52,6 +53,7 @@ export const getAllPosts = async (req, res) => {
   }
 };
 
+// Get a post by id
 export const getPostById = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -65,6 +67,7 @@ export const getPostById = async (req, res) => {
   }
 };
 
+// Update a post's name
 export const updatePostName = async (req, res) => {
   try {
     const { name } = req.body;
@@ -84,6 +87,7 @@ export const updatePostName = async (req, res) => {
   }
 };
 
+// Delete a post
 export const deletePost = async (req, res) => {
   try {
     const post = await Post.findByIdAndDelete(req.params.id);
@@ -97,6 +101,7 @@ export const deletePost = async (req, res) => {
   }
 };
 
+// Update a post's relational User
 export const updatePostUser = async (req, res) => {
   try {
     const { user } = req.body;
@@ -116,6 +121,7 @@ export const updatePostUser = async (req, res) => {
   }
 };
 
+// Get a post's relational User
 export const getPostUser = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id).populate("user");

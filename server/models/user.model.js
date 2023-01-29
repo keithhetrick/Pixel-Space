@@ -41,13 +41,13 @@ UserSchema.pre("save", async function (next) {
   }
 });
 
-// UserSchema.pre("save", async function (next) {
-//   if (this.isModified("password")) {
-//     this.password = await bcrypt.hash(this.password, 10);
-//     this.confirmPassword = undefined;
-//   }
-//   next();
-// });
+// Add foreign Id from Post as posts in the form of a one-to-many relationship to the UserSchema model
+UserSchema.virtual("post", {
+  ref: "Post",
+  localField: "_id",
+  foreignField: "userId",
+  justOne: false,
+});
 
 const User = mongoose.model("User", UserSchema);
 

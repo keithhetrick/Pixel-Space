@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 
-// CONTROLLERS
+// Create a new user
 export const createUser = async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
@@ -21,6 +21,7 @@ export const createUser = async (req, res) => {
   }
 };
 
+// Get all users
 export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({}).populate("posts");
@@ -34,6 +35,7 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+// Get a user by id
 export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate("posts");
@@ -47,6 +49,7 @@ export const getUserById = async (req, res) => {
   }
 };
 
+// Update a user's name, email, password, and relational posts
 export const updateUser = async (req, res) => {
   try {
     const { name, email, password, confirmPassword, posts } = req.body;
@@ -110,6 +113,7 @@ export const updateUser = async (req, res) => {
   }
 };
 
+// Delete a user
 export const deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -123,6 +127,7 @@ export const deleteUser = async (req, res) => {
   }
 };
 
+// Get a user's relational posts
 export const getUserPosts = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate("posts");
