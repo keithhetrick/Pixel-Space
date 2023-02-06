@@ -4,7 +4,8 @@ import mongoose from "mongoose";
 const connectDB = (db) => {
   mongoose.set("strictQuery", true);
   mongoose
-    .connect(`mongodb://localhost/${db}`, {
+    // .connect(`mongodb://localhost/${db}`, {
+    .connect(db, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

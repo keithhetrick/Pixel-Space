@@ -12,7 +12,8 @@ dotenv.config();
 
 // ENVIRONMENT VARIABLES
 const PORT = process.env.PORT;
-const db = process.env.DB;
+const db = process.env.MONGODB_URL;
+// const db = process.env.DB;
 
 // EXPRESS
 const app = express();

@@ -21,7 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/create-post" element={<CreatePost />} />
-          <Route path="/api/post/:id" element={<Image />} />
+          <Route path="/image/:id" element={<Image />} />
         </Routes>
       </main>
     </BrowserRouter>

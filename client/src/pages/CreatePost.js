@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { preview } from "../assets";
@@ -91,6 +91,14 @@ const CreatePost = () => {
     }
   };
 
+  const [randomPrompt, setRandomPrompt] = useState(
+    getRandomPrompt(form.prompt)
+  );
+
+  useEffect(() => {
+    setRandomPrompt(getRandomPrompt(form.prompt));
+  }, [form.prompt]);
+
   return (
     <section className="max-w-7xl mx-auto">
       <div>
@@ -118,6 +126,7 @@ const CreatePost = () => {
         <div className="flex flex-col gap-5">
           <FormField
             labelName="Your Name"
+            autoComplete="off"
             type="text"
             name="name"
             placeholder="Ex., john doe"
@@ -129,8 +138,8 @@ const CreatePost = () => {
             labelName="Prompt"
             type="text"
             name="prompt"
-            // placeholder={form.prompt === "" ? getRandomPrompt(form.prompt) : ""}
-            placeholder={getRandomPrompt(form.prompt)}
+            placeholder={randomPrompt}
+            autoComplete="off"
             value={form.prompt}
             handleChange={handleChange}
             isSurpriseMe
