@@ -109,19 +109,6 @@ const CreatePost = () => {
         </p>
       </div>
 
-      {/* {form.name === "" && (
-        <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5"
-          role="alert"
-        >
-          <span className="block sm:inline">
-            Please enter your name before generating an image
-          </span>
-        </div>
-      )} */}
-
-      {/* add validation for handleSubmit */}
-
       <form className="mt-16 max-w-3xl" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-5">
           <FormField
@@ -174,7 +161,6 @@ const CreatePost = () => {
           <button
             type="button"
             onClick={generateImage}
-            // have button move up slightly on hover
             className=" text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:bg-green-800 hover:translate-y-[-1px] transition duration-200"
           >
             {generatingImg ? "Generating..." : "Generate"}

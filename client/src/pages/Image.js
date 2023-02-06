@@ -47,21 +47,25 @@ const Image = () => {
       ) : (
         <div className="flex flex-col items-center justify-center w-full h-full">
           <img
-            className="rounded-xl w-full object-cover h-auto transform group-hover:translate-y-[-2px] transition duration-200"
+            className="rounded-xl w-full object-cover h-auto transform group-hover:translate-y-[-2px]"
             src={image?.photo}
             alt={image?.name}
           />
-          <div className="flex justify-between items-center w-full h-full">
+          <div className="flex justify-between items-center w-full ">
             <div>
               <button
-                className="font-inter font-medium bg-[#6469ff] mt-1 text-white px-4 py-2 rounded-md hover:bg-[#4d52e8] hover:translate-y-[-1px] transition duration-200"
+                className="font-inter font-medium bg-[#6469] mt-1 text-white px-4 py-2 rounded-md hover:bg-[#b18eb199] hover:translate-y-[-1px] transition duration-200"
                 onClick={() => navigate("/")}
               >
-                Go Back
+                Back
               </button>
             </div>
-            <p>
-              {image?.name} - {image?.prompt}
+            <p className="text-black text-sm xs:text-xs mx-2 my-1">
+              <span className="text-[#000000e2] font-bold">{image?.name}</span>{" "}
+              -{" "}
+              <span className="text-[#1d161ddd] italic font-light">
+                {image?.prompt}
+              </span>
             </p>
             <button
               type="button"

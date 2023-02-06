@@ -2,8 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Sacramento&display=swap");
+
 * {
   font-family: "Inter", sans-serif;
+}
+
+.pixel__space__text {
+  font-family: "Sacramento", cursive;
 }
 
 @media screen and (min-width: 480px) {

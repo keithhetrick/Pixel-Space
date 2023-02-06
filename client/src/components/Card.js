@@ -4,13 +4,15 @@ import { downloadImage } from "../utils";
 
 const Card = ({ _id, name, prompt, photo }) => {
   const navigate = useNavigate();
-  const handleClick = () =>
+  const handleImageClick = () =>
     navigate(`/image/${_id}`, { state: { image: photo, prompt, name, _id } });
+
+  const handleUserClick = () => navigate(`/user/${_id}`);
 
   return (
     <div
       className="rounded-xl group relative shadow-card hover:shadow-cardhover card transition duration-500 cursor-pointer"
-      onClick={handleClick}
+      onClick={handleImageClick}
     >
       <img
         className="rounded-xl w-full object-cover h-auto transform group-hover:translate-y-[-2px] transition duration-200"
@@ -21,7 +23,7 @@ const Card = ({ _id, name, prompt, photo }) => {
         <p className="text-white text-sm overflow-y-auto prompt">{prompt}</p>
 
         <div className="mt-5 flex justify-between items-center gap-2">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" onClick={handleUserClick}>
             <div className="w-7 h-7 rounded-full object-cover bg-green-700 flex justify-center items-center text-white text-xs font-bold">
               {name[0]}
             </div>

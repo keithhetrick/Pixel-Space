@@ -67,8 +67,13 @@ const Home = () => {
   return (
     <section className="max-w-7xl mx-auto">
       <div>
-        <h1 className="font-extrabold text-[#222328] text-[32px]">
-          The Community Showcase
+        <h1 className="font-extrabold text-[#222328] text-[25px]">
+          The {/* make the icon wiggle on hover */}
+          <span className="text-[50px] inline-block transform group hover:translate-x-[-1px] hover:translate-y-[-1px] transition duration-300 pixel__space__text">
+            {" "}
+            Pixel Space
+          </span>{" "}
+          Community Showcase
         </h1>
         <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">
           Browse through a collection of imaginative and visually stunning
