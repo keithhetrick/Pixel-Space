@@ -69,7 +69,7 @@ const Home = () => {
       <div>
         <h1 className="font-extrabold text-[#222328] text-[25px]">
           The {/* make the icon wiggle on hover */}
-          <span className="text-[50px] inline-block transform group hover:translate-x-[-1px] hover:translate-y-[-1px] transition duration-300 pixel__space__text">
+          <span className="text-[50px] mr-1 inline-block transform group hover:translate-x-[-1px] hover:translate-y-[-1px] transition duration-300 pixel__space__text">
             {" "}
             Pixel Space
           </span>{" "}

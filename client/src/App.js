@@ -15,7 +15,7 @@ function App() {
               className="w-5 object-contain -mt-2"
             /> */}
             <p className="font-inter font-medium text-[#222328] text-[8px] -mt-1">
-              <span className="text-[15px] pixel__space__text">
+              <span className="text-[15px] mr-[2px] pixel__space__text">
                 Pixel Space{" "}
               </span>
               powered by:
