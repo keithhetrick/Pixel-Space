@@ -1,7 +1,8 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { logo } from "./assets";
 import { Home, CreatePost, Image } from "./pages";
-// import User from "./pages/User";
+import User from "./pages/User";
+import EditUser from "./pages/EditUser";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
             {/* <img
               src="/pixelspace-icon.png"
               alt="logo"
-              className="w-5 object-contain -mt-2"
+              className="w-5 object-contain -mt-[7px]"
             /> */}
             <p className="font-inter font-medium text-[#222328] text-[8px] -mt-1">
               <span className="text-[15px] mr-[2px] pixel__space__text">
@@ -38,7 +39,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/image/:id" element={<Image />} />
-          {/* <Route path="/user/:id" element={<User />} /> */}
+          <Route path="/user/:id" element={<User />} />
+          <Route path="/user/:id/edit" element={<EditUser />} />
         </Routes>
       </main>
     </BrowserRouter>

@@ -2,14 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Sacramento&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Sacramento&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
 
 * {
   font-family: "Inter", sans-serif;
 }
 
 .pixel__space__text {
-  font-family: "Sacramento", cursive;
+  /* font-family: "Sacramento", cursive; */
+  font-family: "Dancing Script", cursive;
 }
 
 @media screen and (min-width: 480px) {
