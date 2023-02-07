@@ -3,6 +3,7 @@ import { logo } from "./assets";
 import { Home, CreatePost, Image } from "./pages";
 import User from "./pages/User";
 import EditUser from "./pages/EditUser";
+import NewUser from "./pages/NewUser";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/image/:id" element={<Image />} />
           <Route path="/user/:id" element={<User />} />
+          <Route path="/user/" element={<NewUser />} />
           <Route path="/user/:id/edit" element={<EditUser />} />
         </Routes>
       </main>
