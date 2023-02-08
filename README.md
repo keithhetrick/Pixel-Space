@@ -2,6 +2,8 @@
 
 This is a full stack application that uses the Dall-E API to generate images from text prompts. The application is built using React, Node, Express, and MongoDB. Images are stored in Cloudinary (a cloud-based image and video management service), and the generated image-urls are stored in a MongoDB database, for easy access & sharability.
 
+[Pixel Space](http://18.189.184.157/)
+
 Pixel Space built with:
 
 - [React](https://reactjs.org/)
