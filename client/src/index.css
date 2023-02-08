@@ -31,3 +31,16 @@ html {
   background-color: #666e75;
   border-radius: 5px;
 }
+/* 
+.error__message {
+  animation: changeText 10s infinite;
+}
+
+@keyframes changeText {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+} */

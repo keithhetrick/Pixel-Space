@@ -1,5 +1,6 @@
 import * as dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
+import asyncHandler from "express-async-handler";
 
 import Post from "../models/post.model.js";
 
@@ -18,7 +19,7 @@ cloudinary.config({
 });
 
 // Create a new post
-export const createPost = async (req, res) => {
+export const createPost = asyncHandler(async (req, res) => {
   try {
     const { name, prompt, photo, user } = req.body;
     const photoUrl = await cloudinary.uploader.upload(photo);
@@ -37,10 +38,10 @@ export const createPost = async (req, res) => {
       message: "Unable to create a post, please try again",
     });
   }
-};
+});
 
 //
-export const getAllPosts = async (req, res) => {
+export const getAllPosts = asyncHandler(async (req, res) => {
   try {
     const posts = await Post.find({});
 
@@ -51,10 +52,10 @@ export const getAllPosts = async (req, res) => {
       message: "Fetching posts failed, please try again",
     });
   }
-};
+});
 
 // Get a post by id
-export const getPostById = async (req, res) => {
+export const getPostById = asyncHandler(async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -65,10 +66,10 @@ export const getPostById = async (req, res) => {
       message: "Fetching post failed, please try again",
     });
   }
-};
+});
 
 // Update a post's name
-export const updatePostName = async (req, res) => {
+export const updatePostName = asyncHandler(async (req, res) => {
   try {
     const { name } = req.body;
 
@@ -85,10 +86,10 @@ export const updatePostName = async (req, res) => {
       message: "Updating post failed, please try again",
     });
   }
-};
+});
 
 // Delete a post
-export const deletePost = async (req, res) => {
+export const deletePost = asyncHandler(async (req, res) => {
   try {
     const post = await Post.findByIdAndDelete(req.params.id);
 
@@ -99,10 +100,10 @@ export const deletePost = async (req, res) => {
       message: "Deleting post failed, please try again",
     });
   }
-};
+});
 
 // Update a post's relational User
-export const updatePostUser = async (req, res) => {
+export const updatePostUser = asyncHandler(async (req, res) => {
   try {
     const { user } = req.body;
 
@@ -119,10 +120,10 @@ export const updatePostUser = async (req, res) => {
       message: "Updating post failed, please try again",
     });
   }
-};
+});
 
 // Get a post's relational User
-export const getPostUser = async (req, res) => {
+export const getPostUser = asyncHandler(async (req, res) => {
   try {
     const post = await Post.findById(req.params.id).populate("user");
 
@@ -133,4 +134,4 @@ export const getPostUser = async (req, res) => {
       message: "Fetching user failed, please try again",
     });
   }
-};
+});

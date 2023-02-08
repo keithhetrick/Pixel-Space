@@ -1,11 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home, CreatePost, Image } from "./pages";
-import User from "./pages/User";
-import Header from "./components/Header";
-import EditUser from "./pages/EditUser";
-import NewUser from "./pages/NewUser";
-import Footer from "./components/Footer";
-import Login from "./components/Login";
+import { Home, CreatePost, Image, User, EditUser, CreateUser } from "./pages";
+import Header from "./layout/Header";
+import Footer from "./layout/Footer";
+import Login from "./auth/Login";
 
 function App() {
   return (
@@ -18,7 +15,7 @@ function App() {
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/image/:id" element={<Image />} />
           <Route path="/user/:id" element={<User />} />
-          <Route path="/user/" element={<NewUser />} />
+          <Route path="/create-user/" element={<CreateUser />} />
           <Route path="/user/:id/edit" element={<EditUser />} />
           <Route path="/login" element={<Login />} />
         </Routes>

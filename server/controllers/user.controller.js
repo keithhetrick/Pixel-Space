@@ -1,7 +1,8 @@
 import User from "../models/user.model.js";
+import asyncHandler from "express-async-handler";
 
 // Create a new user
-export const createUser = async (req, res) => {
+export const createUser = asyncHandler(async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
 
@@ -11,18 +12,20 @@ export const createUser = async (req, res) => {
       password,
       confirmPassword,
     });
-
     res.status(200).json({ success: true, data: user });
   } catch (err) {
+    console.log("ERROR:", err);
     res.status(500).json({
       success: false,
-      message: `Unable to create a user - ${err.message}`,
+
+      message: `Unable to create user -
+      ${err.message.replace("User validation failed: ", "")}`,
     });
   }
-};
+});
 
 // Get all users
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = asyncHandler(async (req, res) => {
   try {
     const users = await User.find({}).populate("posts");
 
@@ -33,10 +36,10 @@ export const getAllUsers = async (req, res) => {
       message: `Fetching users failed - ${err.message}`,
     });
   }
-};
+});
 
 // Get a user by id
-export const getUserById = async (req, res) => {
+export const getUserById = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate("posts");
 
@@ -47,9 +50,9 @@ export const getUserById = async (req, res) => {
       message: `Fetching user failed - ${err.message}`,
     });
   }
-};
+});
 
-export const updateUser = async (req, res) => {
+export const updateUser = asyncHandler(async (req, res) => {
   try {
     const { name, email, password, confirmPassword, posts } = req.body;
 
@@ -116,10 +119,10 @@ export const updateUser = async (req, res) => {
       message: `Updating user failed - ${err.message}`,
     });
   }
-};
+});
 
 // Delete a user
-export const deleteUser = async (req, res) => {
+export const deleteUser = asyncHandler(async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
 
@@ -130,10 +133,10 @@ export const deleteUser = async (req, res) => {
       message: `Deleting user failed - ${err.message}`,
     });
   }
-};
+});
 
 // Get a user's relational posts
-export const getUserPosts = async (req, res) => {
+export const getUserPosts = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate("posts");
 
@@ -144,4 +147,4 @@ export const getUserPosts = async (req, res) => {
       message: `Fetching user posts failed - ${err.message}`,
     });
   }
-};
+});

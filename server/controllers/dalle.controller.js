@@ -1,5 +1,6 @@
 import * as dotenv from "dotenv";
 import { Configuration, OpenAIApi } from "openai";
+import asyncHandler from "express-async-handler";
 
 dotenv.config();
 
@@ -13,11 +14,11 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // CONTROLLERS
-export const serverCheck = async (req, res) => {
+export const serverCheck = asyncHandler(async (req, res) => {
   res.send("Hello from DALL-E route 🚀🚀🚀🔥🔥🔥");
-};
+});
 
-export const createImage = async (req, res) => {
+export const createImage = asyncHandler(async (req, res) => {
   try {
     const { prompt } = req.body;
 
@@ -35,4 +36,4 @@ export const createImage = async (req, res) => {
     console.log("\nERROR: ", error);
     res.status(500).send(error?.response.data.error.message);
   }
-};
+});

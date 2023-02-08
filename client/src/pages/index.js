@@ -1,5 +1,8 @@
 import Home from "./Home";
-import CreatePost from "./CreatePost";
-import Image from "./Image";
+import CreatePost from "./posts/CreatePost";
+import Image from "./posts/Image";
+import User from "./users/User";
+import EditUser from "./users/EditUser";
+import CreateUser from "./users/CreateUser";
 
-export { Home, CreatePost, Image };
+export { Home, CreatePost, Image, User, EditUser, CreateUser };

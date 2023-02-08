@@ -19,6 +19,12 @@ const Home = () => {
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState(null);
 
+  useEffect(() => {
+    const button = document.querySelector(".header__button");
+    button.innerHTML = "Create";
+    button.href = "/create-post";
+  }, []);
+
   // URL
   const getUrl = "http://localhost:8000/api/post";
 

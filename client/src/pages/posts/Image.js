@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { download } from "../assets";
-import { downloadImage } from "../utils";
+import { download } from "../../assets";
+import { downloadImage } from "../../utils";
 
 const Image = () => {
   const { id } = useParams();
@@ -11,6 +11,12 @@ const Image = () => {
 
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    const button = document.querySelector(".header__button");
+    button.innerHTML = "Login";
+    button.href = "/login";
+  }, []);
 
   const fetchImage = async () => {
     setLoading(true);

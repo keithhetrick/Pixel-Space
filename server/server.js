@@ -8,6 +8,7 @@ import connectDB from "./config/mongoose.config.js";
 import postRoutes from "./routes/post.routes.js";
 import dalleRoutes from "./routes/dalle.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ const db = process.env.MONGODB_URL;
 
 // MIDDLEWARE
 import { logger } from "./middleware/logger.js";
-import { errorHandler } from "./middleware/errorHandler.js";
+import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 // EXPRESS
 const app = express();
@@ -33,6 +34,7 @@ app.use(logger);
 app.use("/", postRoutes);
 app.use("/", dalleRoutes);
 app.use("/", userRoutes);
+app.use("/", authRoutes);
 
 app.get("/", async (req, res) => {
   res.status(200).json({
@@ -42,6 +44,7 @@ app.get("/", async (req, res) => {
 
 // ERROR HANDLER
 app.use(errorHandler);
+app.use(notFound);
 
 // SERVER
 const startServer = async () => {
