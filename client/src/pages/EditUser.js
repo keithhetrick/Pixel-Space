@@ -14,36 +14,6 @@ const EditUser = () => {
   const [userPassword, setUserPassword] = useState("");
   const [userConfirmPassword, setUserConfirmPassword] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const response = await fetch(`http://localhost:8000/api/user/${userId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: userName,
-          email: userEmail,
-          password: userPassword,
-          confirmPassword: userConfirmPassword,
-        }),
-      });
-      if (response.ok) {
-        const result = await response.json();
-        console.log("RESULT:", result);
-        navigate(`/user/${userId}`);
-      }
-    } catch (err) {
-      setErrors(err);
-      console.log("ERROR:", err);
-      alert(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const fetchSingleUser = async () => {
     try {
       setLoading(true);
@@ -62,7 +32,7 @@ const EditUser = () => {
         setUserName(result?.data.name);
         setUserPassword(result?.data.password);
         setUserConfirmPassword(result?.data.confirmPassword);
-        console.log("RESULT:", result?.data);
+        console.log("FETCHING USER RESULT:", result?.data);
       }
     } catch (err) {
       setErrors(err);
@@ -78,6 +48,60 @@ const EditUser = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleUpdateUserSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await fetch(`http://localhost:8000/api/user/${userId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: userName,
+          email: userEmail,
+          password: userPassword,
+          confirmPassword: userConfirmPassword,
+        }),
+      });
+      if (response.ok) {
+        const result = await response.json();
+        console.log("HANDLE UPDATE USER SUBMIT:", result);
+        navigate(`/user/${userId}`);
+      }
+    } catch (err) {
+      setErrors(err);
+      console.log("ERROR:", err);
+      alert(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteUserSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await fetch(`http://localhost:8000/api/user/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const result = await response.json();
+        console.log("HANDLE DELETE USER SUBMIT:", result);
+        navigate(`/`);
+      }
+    } catch (err) {
+      setErrors(err);
+      console.log("ERROR:", err);
+      alert(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <h1>Edit User</h1>
@@ -91,7 +115,7 @@ const EditUser = () => {
       {errors && <p className="text-red-500">{errors.message}</p>}
       {loading && <p>Loading...</p>}
       {!loading && !errors && userData && (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleUpdateUserSubmit}>
           <div className="flex flex-col">
             <label htmlFor="name">Name</label>
             <input
@@ -136,22 +160,21 @@ const EditUser = () => {
               Update User
             </button>
 
-            {/* <button
+            <button
               className="font-inter font-medium bg-[#6469] mt-1 text-white px-4 py-2 rounded-md hover:bg-[#b18eb199] hover:translate-y-[-1px] transition duration-200"
-              onClick={() => navigate(`/user/${userId}`)}
-            >
-              Cancel
-            </button> */}
-
-            {/* <button
-              className="font-inter font-medium bg-[#6469] mt-1 text-white px-4 py-2 rounded-md hover:bg-[#b18eb199] hover:translate-y-[-1px] transition duration-200"
-              onClick={() => navigate(`/user/${userId}/delete`)}
+              onClick={handleDeleteUserSubmit}
             >
               Delete User
-            </button> */}
+            </button>
           </div>
         </form>
       )}
+      <button
+        className="font-inter font-medium bg-[#6469] mt-1 text-white px-4 py-2 rounded-md hover:bg-[#b18eb199] hover:translate-y-[-1px] transition duration-200"
+        onClick={() => navigate(`/user/${userId}`)}
+      >
+        Cancel
+      </button>
     </div>
   );
 };

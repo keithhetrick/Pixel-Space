@@ -75,7 +75,8 @@ const Image = () => {
               <img
                 src={download}
                 alt="download"
-                className="w-6 h-6 object-contain invert bg-white rounded-full p-1 hover:animate-spin"
+                className="w-6 h-6 object-contain invert bg-white rounded-full p-1 
+                hover:animate-spin"
               />
             </button>
           </div>

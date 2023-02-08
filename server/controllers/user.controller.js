@@ -49,11 +49,11 @@ export const getUserById = async (req, res) => {
   }
 };
 
-// Update a user's name, email, password, and relational posts
 export const updateUser = async (req, res) => {
   try {
     const { name, email, password, confirmPassword, posts } = req.body;
 
+    // all fields dont have to be provided while updating
     const user = await User.findByIdAndUpdate(
       req.params.id,
       {
@@ -61,7 +61,7 @@ export const updateUser = async (req, res) => {
         email,
         password,
         confirmPassword,
-        posts,
+        // posts,
       },
       { new: true }
     );
@@ -73,23 +73,28 @@ export const updateUser = async (req, res) => {
       });
     }
 
-    if (posts) {
-      user.posts.push(req.body.posts);
-    } else if (posts === []) {
-      user.posts = [];
-    } else {
-      res.status(500).json({
-        success: false,
-        message: "Posts already exists",
-      });
-    }
+    // ignore "posts" if not provided
+    // if (!posts) {
+    //   delete user.posts;
+    // }
+
+    // if (posts) {
+    //   user.posts.push(req.body.posts);
+    // } else if (posts === []) {
+    //   user.posts = [];
+    // } else {
+    //   res.status(500).json({
+    //     success: false,
+    //     message: "Posts already exists",
+    //   });
+    // }
 
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
       user.password = req.body.password || user.password;
       user.confirmPassword = req.body.confirmPassword || user.confirmPassword;
-      user.posts = req.body.posts || user.posts;
+      // user.posts = req.body.posts || user.posts;
     }
 
     const updatedUser = await user.save();
@@ -102,7 +107,7 @@ export const updateUser = async (req, res) => {
         email: updatedUser.email,
         password: updatedUser.password,
         confirmPassword: updatedUser.confirmPassword,
-        posts: updatedUser.posts,
+        // posts: updatedUser.posts,
       },
     });
   } catch (err) {

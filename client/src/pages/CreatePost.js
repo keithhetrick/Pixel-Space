@@ -101,6 +101,12 @@ const CreatePost = () => {
 
   return (
     <section className="max-w-7xl mx-auto">
+      {/* <button
+        className="font-inter font-medium bg-[#6469] -mt-1 text-white px-4 py-2 rounded-md hover:bg-[#b18eb199] hover:translate-y-[-1px] transition duration-200"
+        onClick={() => navigate(-1)}
+      >
+        Back
+      </button> */}
       <div>
         <h1 className="font-extrabold text-[#222328] text-[32px]">Create</h1>
         <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">
