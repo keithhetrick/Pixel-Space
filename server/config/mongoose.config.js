@@ -1,20 +1,28 @@
 import mongoose from "mongoose";
+import { logEvents } from "../middleware/logger.js";
 
-// db environment variable is passed in from server.js
-const connectDB = (db) => {
-  mongoose.set("strictQuery", true);
-  mongoose
-    // .connect(`mongodb://localhost/${db}`, {
-    .connect(db, {
+const connectDB = async (db) => {
+  try {
+    mongoose.set("strictQuery", false);
+    const conn = await mongoose.connect(db, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    })
-    .then(() =>
-      console.log(`\nEstablished a connection to the "${db}" database!`)
-    )
-    .catch((err) => {
-      console.error("\nFailed to connect with the database\n", err);
     });
+
+    console.log(
+      `\nMongoDB Connected: ${conn.connection.host} with database "${conn.connection.name}"`
+    );
+  } catch (error) {
+    console.error("\nERROR:", error, "\n");
+  }
 };
+
+mongoose.connection.on("error", (err) => {
+  console.log("\nERROR:", err);
+  logEvents(
+    `\n${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
+    "mongoErrLog.log"
+  );
+});
 
 export default connectDB;
