@@ -14,7 +14,7 @@ const Login = () => {
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
 
-  // hide useHeaderButton title & link
+  // useHeaderButton title & link
   useEffect(() => {
     const button = document.querySelector(".header__button");
     button.innerHTML = "Back";
@@ -22,7 +22,7 @@ const Login = () => {
   }, []);
 
   // URL'S
-  const loginUrl = "http://localhost:8000/api/login";
+  const loginUrl = "https://localhost:8000/api/login";
 
   const loginUser = async () => {
     try {
@@ -34,10 +34,10 @@ const Login = () => {
         name: response.data.name,
         email: response.data.email,
       });
-      // const id = user?._id;
-      // console.log("USER ID", id);
-      navigate("/");
-      // navigate(`/user/${user?._id}`);
+      const id = user?._id;
+      console.log("USER ID", id);
+      // navigate("/");
+      navigate(`/user/${user?._id}`);
     } catch (error) {
       setErrors(error.response.data.message);
     }
@@ -89,7 +89,7 @@ const Login = () => {
         Don't have an account?{" "}
         <span
           className="text-[#6469ff] cursor-pointer hover:underline"
-          onClick={() => navigate("/create-user")}
+          onClick={() => navigate("/register")}
         >
           Create one
         </span>

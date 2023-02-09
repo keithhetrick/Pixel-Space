@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from "../../hooks/useErrorMessage";
 
 import axios from "axios";
 
-const CreateUser = () => {
+const Register = () => {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -14,11 +14,19 @@ const CreateUser = () => {
 
   const navigate = useNavigate();
 
-  // make a new user with a POST request
+  // useHeaderButton title & link
+  useEffect(() => {
+    const button = document.querySelector(".header__button");
+    button.innerHTML = "Back";
+    button.href = "/login";
+  }, []);
+
+  const createUserUrl = "https://localhost:8000/api/user";
+
   const createUser = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:8000/api/user", {
+      const response = await axios.post(createUserUrl, {
         name: userName,
         email: userEmail,
         password: userPassword,
@@ -39,40 +47,10 @@ const CreateUser = () => {
     createUser();
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     setLoading(true);
-  //     const response = await fetch(`http://localhost:8000/api/user`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         name: userName,
-  //         email: userEmail,
-  //         password: userPassword,
-  //         confirmPassword: userConfirmPassword,
-  //       }),
-  //     });
-  //     if (response.ok) {
-  //       const result = await response.json();
-  //       console.log("RESULT:", result);
-  //       navigate(`/user/${result?.data._id}`);
-  //     }
-  //   } catch (err) {
-  //     setErrors(err);
-  //     console.log("ERROR:", err);
-  //     alert(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <h2 className="font-inter font-bold text-3xl text-gray-700 mb-4">
-        New User
+        Register
       </h2>
 
       {loading && <p>Loading...</p>}
@@ -122,8 +100,17 @@ const CreateUser = () => {
           Sign Up
         </button>
       </form>
+      <p className="font-inter font-medium text-gray-500 mt-4">
+        Already have an account?{" "}
+        <span
+          className="text-[#6469ff] cursor-pointer hover:underline"
+          onClick={() => navigate("/login")}
+        >
+          Sign In
+        </span>
+      </p>
     </div>
   );
 };
 
-export default CreateUser;
+export default Register;

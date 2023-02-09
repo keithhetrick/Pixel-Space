@@ -16,7 +16,7 @@ const EditUser = () => {
   const [userPassword, setUserPassword] = useState("");
   const [userConfirmPassword, setUserConfirmPassword] = useState("");
 
-  const fetchSingleUserUrl = `http://localhost:8000/api/user/${userId}`;
+  const fetchSingleUserUrl = `https://localhost:8000/api/user/${userId}`;
 
   const fetchSingleUser = async () => {
     try {

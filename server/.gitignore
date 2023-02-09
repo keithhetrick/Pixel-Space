@@ -6,3 +6,6 @@
 
 # logs
 logs
+
+# https certs
+*.pem

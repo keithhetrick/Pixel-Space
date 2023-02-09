@@ -20,5 +20,7 @@ export const userLogin = asyncHandler(async (req, res) => {
   //   return res.status(401).json({ message: "Unauthorized" });
   // }
 
-  res.status(200).json({ success: true, data: candidate });
+  res
+    .status(200)
+    .json({ success: true, data: candidate, message: "Login successful" });
 });

@@ -3,6 +3,6 @@ import CreatePost from "./posts/CreatePost";
 import Image from "./posts/Image";
 import User from "./users/User";
 import EditUser from "./users/EditUser";
-import CreateUser from "./users/CreateUser";
+import Register from "./users/Register";
 
-export { Home, CreatePost, Image, User, EditUser, CreateUser };
+export { Home, CreatePost, Image, User, EditUser, Register };

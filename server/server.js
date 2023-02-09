@@ -2,6 +2,9 @@ import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
 import corsOptions from "./config/corsOptions.js";
+import https from "https";
+import fs from "fs";
+import helmet from "helmet";
 
 import connectDB from "./config/mongoose.config.js";
 
@@ -23,6 +26,7 @@ import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 // EXPRESS
 const app = express();
+app.use(helmet());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
@@ -47,14 +51,28 @@ app.use(errorHandler);
 app.use(notFound);
 
 // SERVER
-const startServer = async () => {
-  try {
+// const startServer = async () => {
+//   try {
+//     connectDB(db);
+//     app.listen(PORT, () =>
+//       console.log(`\nListening on port ${PORT} on ${ENVIRONMENT} mode`)
+//     );
+//   } catch (error) {
+//     console.log("\nERROR:", error);
+//   }
+// };
+// startServer();
+
+// TLS CONFIG - HTTPS
+https
+  .createServer(
+    {
+      key: fs.readFileSync("key.pem"),
+      cert: fs.readFileSync("cert.pem"),
+    },
+    app
+  )
+  .listen(PORT, () => {
+    console.log(`\nListening on port ${PORT} on ${ENVIRONMENT} mode`);
     connectDB(db);
-    app.listen(PORT, () =>
-      console.log(`\nListening on port ${PORT} on ${ENVIRONMENT} mode`)
-    );
-  } catch (error) {
-    console.log("\nERROR:", error);
-  }
-};
-startServer();
+  });

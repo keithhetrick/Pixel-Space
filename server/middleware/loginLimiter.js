@@ -1,6 +1,8 @@
 import rateLimit from "express-rate-limit";
 import { logEvents } from "../middleware/logger.js";
 
+// add 429 error handler - Too Many Requests
+
 export const loginLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 5, // Limit each IP to 5 login requests per `window` per minute
@@ -8,6 +10,7 @@ export const loginLimiter = rateLimit({
     message:
       "Too many login attempts from this IP, please try again after a 60 second pause",
   },
+  statusCode: 429,
   handler: (req, res, next, options) => {
     logEvents(
       `Too Many Requests: ${options.message.message}\t${req.method}\t${req.url}\t${req.headers.origin}`,

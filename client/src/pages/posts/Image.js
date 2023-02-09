@@ -18,7 +18,7 @@ const Image = () => {
     button.href = "/login";
   }, []);
 
-  const getUrlByID = `http://localhost:8000/api/post/${id}`;
+  const getUrlByID = `https://localhost:8000/api/post/${id}`;
 
   const fetchImage = async () => {
     setLoading(true);
