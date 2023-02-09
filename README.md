@@ -11,6 +11,7 @@ Pixel Space built with:
 - [Express](https://expressjs.com/)
 - [MongoDB](https://www.mongodb.com/)
 - [Mongoose](https://mongoosejs.com/)
+- [Express-Async-Handler](https://www.npmjs.com/package/express-async-handler)
 - [Express-Rate-Limit](https://www.npmjs.com/package/express-rate-limit)
 - [Helmet](https://helmetjs.github.io/)
 - [Cors](https://www.npmjs.com/package/cors)
