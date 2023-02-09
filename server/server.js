@@ -5,6 +5,8 @@ import corsOptions from "./config/corsOptions.js";
 import https from "https";
 import fs from "fs";
 import helmet from "helmet";
+import passport from "passport";
+import { Strategy } from "passport-google-oauth20";
 
 import connectDB from "./config/mongoose.config.js";
 
@@ -20,13 +22,39 @@ const PORT = process.env.PORT;
 const ENVIRONMENT = process.env.NODE_ENV;
 const db = process.env.MONGODB_URL;
 
-// MIDDLEWARE
-import { logger } from "./middleware/logger.js";
-import { notFound, errorHandler } from "./middleware/errorHandler.js";
+// PASSPORT AUTH CONFIG
+const AUTH_OPTIONS = {
+  callbackURL: "/auth/google/callback",
+  clientID: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+};
+
+function verifyCallback(accessToken, refreshToken, profile, done) {
+  console.log("Google profile:", profile);
+  return done(null, profile);
+}
+
+passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 
 // EXPRESS
 const app = express();
 app.use(helmet());
+
+// MIDDLEWARE
+app.use(passport.initialize());
+import { logger } from "./middleware/logger.js";
+import { notFound, errorHandler } from "./middleware/errorHandler.js";
+
+// auth middleware function
+function checkedLoggedIn(req, res, next) {
+  const isLoggedIn = true;
+  if (!isLoggedIn) {
+    res.status(401).json({ message: "You must log in!" });
+  }
+  next();
+}
+
+// ADDITIONAL EXPRESS CONFIG
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
@@ -43,6 +71,40 @@ app.use("/", authRoutes);
 app.get("/", async (req, res) => {
   res.status(200).json({
     message: "Hello from DALL.E!",
+  });
+});
+
+// auth routes
+app.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+// Google OAuth callback route
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/failure",
+    successRedirect: "/",
+    session: false,
+  }),
+  (req, res) => {
+    console.log("Google called us back!");
+  }
+);
+
+app.get("/auth/logout", (req, res) => {});
+
+app.get("failure", (req, res) => {
+  return res.send("Failed to log in!");
+});
+
+// secret route
+app.get("/secret", checkedLoggedIn, async (req, res) => {
+  res.status(200).json({
+    message: "Hello from DALL.E! You found the secret route!",
   });
 });
 

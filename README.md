@@ -11,13 +11,23 @@ Pixel Space built with:
 - [Express](https://expressjs.com/)
 - [MongoDB](https://www.mongodb.com/)
 - [Mongoose](https://mongoosejs.com/)
+- [Express-Rate-Limit](https://www.npmjs.com/package/express-rate-limit)
+- [Helmet](https://helmetjs.github.io/)
+- [Cors](https://www.npmjs.com/package/cors)
+- [Passport](http://www.passportjs.org/)
+- [Axios](https://www.npmjs.com/package/axios)
 - [Nodemon](https://www.npmjs.com/package/nodemon)
 - [Tailwind](https://tailwindcss.com/)
 - [File-Saver](https://www.npmjs.com/package/file-saver)
+- [UUID](https://www.npmjs.com/package/uuid)
+- [Date-FNS](https://date-fns.org/)
 - [Dotenv](https://www.npmjs.com/package/dotenv)
 - [Cloudinary](https://cloudinary.com/)
 - [Dall-E](https://openai.com/blog/dall-e/)
 - [OpenAI](https://openai.com/)
+- [TLS](https://letsencrypt.org/)
+- [AWS](https://aws.amazon.com/)
+- [AWS EC2](https://aws.amazon.com/ec2/)
 
 ## Installation
 
