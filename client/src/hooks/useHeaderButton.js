@@ -8,5 +8,3 @@ export const useHeaderButton = ({ title, link }) => {
     </a>
   );
 };
-
-// export default useHeaderButton;

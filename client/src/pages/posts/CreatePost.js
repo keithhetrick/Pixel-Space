@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
+
 import { preview } from "../../assets";
 import { getRandomPrompt } from "../../utils";
 import { FormField, Loader } from "../../components";
@@ -52,17 +54,14 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch(postUrl, {
-          method: "POST",
+        const response = await axios.post(postUrl, {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            prompt: form.prompt,
-          }),
+          prompt: form.prompt,
         });
 
-        const data = await response.json();
+        const data = await response.data;
         setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
       } catch (err) {
         alert(err);
@@ -83,15 +82,17 @@ const CreatePost = () => {
     if (form.prompt && form.photo) {
       setLoading(true);
       try {
-        const response = await fetch(getUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const response = await axios.post(
+          getUrl,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           },
-          body: JSON.stringify({ ...form }),
-        });
+          { ...form }
+        );
 
-        await response.json();
+        await response.data;
         navigate("/");
       } catch (err) {
         alert(err);
@@ -192,13 +193,7 @@ const CreatePost = () => {
               )}
             </div>
           </div>
-          {/* {errors && <p className="mt-2 text-red-500 text-sm">{errors}</p>} */}
-          {/* {errors && (
-          <ErrorMessage
-            variant={errors ? "danger" : "success"}
-            message={errors}
-          />
-        )} */}
+
           <div className="mt-5 flex gap-5">
             <button
               type="button"

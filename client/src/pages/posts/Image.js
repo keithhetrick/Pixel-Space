@@ -3,11 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { download } from "../../assets";
 import { downloadImage } from "../../utils";
 
+import axios from "axios";
+
 const Image = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const getUrlByID = `http://localhost:8000/api/post/${id}`;
 
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
@@ -18,20 +18,20 @@ const Image = () => {
     button.href = "/login";
   }, []);
 
+  const getUrlByID = `http://localhost:8000/api/post/${id}`;
+
   const fetchImage = async () => {
     setLoading(true);
 
     try {
-      const response = await fetch(getUrlByID, {
-        method: "GET",
+      const response = await axios.get(getUrlByID, {
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        setImage(result.data);
+      if (response.status === 200) {
+        setImage(response.data.data);
       } else {
         navigate("/404");
       }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Card, FormField, Loader } from "../components";
 
+import axios from "axios";
+
 const RenderCards = ({ data, title }) => {
   if (data?.length > 0) {
     return data.map((post) => <Card key={post._id} {...post} />);
@@ -32,15 +34,14 @@ const Home = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(getUrl, {
-        method: "GET",
+      const response = await axios.get(getUrl, {
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      if (response.ok) {
-        const result = await response.json();
+      if (response.status === 200) {
+        const result = response.data;
         setAllPosts(result.data.reverse());
       }
     } catch (err) {

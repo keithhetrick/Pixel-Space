@@ -3,6 +3,9 @@ import { Home, CreatePost, Image, User, EditUser, CreateUser } from "./pages";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 import Login from "./auth/Login";
+import ErrorLandingPage from "./pages/ErrorLandingPage";
+
+// Add errorLandingPage to Routes & route any other path to errorLandingPage
 
 function App() {
   return (
@@ -18,6 +21,7 @@ function App() {
           <Route path="/create-user/" element={<CreateUser />} />
           <Route path="/user/:id/edit" element={<EditUser />} />
           <Route path="/login" element={<Login />} />
+          <Route path="*" element={<ErrorLandingPage />} />
         </Routes>
       </main>
 

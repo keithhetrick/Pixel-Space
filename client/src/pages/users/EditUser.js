@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import axios from "axios";
+
 const EditUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -14,18 +16,19 @@ const EditUser = () => {
   const [userPassword, setUserPassword] = useState("");
   const [userConfirmPassword, setUserConfirmPassword] = useState("");
 
+  const fetchSingleUserUrl = `http://localhost:8000/api/user/${userId}`;
+
   const fetchSingleUser = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8000/api/user/${userId}`, {
-        method: "GET",
+      const response = await axios.get(fetchSingleUserUrl, {
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      if (response.ok) {
-        const result = await response.json();
+      if (response.status === 200) {
+        const result = response?.data;
         setUserData(result?.data);
         setUserId(result?.data._id);
         setUserEmail(result?.data.email);
@@ -52,20 +55,23 @@ const EditUser = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8000/api/user/${userId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await axios.patch(
+        fetchSingleUserUrl,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-        body: JSON.stringify({
+        {
           name: userName,
           email: userEmail,
           password: userPassword,
           confirmPassword: userConfirmPassword,
-        }),
-      });
-      if (response.ok) {
-        const result = await response.json();
+        }
+      );
+
+      if (response.status === 200) {
+        const result = response.data;
         console.log("HANDLE UPDATE USER SUBMIT:", result);
         navigate(`/user/${userId}`);
       }
@@ -82,14 +88,14 @@ const EditUser = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8000/api/user/${userId}`, {
-        method: "DELETE",
+      const response = await axios.delete(fetchSingleUserUrl, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      if (response.ok) {
-        const result = await response.json();
+
+      if (response.status === 200) {
+        const result = await response.data;
         console.log("HANDLE DELETE USER SUBMIT:", result);
         navigate(`/`);
       }

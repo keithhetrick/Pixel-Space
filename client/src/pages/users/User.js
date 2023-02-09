@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
+import axios from "axios";
+
 const User = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -33,18 +35,19 @@ const User = () => {
 
   const showUpdatedAt = formattedCreatedAt !== formattedUpdatedAt;
 
+  const fetchSingleUserUrl = `http://localhost:8000/api/user/${userId}`;
+
   const fetchSingleUser = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8000/api/user/${userId}`, {
-        method: "GET",
+      const response = await axios.get(fetchSingleUserUrl, {
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      if (response.ok) {
-        const result = await response.json();
+      if (response.status === 200) {
+        const result = response.data;
         setUserData(result?.data);
         setUserId(result?.data._id);
         setUserEmail(result?.data.email);
