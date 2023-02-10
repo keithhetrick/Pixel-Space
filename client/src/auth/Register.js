@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ErrorMessage from "../../hooks/useErrorMessage";
+import { GoogleLoginButton } from "react-social-login-buttons";
 
 import axios from "axios";
+
+import ErrorMessage from "../hooks/useErrorMessage";
 
 const Register = () => {
   const [userName, setUserName] = useState("");
@@ -17,8 +19,8 @@ const Register = () => {
   // useHeaderButton title & link
   useEffect(() => {
     const button = document.querySelector(".header__button");
-    button.innerHTML = "Back";
-    button.href = "/login";
+    button.innerHTML = "See Users";
+    button.href = "/user/view";
   }, []);
 
   const createUserUrl = "https://localhost:8000/api/user";
@@ -100,6 +102,24 @@ const Register = () => {
           Sign Up
         </button>
       </form>
+
+      {/* make modal for social login popup for Google */}
+      <div className="flex items-center justify-center mt-4">
+        <div className="w-10 h-0.5 bg-gray-300"></div>
+        <p className="font-inter font-medium text-gray-500 mx-2">Or</p>
+        <div className="w-10 h-0.5 bg-gray-300"></div>
+      </div>
+
+      <div className="flex flex-col w-[16.5rem]">
+        <a href="https://localhost:8000/auth/google">
+          <GoogleLoginButton className="hover:bg-[#f2f2f2] hover:translate-y-[-1px] transition duration-200">
+            <span>Sign up with Google</span>
+          </GoogleLoginButton>
+        </a>
+
+        {/* <FacebookLoginButton className="bg-[#4267b2] text-white rounded-md hover:bg-[#344e86] hover:translate-y-[-1px] transition duration-200" /> */}
+      </div>
+
       <p className="font-inter font-medium text-gray-500 mt-4">
         Already have an account?{" "}
         <span

@@ -1,3 +1,5 @@
+"use strict";
+
 import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
@@ -7,6 +9,7 @@ import fs from "fs";
 import helmet from "helmet";
 import passport from "passport";
 import { Strategy } from "passport-google-oauth20";
+import cookieSession from "cookie-session";
 
 import connectDB from "./config/mongoose.config.js";
 
@@ -20,36 +23,65 @@ dotenv.config();
 // ENVIRONMENT VARIABLES
 const PORT = process.env.PORT;
 const ENVIRONMENT = process.env.NODE_ENV;
-const db = process.env.MONGODB_URL;
+const DB = process.env.MONGODB_URL;
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const COOKIE_KEY_1 = process.env.COOKIE_KEY_1;
+const COOKIE_KEY_2 = process.env.COOKIE_KEY_2;
 
-// PASSPORT AUTH CONFIG
+// PASSPORT AUTH CONFIG & SERIALIZE/DESERIALIZE
 const AUTH_OPTIONS = {
   callbackURL: "/auth/google/callback",
-  clientID: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
+  clientID: CLIENT_ID,
+  clientSecret: CLIENT_SECRET,
 };
 
 function verifyCallback(accessToken, refreshToken, profile, done) {
-  console.log("Google profile:", profile);
+  console.log("\nGoogle profile:", profile);
   return done(null, profile);
 }
 
 passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 
+// Save session to cookie
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+// Read session from cookie
+passport.deserializeUser((id, done) => {
+  done(null, id);
+});
+
 // EXPRESS
 const app = express();
-app.use(helmet());
 
 // MIDDLEWARE
+app.use(helmet());
+app.use(
+  cookieSession({
+    name: "session",
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours - hrs * mins * secs * ms
+    keys: [COOKIE_KEY_1, COOKIE_KEY_2],
+  })
+);
+
+// Initialize passport and restore authentication state, if any, from the session.
 app.use(passport.initialize());
+app.use(passport.session());
+
+// MIDDLEWARE LOGGER
 import { logger } from "./middleware/logger.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
-// auth middleware function
+// AUTH MIDDLEWARE FUNCTION
 function checkedLoggedIn(req, res, next) {
-  const isLoggedIn = true;
+  console.log("\nCurrent user is:", req.user);
+  const isLoggedIn = req.isAuthenticated() && req.user;
   if (!isLoggedIn) {
-    res.status(401).json({ message: "You must log in!" });
+    return res
+      .status(401)
+      .json({ message: "You must be logged in to access this route" });
   }
   next();
 }
@@ -87,18 +119,21 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/failure",
-    successRedirect: "/",
-    session: false,
+    successRedirect: "http://localhost:3001",
+    session: true,
   }),
   (req, res) => {
     console.log("Google called us back!");
   }
 );
 
-app.get("/auth/logout", (req, res) => {});
+app.get("/auth/logout", (req, res) => {
+  req.logout();
+  return res.redirect("http://localhost:3001");
+});
 
 app.get("failure", (req, res) => {
-  return res.send("Failed to log in!");
+  res.status(401).json({ message: "Failed to log in!" });
 });
 
 // secret route
@@ -112,10 +147,17 @@ app.get("/secret", checkedLoggedIn, async (req, res) => {
 app.use(errorHandler);
 app.use(notFound);
 
-// SERVER
+// error & exception handling
+process.on("uncaughtException", (err) => {
+  console.log("\nUNCAUGHT EXCEPTION! Shutting down...");
+  console.log(err.name, err.message);
+  process.exit(1);
+});
+
+// SERVER CONFIG // HTTP
 // const startServer = async () => {
 //   try {
-//     connectDB(db);
+//     connectDB(DB);
 //     app.listen(PORT, () =>
 //       console.log(`\nListening on port ${PORT} on ${ENVIRONMENT} mode`)
 //     );
@@ -136,5 +178,5 @@ https
   )
   .listen(PORT, () => {
     console.log(`\nListening on port ${PORT} on ${ENVIRONMENT} mode`);
-    connectDB(db);
+    connectDB(DB);
   });

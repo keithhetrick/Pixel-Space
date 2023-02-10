@@ -55,20 +55,12 @@ const EditUser = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.patch(
-        fetchSingleUserUrl,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-        {
-          name: userName,
-          email: userEmail,
-          password: userPassword,
-          confirmPassword: userConfirmPassword,
-        }
-      );
+      const response = await axios.patch(fetchSingleUserUrl, {
+        name: userName,
+        email: userEmail,
+        password: userPassword,
+        confirmPassword: userConfirmPassword,
+      });
 
       if (response.status === 200) {
         const result = response.data;

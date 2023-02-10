@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import { logEvents } from "../middleware/logger.js";
 
-const connectDB = async (db) => {
+const connectDB = async (DB) => {
   try {
     mongoose.set("strictQuery", false);
-    const conn = await mongoose.connect(db, {
+    const conn = await mongoose.connect(DB, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

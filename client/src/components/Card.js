@@ -11,11 +11,12 @@ const Card = ({ _id, name, prompt, photo }) => {
 
   return (
     <div
-      className="rounded-xl group relative shadow-card hover:shadow-cardhover card transition duration-500 cursor-pointer"
+      className="rounded-xl group p-4 relative shadow-card hover:shadow-cardhover card transition duration-500 cursor-pointer"
       onClick={handleImageClick}
     >
       <img
-        className="rounded-xl w-full object-cover h-auto transform group-hover:translate-y-[-2px] transition duration-200"
+        className="rounded-xl w-full object-cover h-auto transform group-hover:translate-y-[-2px] 
+        hover:shadow-lg transition duration-200"
         src={photo}
         alt={prompt}
       />
@@ -42,6 +43,11 @@ const Card = ({ _id, name, prompt, photo }) => {
           </button>
         </div>
       </div>
+      {/* {prompt && (
+        <div className="absolute bottom-0 left-0 right-0 rounded-md">
+          <p className="text-black text-xs overflow-y-auto prompt">{name}</p>
+        </div>
+      )} */}
     </div>
   );
 };

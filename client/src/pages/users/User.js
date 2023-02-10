@@ -73,8 +73,8 @@ const User = () => {
   return (
     <div>
       <button
-        className="font-inter font-medium bg-[#6469] mt-1 text-white px-4 py-2 rounded-md hover:bg-[#b18eb199] hover:translate-y-[-1px] transition duration-200"
-        onClick={() => navigate(`/`)}
+        className="font-inter font-medium bg-[#6469] mt-1 text-white px-4 py-2 mb-2 rounded-md hover:bg-[#b18eb199] hover:translate-y-[-1px] transition duration-200"
+        onClick={() => navigate(-1)}
       >
         Back
       </button>
