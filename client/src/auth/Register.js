@@ -22,7 +22,7 @@ const Register = () => {
     button.href = "/user/view";
   }, []);
 
-  const createUserUrl = "https://localhost:8000/api/user";
+  const createUserUrl = "http://localhost:8000/api/user";
 
   const createUser = async () => {
     try {

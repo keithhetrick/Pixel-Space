@@ -17,7 +17,7 @@ const Image = () => {
     button.href = "/login";
   }, []);
 
-  const getUrlByID = `https://localhost:8000/api/post/${id}`;
+  const getUrlByID = `http://localhost:8000/api/post/${id}`;
 
   const fetchImage = async () => {
     setLoading(true);
@@ -49,7 +49,7 @@ const Image = () => {
     setLoading(true);
 
     try {
-      const response = await axios.get("https://localhost:8000/api/post", {
+      const response = await axios.get("http://localhost:8000/api/post", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -88,7 +88,7 @@ const Image = () => {
     setLoading(true);
 
     try {
-      const response = await axios.get("https://localhost:8000/api/post", {
+      const response = await axios.get("http://localhost:8000/api/post", {
         headers: {
           "Content-Type": "application/json",
         },

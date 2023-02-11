@@ -30,7 +30,7 @@ const Home = () => {
   }, []);
 
   // URL
-  const getUrl = "https://localhost:8000/api/post";
+  const getUrl = "http://localhost:8000/api/post";
 
   const fetchPosts = async () => {
     setLoading(true);
