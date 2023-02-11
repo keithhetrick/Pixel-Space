@@ -10,6 +10,7 @@ import helmet from "helmet";
 import passport from "passport";
 import { Strategy } from "passport-google-oauth20";
 import cookieSession from "cookie-session";
+import morgan from "morgan";
 
 import connectDB from "./config/mongoose.config.js";
 
@@ -56,8 +57,14 @@ passport.deserializeUser((id, done) => {
 // EXPRESS
 const app = express();
 
+// morgan.token("user-type", function (req, res) {
+//   return req.headers["user-type"];
+// });
+
 // MIDDLEWARE
 app.use(helmet());
+// app.use(morgan(":method :url :status :user-type"));
+app.use(morgan("dev"));
 app.use(
   cookieSession({
     name: "session",

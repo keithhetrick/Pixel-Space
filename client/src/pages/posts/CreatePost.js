@@ -19,6 +19,7 @@ const CreatePost = () => {
 
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line
   const [loggedIn, setLoggedIn] = useState(false);
 
   // change useHeaderButton title & link if not logged in
@@ -64,7 +65,8 @@ const CreatePost = () => {
         const data = await response.data;
         setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
       } catch (err) {
-        alert(err);
+        setErrors(err.response?.data?.message);
+        console.log(err.response);
       } finally {
         setGeneratingImg(false);
       }
@@ -82,20 +84,16 @@ const CreatePost = () => {
     if (form.prompt && form.photo) {
       setLoading(true);
       try {
-        const response = await axios.post(
-          getUrl,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          },
-          { ...form }
-        );
+        const response = await axios.post(getUrl, { ...form });
 
         await response.data;
         navigate("/");
       } catch (err) {
-        alert(err);
+        setErrors(err.response?.data?.message);
+        console.log(err.response);
+        setTimeout(() => {
+          setErrors("");
+        }, 6000);
       } finally {
         setLoading(false);
       }
@@ -126,12 +124,6 @@ const CreatePost = () => {
   return (
     <div>
       <section className="max-w-7xl mx-auto">
-        {/* <button
-        className="font-inter font-medium bg-[#6469] -mt-1 text-white px-4 py-2 rounded-md hover:bg-[#b18eb199] hover:translate-y-[-1px] transition duration-200"
-        onClick={() => navigate(-1)}
-      >
-        Back
-      </button> */}
         <div>
           <h1 className="font-extrabold text-[#222328] text-[32px]">Create</h1>
           <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">
@@ -196,9 +188,9 @@ const CreatePost = () => {
 
           <div className="mt-5 flex gap-5">
             <button
+              className="px-7 py-3  bg-green-700 text-white font-medium text-xs leading-snug uppercase rounded-md shadow-md sm:w-auto hover:bg-green-800 hover:translate-y-[-1px] hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
               type="button"
               onClick={generateImage}
-              className=" text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:bg-green-800 hover:translate-y-[-1px] transition duration-200"
             >
               {generatingImg ? "Generating..." : "Generate"}
             </button>
@@ -208,23 +200,13 @@ const CreatePost = () => {
               ** Once you have created the image you want, you can share it with
               others in the community **
             </p>
-
             {/* {loggedIn ? ( */}
             <button
               type="submit"
-              className="mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:bg-[#4d52e8] hover:translate-y-[-1px] transition duration-200"
+              className="mt-3 px-7 py-3 bg-blue-600 text-white font-medium text-xs leading-snug uppercase rounded-md shadow-md sm:w-auto hover:bg-blue-500 hover:translate-y-[-1px] hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
             >
               {loading ? "Sharing..." : "Share with the Community"}
             </button>
-            {/* ) : (
-              <button
-                type="button"
-                onClick={() => navigate("/login")}
-                className="mt-5 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-centerhover:bg-[#4d52e8] hover:translate-y-[-1px] transition duration-200"
-              >
-                Login to Create
-              </button>
-            )} */}
           </div>
         </form>
       </section>

@@ -12,8 +12,8 @@ const Header = ({ title, link }) => {
     <header className="w-full flex justify-between items-center bg-white sm:px-8 px-4 py-4 border-b border-b-[#e6ebf4]">
       <div className="flex flex-col items-center sm:block">
         <div className="flex flex-row items-center justify-center sm:justify-start sm:mb-0">
-          <p className="font-inter font-medium text-[#222328] text-[8px] -mt-1">
-            <span className="text-[15px] mr-[2px] pixel__space__text">
+          <p className="text-gray-700 text-[10px] -mt-1">
+            <span className="text-[16px] mr-[2px] pixel__space__text">
               Pixel Space{" "}
             </span>
             powered by:

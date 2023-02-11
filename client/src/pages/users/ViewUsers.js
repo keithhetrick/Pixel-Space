@@ -29,9 +29,9 @@ const ViewUsers = () => {
         setUsers(result?.data);
         console.log("RESULT:", result?.data);
       }
-    } catch (err) {
-      console.log("ERROR:", err);
-      alert(err);
+    } catch (error) {
+      console.log("ERROR:", error);
+      alert(error);
     }
   };
 

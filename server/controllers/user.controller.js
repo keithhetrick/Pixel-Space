@@ -12,15 +12,23 @@ export const createUser = asyncHandler(async (req, res) => {
       password,
       confirmPassword,
     });
+
     res.status(200).json({ success: true, data: user });
   } catch (err) {
     console.log("ERROR:", err);
-    res.status(500).json({
-      success: false,
 
-      message: `Unable to create user -
+    if (err.code === 11000) {
+      res.status(500).json({
+        success: false,
+        message: `Unable to create user - "${err.keyValue.name}" already exists`,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: `Unable to create user -
       ${err.message.replace("User validation failed: ", "")}`,
-    });
+      });
+    }
   }
 });
 
@@ -28,6 +36,25 @@ export const createUser = asyncHandler(async (req, res) => {
 export const getAllUsers = asyncHandler(async (req, res) => {
   try {
     const users = await User.find({}).populate("posts");
+
+    // sort by name
+    // users.sort((a, b) => {
+    //   const nameA = a.name.toUpperCase();
+    //   const nameB = b.name.toUpperCase();
+
+    //   if (nameA < nameB) {
+    //     return -1;
+    //   }
+    //   if (nameA > nameB) {
+    //     return 1;
+    //   }
+    //   return 0;
+    // });
+
+    // sort by newest first
+    users.sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
 
     res.status(200).json({ success: true, data: users });
   } catch (err) {
