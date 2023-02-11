@@ -1,11 +1,17 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home, CreatePost, Image, User, EditUser } from "./pages";
+import {
+  Home,
+  CreatePost,
+  Image,
+  User,
+  EditUser,
+  ViewUsers,
+  ErrorLandingPage,
+} from "./pages";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
-import ErrorLandingPage from "./pages/ErrorLandingPage";
-import ViewUsers from "./pages/users/ViewUsers";
 
 function App() {
   return (

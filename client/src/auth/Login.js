@@ -57,8 +57,10 @@ const Login = () => {
 
   // create a function that navigates to user view page with user id
   const navigateToUserView = () => {
-    navigate(`/user/${user._id}`, { state: user });
+    navigate(`/user/${user._id}`);
   };
+
+  // create a function that navigates to Home page if sign out header button is clicked & have a logout modal pop up to confirm logout
 
   return (
     <section className="h-screen">

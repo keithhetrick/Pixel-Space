@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, FormField, Loader } from "../components";
 
 import axios from "axios";
+// import ReturnModal from "../components/ReturnModal";
 
 const RenderCards = ({ data, title }) => {
   if (data?.length > 0) {
@@ -16,6 +17,7 @@ const RenderCards = ({ data, title }) => {
 const Home = () => {
   const [loading, setLoading] = useState(false);
   const [allPosts, setAllPosts] = useState(null);
+  // const [returnModal, setReturnModal] = useState(false);
 
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
@@ -71,8 +73,17 @@ const Home = () => {
     );
   };
 
+  // useEffect(() => {
+  //   const url = window.location.href;
+  //   if (url.includes("return=true")) {
+  //     setReturnModal(true);
+  //   }
+  // }, []);
+
   return (
     <section className="max-w-7xl mx-auto">
+      {/* {returnModal ? <ReturnModal setReturnModal={setReturnModal} /> : null} */}
+
       <div>
         <h1 className="font-extrabold text-[#222328] text-[25px]">
           The{" "}

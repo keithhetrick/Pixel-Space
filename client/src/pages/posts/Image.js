@@ -45,7 +45,6 @@ const Image = () => {
     fetchImage();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // sets state the the current image[index - 1], then navigates user to that image page
   const prev = async () => {
     setLoading(true);
 
@@ -85,7 +84,6 @@ const Image = () => {
     }
   };
 
-  // sets state the the current image[index + 1], then navigates user to that image page
   const next = async () => {
     setLoading(true);
 
@@ -125,32 +123,6 @@ const Image = () => {
     }
   };
 
-  //   <div class="flex justify-center">
-  //   <nav aria-label="Page navigation example">
-  //     <ul class="flex list-style-none">
-  //       <li class="page-item"><a
-  //           class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 focus:shadow-none"
-  //           href="#" aria-label="Previous">
-  //           <span aria-hidden="true">&laquo;</span>
-  //         </a></li>
-  //       <li class="page-item"><a
-  //           class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-  //           href="#">1</a></li>
-  //       <li class="page-item"><a
-  //           class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-  //           href="#">2</a></li>
-  //       <li class="page-item"><a
-  //           class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-  //           href="#">3</a></li>
-  //       <li class="page-item"><a
-  //           class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-  //           href="#" aria-label="Next">
-  //           <span aria-hidden="true">&raquo;</span>
-  //         </a></li>
-  //     </ul>
-  //   </nav>
-  // </div>
-
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       {loading ? (
@@ -162,10 +134,10 @@ const Image = () => {
               <ul className="flex list-style-none justify-between items-center w-full">
                 <li className="page-item">
                   <a
-                    className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:animate-bounce focus:shadow-none"
+                    className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 hover:translate-y-[-1px] focus:shadow-none"
                     href="#!"
-                    aria-label="Previous"
-                    onClick={prev}
+                    aria-label="Next"
+                    onClick={next}
                   >
                     <span aria-hidden="true" className="text-sm xs:text-xs">
                       &laquo; Next
@@ -177,10 +149,10 @@ const Image = () => {
                 </p>
                 <li className="page-item">
                   <a
-                    className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 hover:animate-bounce focus:shadow-none"
+                    className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 hover:translate-y-[-1px] focus:shadow-none"
                     href="#!"
-                    aria-label="Next"
-                    onClick={next}
+                    aria-label="Previous"
+                    onClick={prev}
                   >
                     <span aria-hidden="true" className="text-sm xs:text-xs">
                       Prev &raquo;
