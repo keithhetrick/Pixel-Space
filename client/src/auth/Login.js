@@ -11,6 +11,7 @@ const Login = () => {
   const [user, setUser] = useState(null);
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
@@ -34,7 +35,11 @@ const Login = () => {
   // URL'S
   const loginUrl = "https://localhost:8000/api/login";
 
-  const loginUser = async () => {
+  // if login successful, navigate to user view page
+
+  const loginUserSubmit = async (e) => {
+    e.preventDefault();
+
     try {
       const response = await axios.post(loginUrl, {
         email: userEmail,
@@ -44,29 +49,32 @@ const Login = () => {
         name: response.data.name,
         email: response.data.email,
       });
+      navigate(`/user/view`);
+      console.log("RESPONSE", response);
     } catch (error) {
       setErrors(error.response.data.message);
       console.log("ERROR", error.response);
       setTimeout(() => {
         setErrors("");
       }, 6000);
+    } finally {
+      setLoading(false);
     }
   };
   console.log("ERRORS STATE", errors);
   console.log("MESSAGE VARIANT", errors ? "danger" : "success");
 
   // create a function that navigates to user view page with user id
-  const navigateToUserView = () => {
-    navigate(`/user/${user._id}`);
-  };
-
-  // create a function that navigates to Home page if sign out header button is clicked & have a logout modal pop up to confirm logout
+  // const navigateToUserView = () => {
+  //   navigate(`/user/view`);
+  // };
 
   return (
     <section className="h-screen">
-      <div className="px-6 h-full text-gray-800">
+      <div className="px-6 text-gray-800">
         <div className="flex flex-col items-center justify-center w-full">
           <div className="flex flex-col items-center justify-center w-full mb-6">
+            {loading && <p>Loading...</p>}
             <h1 className="font-bold text-4xl mb-6 text-gray-800 pixel__space__text">
               Pixel Space
             </h1>
@@ -86,12 +94,7 @@ const Login = () => {
           )}
 
           <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                loginUser();
-              }}
-            >
+            <form>
               <div className="mb-6">
                 <input
                   className="form-control block w-full px-4 py-2 text-lg font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -110,6 +113,7 @@ const Login = () => {
                   name="password"
                   id="password"
                   placeholder="Password"
+                  autoComplete="off"
                   onChange={(e) => setUserPassword(e.target.value)}
                 />
               </div>
@@ -121,6 +125,7 @@ const Login = () => {
                     type="checkbox"
                     name="remember-checkbox"
                     id="remember-checkbox"
+                    autoComplete="off"
                   />
                   <label
                     className="form-check-label inline-block text-gray-800 text-sm leading-snug cursor-pointer"
@@ -145,7 +150,8 @@ const Login = () => {
                   type="submit"
                   data-mdb-ripple="true"
                   data-mdb-ripple-color="light"
-                  onClick={navigateToUserView}
+                  // onClick={navigateToUserView}
+                  onSubmit={loginUserSubmit}
                 >
                   Sign in
                 </button>

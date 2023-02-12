@@ -50,7 +50,7 @@ const Register = () => {
 
   return (
     <section className="h-full">
-      <div className="px-6  text-gray-800">
+      <div className="px-6 text-gray-800">
         <div className="flex flex-col items-center justify-center w-full">
           <div>
             {loading && <p>Loading...</p>}

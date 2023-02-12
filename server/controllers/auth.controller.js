@@ -1,6 +1,11 @@
 import User from "../models/user.model.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 
+// @desc Login
+// @route POST /api/login
+// @access Public
 export const userLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 

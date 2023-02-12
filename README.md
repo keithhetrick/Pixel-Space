@@ -51,9 +51,16 @@ npm install
 3. Create a .env file in the server directory and add the following:
 
 ```sh
+PORT=8000
+MONGODB_URL=<your_mongoDB_uri> => can be created via MongoDB Atlas
+NODE_ENV=<development> || <production>
+ACCESS_TOKEN_SECRET=<your_access_token_secret> => can be generated inside Node shell via the following command: require('crypto').randomBytes(64).toString('hex')
+REFRESH_TOKEN_SECRET=<your_refresh_token_secret> => use the same command as above, and paste the new result into the .env file
 CLOUDINARY_NAME=your_cloudinary_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+CLIENT_ID=your_google_client_id
+CLIENT_SECRET=your_google_client_secret
 ```
 
 4. Run the app on both the client and server

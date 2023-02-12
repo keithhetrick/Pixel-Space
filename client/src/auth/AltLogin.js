@@ -1,53 +1,68 @@
-import { useRef, useState, useEffect, useContext } from "react";
-// import AuthContext from "./context/AuthProvider";
+import { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
-const LOGIN_URL = "/auth";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../features/auth/authSlice";
+import { useLoginMutation } from "../features/auth/authApiSlice";
+
+// import axios from "axios";
 
 const AltLogin = () => {
-  // const { setAuth } = useContext(AuthContext);
   const userRef = useRef();
   const errRef = useRef();
-
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     userRef.current.focus();
+    console.log("AltLogin mounted");
   }, []);
 
   useEffect(() => {
     setErrMsg("");
+    console.log("user:", user, "pwd:", pwd);
   }, [user, pwd]);
+
+  // function to check if the server is running
+  const url = "https://localhost:8000/api/login";
+  const serverCheck = () => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => console.log(url, data))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    serverCheck();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        LOGIN_URL,
-        JSON.stringify({ user, pwd }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+      const userData = await login({ user, pwd }).unwrap();
+      dispatch(setCredentials({ ...userData, user }));
+      console.log(
+        "DISPATCH: ",
+        dispatch(setCredentials({ ...userData, user }))
       );
-      console.log(JSON.stringify(response?.data));
-      //console.log(JSON.stringify(response));
-      // const accessToken = response?.data?.accessToken;
-      // const roles = response?.data?.roles;
-      // setAuth({ user, pwd, roles, accessToken });
+      console.log("DATA:", userData);
       setUser("");
       setPwd("");
-      setSuccess(true);
+      navigate("/");
     } catch (err) {
-      if (!err?.response) {
+      if (!err?.originalStatus) {
+        console.log("No Server Response");
+        // isLoading: true until timeout occurs
         setErrMsg("No Server Response");
-      } else if (err.response?.status === 400) {
+      } else if (err.originalStatus === 400) {
         setErrMsg("Missing Username or Password");
-      } else if (err.response?.status === 401) {
+      } else if (err.originalStatus === 401) {
         setErrMsg("Unauthorized");
       } else {
         setErrMsg("Login Failed");
@@ -56,60 +71,49 @@ const AltLogin = () => {
     }
   };
 
-  return (
-    <>
-      {success ? (
-        <section>
-          <h1>You are logged in!</h1>
-          <br />
-          <p>
-            <a href="#!">Go to Home</a>
-          </p>
-        </section>
-      ) : (
-        <section>
-          <p
-            ref={errRef}
-            className={errMsg ? "errmsg" : "offscreen"}
-            aria-live="assertive"
-          >
-            {errMsg}
-          </p>
-          <h1>Sign In</h1>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              id="username"
-              ref={userRef}
-              autoComplete="off"
-              onChange={(e) => setUser(e.target.value)}
-              value={user}
-              required
-            />
+  const handleUserInput = (e) => setUser(e.target.value);
 
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              onChange={(e) => setPwd(e.target.value)}
-              value={pwd}
-              required
-            />
-            <button>Sign In</button>
-          </form>
-          <p>
-            Need an Account?
-            <br />
-            <span className="line">
-              {/*put router link here*/}
-              <a href="#!">Sign Up</a>
-            </span>
-          </p>
-        </section>
-      )}
-    </>
+  const handlePwdInput = (e) => setPwd(e.target.value);
+
+  const content = isLoading ? (
+    <h1>Loading...</h1>
+  ) : (
+    <section className="login">
+      <p
+        ref={errRef}
+        className={errMsg ? "errmsg" : "offscreen"}
+        aria-live="assertive"
+      >
+        {errMsg}
+      </p>
+
+      <h1>Employee Login</h1>
+
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          ref={userRef}
+          value={user}
+          onChange={handleUserInput}
+          autoComplete="off"
+          required
+        />
+
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          onChange={handlePwdInput}
+          value={pwd}
+          required
+        />
+        <button>Sign In</button>
+      </form>
+    </section>
   );
-};
 
+  return content;
+};
 export default AltLogin;

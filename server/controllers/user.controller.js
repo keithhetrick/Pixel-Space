@@ -1,5 +1,7 @@
 import User from "../models/user.model.js";
 import asyncHandler from "express-async-handler";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 // Create a new user
 export const createUser = asyncHandler(async (req, res) => {

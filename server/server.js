@@ -113,6 +113,12 @@ app.get("/", async (req, res) => {
   });
 });
 
+app.get("/api/login", (req, res) => {
+  res.status(200).json({
+    message: "Hello!!! You found the login route 🔥",
+  });
+});
+
 // auth routes
 app.get(
   "/auth/google",
