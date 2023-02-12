@@ -162,28 +162,28 @@ process.on("uncaughtException", (err) => {
 });
 
 // SERVER CONFIG // HTTP
-const startServer = async () => {
-  try {
-    connectDB(DB);
-    app.listen(PORT, () =>
-      console.log(`\nListening on port ${PORT} on ${ENVIRONMENT} mode`)
-    );
-  } catch (error) {
-    console.log("\nERROR:", error);
-  }
-};
-startServer();
+// const startServer = async () => {
+//   try {
+//     connectDB(DB);
+//     app.listen(PORT, () =>
+//       console.log(`\nListening on port ${PORT} on ${ENVIRONMENT} mode`)
+//     );
+//   } catch (error) {
+//     console.log("\nERROR:", error);
+//   }
+// };
+// startServer();
 
 // TLS CONFIG - HTTPS
-// https
-//   .createServer(
-//     {
-//       key: fs.readFileSync("key.pem"),
-//       cert: fs.readFileSync("cert.pem"),
-//     },
-//     app
-//   )
-//   .listen(PORT, () => {
-//     console.log(`\nListening on port ${PORT} on ${ENVIRONMENT} mode`);
-//     connectDB(DB);
-//   });
+https
+  .createServer(
+    {
+      key: fs.readFileSync("key.pem"),
+      cert: fs.readFileSync("cert.pem"),
+    },
+    app
+  )
+  .listen(PORT, () => {
+    console.log(`\nListening on port ${PORT} on ${ENVIRONMENT} mode`);
+    connectDB(DB);
+  });

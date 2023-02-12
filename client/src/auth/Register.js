@@ -11,6 +11,8 @@ const Register = () => {
   const [userPassword, setUserPassword] = useState("");
   const [userConfirmPassword, setUserConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
 
   const navigate = useNavigate();
@@ -22,9 +24,9 @@ const Register = () => {
     button.href = "/user/view";
   }, []);
 
-  const createUserUrl = "http://localhost:8000/api/user";
+  const createUserUrl = "https://localhost:8000/api/user";
 
-  const createUser = async () => {
+  const createUserSubmit = async () => {
     try {
       setLoading(true);
       const response = await axios.post(createUserUrl, {
@@ -46,11 +48,6 @@ const Register = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    createUser();
-  };
-
   return (
     <section className="h-full">
       <div className="px-6  text-gray-800">
@@ -70,7 +67,7 @@ const Register = () => {
           )}
 
           <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-            <form onSubmit={handleSubmit}>
+            <form>
               <div className="mb-6">
                 <input
                   className="form-control block w-full px-4 py-2 text-lg font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -78,6 +75,9 @@ const Register = () => {
                   name="name"
                   id="name"
                   placeholder="Name"
+                  autoComplete="off"
+                  // onFocus={() => setUserFocus(true)}
+                  // onBlur={() => setUserFocus(false)}
                   onChange={(e) => setUserName(e.target.value)}
                 />
               </div>
@@ -89,6 +89,9 @@ const Register = () => {
                   name="email"
                   id="email"
                   placeholder="Email address"
+                  autoComplete="off"
+                  // onFocus={() => setEmailFocus(true)}
+                  // onBlur={() => setEmailFocus(false)}
                   onChange={(e) => setUserEmail(e.target.value)}
                 />
               </div>
@@ -100,6 +103,9 @@ const Register = () => {
                   name="password"
                   id="password"
                   placeholder="Password"
+                  autoComplete="off"
+                  // onFocus={() => setPasswordFocus(true)}
+                  // onBlur={() => setPasswordFocus(false)}
                   onChange={(e) => setUserPassword(e.target.value)}
                 />
               </div>
@@ -111,6 +117,9 @@ const Register = () => {
                   name="confirmPassword"
                   id="confirmPassword"
                   placeholder="Confirm Password"
+                  autoComplete="off"
+                  // onFocus={() => setConfirmPasswordFocus(true)}
+                  // onBlur={() => setConfirmPasswordFocus(false)}
                   onChange={(e) => setUserConfirmPassword(e.target.value)}
                 />
               </div>
@@ -121,7 +130,7 @@ const Register = () => {
                   type="submit"
                   data-mdb-ripple="true"
                   data-mdb-ripple-color="light"
-                  onClick={() => navigate("/user/view")}
+                  onClick={createUserSubmit}
                 >
                   Sign Up
                 </button>
@@ -139,7 +148,7 @@ const Register = () => {
                   data-mdb-ripple-color="light"
                 >
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns="https://www.w3.org/2000/svg"
                     viewBox="0 0 488 512"
                     className="w-3.5 h-3.5 mr-2"
                   >

@@ -17,7 +17,7 @@ const Image = () => {
     button.href = "/login";
   }, []);
 
-  const getUrlByID = `http://localhost:8000/api/post/${id}`;
+  const getUrlByID = `https://localhost:8000/api/post/${id}`;
 
   const fetchImage = async () => {
     setLoading(true);
@@ -49,7 +49,7 @@ const Image = () => {
     setLoading(true);
 
     try {
-      const response = await axios.get("http://localhost:8000/api/post", {
+      const response = await axios.get("https://localhost:8000/api/post", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -88,7 +88,7 @@ const Image = () => {
     setLoading(true);
 
     try {
-      const response = await axios.get("http://localhost:8000/api/post", {
+      const response = await axios.get("https://localhost:8000/api/post", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -199,7 +199,7 @@ const Image = () => {
                 data-icon="download"
                 className="w-6 mx-auto hover:animate-bounce text-gray-700"
                 role="img"
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="https://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"
               >
                 <path

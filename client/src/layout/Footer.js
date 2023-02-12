@@ -28,7 +28,7 @@ const Footer = () => {
             className="text-[10px]"
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="https://www.w3.org/2000/svg"
               viewBox="0 0 496 512"
               className="w-4 inline-block color-black cursor-pointer"
             >

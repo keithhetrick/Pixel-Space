@@ -2,7 +2,7 @@
 
 This is a full stack application that uses the Dall-E API to generate images from text prompts. The application is built using React, Node, Express, and MongoDB. Images are stored in Cloudinary (a cloud-based image and video management service), and the generated image-urls are stored in a MongoDB database, for easy access & sharability.
 
-[Pixel Space](http://18.189.184.157/)
+[Pixel Space](https://18.189.184.157/)
 
 Pixel Space built with:
 
@@ -15,7 +15,7 @@ Pixel Space built with:
 - [Express-Rate-Limit](https://www.npmjs.com/package/express-rate-limit)
 - [Helmet](https://helmetjs.github.io/)
 - [Cors](https://www.npmjs.com/package/cors)
-- [Passport](http://www.passportjs.org/)
+- [Passport](https://www.passportjs.org/)
 - [OAuth2](https://oauth.net/2/)
 - [Google-OAuth2](https://developers.google.com/identity/protocols/oauth2)
 - [Axios](https://www.npmjs.com/package/axios)

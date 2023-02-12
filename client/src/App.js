@@ -12,6 +12,7 @@ import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
+import AltLogin from "./auth/AltLogin";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/image/:id" element={<Image />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/alt-login" element={<AltLogin />} />
           <Route path="/user/:id" element={<User />} />
           <Route path="/user/view" element={<ViewUsers />} />
           <Route path="/register/" element={<Register />} />

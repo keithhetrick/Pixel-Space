@@ -41,7 +41,7 @@ const Card = ({ _id, name, prompt, photo }) => {
               data-icon="download"
               className="w-5 mx-auto hover:animate-bounce text-gray-200"
               role="img"
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="https://www.w3.org/2000/svg"
               viewBox="0 0 512 512"
             >
               <path
