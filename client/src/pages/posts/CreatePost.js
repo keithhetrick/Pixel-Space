@@ -48,8 +48,8 @@ const CreatePost = () => {
   };
 
   // URL'S
-  const postUrl = "https://localhost:8000/api/dalle";
-  const getUrl = "https://localhost:8000/api/post";
+  const postUrl = "http://localhost:8000/api/dalle";
+  const getUrl = "http://localhost:8000/api/post";
 
   const generateImage = async () => {
     if (form.prompt) {

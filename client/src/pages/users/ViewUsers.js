@@ -14,7 +14,7 @@ const ViewUsers = () => {
     button.href = "/";
   }, []);
 
-  const fetchAllUsersUrl = `https://localhost:8000/api/user`;
+  const fetchAllUsersUrl = `http://localhost:8000/api/user`;
 
   const fetchAllUsers = async () => {
     try {

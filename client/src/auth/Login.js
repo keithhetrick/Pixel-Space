@@ -22,18 +22,18 @@ const Login = () => {
   useEffect(() => {
     const button = document.querySelector(".header__button");
     button.innerHTML = "Sign out";
-    button.href = "https://localhost:8000/auth/logout";
+    button.href = "http://localhost:8000/auth/logout";
 
     //   <a
     //   className="font-inter font-medium bg-[#ffffff] text-gray-700 px-4 py-2 rounded-md hover:bg-[#f2f2f2] hover:translate-y-[-1px] transition duration-200 mt-4"
-    //   href="https://localhost:8000/auth/logout"
+    //   href="http://localhost:8000/auth/logout"
     // >
     //   Logout
     // </a>
   }, []);
 
   // URL'S
-  const loginUrl = "https://localhost:8000/api/login";
+  const loginUrl = "http://localhost:8000/api/login";
 
   // if login successful, navigate to user view page
 
@@ -164,7 +164,7 @@ const Login = () => {
                 <a
                   className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md bg-[#ea4335] hover:bg-[#ef7166] hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 
                   ease-in-out w-full flex justify-center items-center mb-3"
-                  href="https://localhost:8000/auth/google"
+                  href="http://localhost:8000/auth/google"
                   role="button"
                   data-mdb-ripple="true"
                   data-mdb-ripple-color="light"

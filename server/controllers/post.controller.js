@@ -21,22 +21,40 @@ cloudinary.config({
 // Create a new post
 export const createPost = asyncHandler(async (req, res) => {
   try {
-    const { name, prompt, photo, user } = req.body;
+    const {
+      name,
+      prompt,
+      photo,
+      // user
+    } = req.body;
     const photoUrl = await cloudinary.uploader.upload(photo);
 
     const newPost = await Post.create({
       name,
       prompt,
       photo: photoUrl.url,
-      user,
+      // user,
     });
 
     res.status(200).json({ success: true, data: newPost });
   } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Unable to create a post, please try again",
-    });
+    let status = err.statusCode || 500;
+    if (status === 413) {
+      return res.status(413).json({
+        success: false,
+        message: "Image size too large. Please upload a smaller image",
+      });
+    } else if (status === 400) {
+      return res.status(400).json({
+        success: false,
+        message: "Please fill in all fields",
+      });
+    } else if (status === 500) {
+      res.status(500).json({
+        success: false,
+        message: "Unable to create a post, please try again",
+      });
+    }
   }
 });
 

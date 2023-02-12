@@ -39,7 +39,7 @@ const User = () => {
 
   const showUpdatedAt = formattedCreatedAt !== formattedUpdatedAt;
 
-  const fetchSingleUserUrl = `https://localhost:8000/api/user/${userId}`;
+  const fetchSingleUserUrl = `http://localhost:8000/api/user/${userId}`;
 
   const fetchSingleUser = async () => {
     try {

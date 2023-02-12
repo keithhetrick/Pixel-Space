@@ -24,7 +24,7 @@ const Register = () => {
     button.href = "/user/view";
   }, []);
 
-  const createUserUrl = "https://localhost:8000/api/user";
+  const createUserUrl = "http://localhost:8000/api/user";
 
   const createUserSubmit = async () => {
     try {
@@ -142,7 +142,7 @@ const Register = () => {
                 <a
                   className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md bg-[#ea4335] hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 
                 ease-in-out w-full flex justify-center items-center mb-3"
-                  href="https://localhost:8000/auth/google"
+                  href="http://localhost:8000/auth/google"
                   role="button"
                   data-mdb-ripple="true"
                   data-mdb-ripple-color="light"

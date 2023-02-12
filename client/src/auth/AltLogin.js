@@ -29,7 +29,7 @@ const AltLogin = () => {
   }, [user, pwd]);
 
   // function to check if the server is running
-  const url = "https://localhost:8000/api/login";
+  const url = "http://localhost:8000/api/login";
   const serverCheck = () => {
     fetch(url)
       .then((res) => res.json())
