@@ -9,25 +9,47 @@ import asyncHandler from "express-async-handler";
 export const userLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  // write a error that checks if the email and password are provided, and if not, return a 400 error with a message for each field missing
-  if (!email || !password) {
+  const targetLength = 6;
+
+  if (!email && !password) {
+    return res
+      .status(400)
+      .json({ success: false, message: "All fields are required" });
+  } else if (!password) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Password is required" });
+  } else if (!email) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Email is required" });
+  } else if (
+    !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+      email
+    )
+  ) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Please enter a valid email" });
+  } else if (password.length < targetLength) {
     return res.status(400).json({
       success: false,
-      message: "All fields are required",
+      message: `Password must be at least ${targetLength} characters`,
+    });
+  } else if (email.length < targetLength) {
+    return res.status(400).json({
+      success: false,
+      message: `Email must be at least ${targetLength} characters`,
     });
   }
 
   const candidate = await User.findOne({ email }).exec();
 
-  // if (!candidate || !candidate.active) {
-  //   return res.status(401).json({ message: "Unauthorized" });
-  // }
-
-  // const isMatch = await candidate.comparePassword(password);
-
-  // if (!isMatch) {
-  //   return res.status(401).json({ message: "Unauthorized" });
-  // }
+  if (!candidate) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Invalid credentials" });
+  }
 
   res
     .status(200)

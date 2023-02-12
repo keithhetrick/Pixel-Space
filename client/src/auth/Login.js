@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { GoogleLoginButton } from "react-social-login-buttons";
 
 import axios from "axios";
 
@@ -23,19 +22,10 @@ const Login = () => {
     const button = document.querySelector(".header__button");
     button.innerHTML = "Sign out";
     button.href = "http://localhost:8000/auth/logout";
-
-    //   <a
-    //   className="font-inter font-medium bg-[#ffffff] text-gray-700 px-4 py-2 rounded-md hover:bg-[#f2f2f2] hover:translate-y-[-1px] transition duration-200 mt-4"
-    //   href="http://localhost:8000/auth/logout"
-    // >
-    //   Logout
-    // </a>
   }, []);
 
   // URL'S
   const loginUrl = "http://localhost:8000/api/login";
-
-  // if login successful, navigate to user view page
 
   const loginUserSubmit = async (e) => {
     e.preventDefault();
@@ -46,28 +36,22 @@ const Login = () => {
         password: userPassword,
       });
       setUser({
-        name: response.data.name,
-        email: response.data.email,
+        name: response?.data?.data?.name,
+        email: response?.data?.data?.email,
       });
-      navigate(`/user/view`);
       console.log("RESPONSE", response);
+      console.log("Name", response?.data?.data?.name);
+      console.log("Status", response?.status);
+      navigate(`/user/${response?.data?.data?._id}`);
     } catch (error) {
-      setErrors(error.response.data.message);
+      setErrors(error.response?.data?.message);
       console.log("ERROR", error.response);
-      setTimeout(() => {
-        setErrors("");
-      }, 6000);
     } finally {
       setLoading(false);
     }
   };
   console.log("ERRORS STATE", errors);
   console.log("MESSAGE VARIANT", errors ? "danger" : "success");
-
-  // create a function that navigates to user view page with user id
-  // const navigateToUserView = () => {
-  //   navigate(`/user/view`);
-  // };
 
   return (
     <section className="h-screen">
@@ -94,7 +78,7 @@ const Login = () => {
           )}
 
           <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-            <form>
+            <form onSubmit={loginUserSubmit}>
               <div className="mb-6">
                 <input
                   className="form-control block w-full px-4 py-2 text-lg font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -150,8 +134,6 @@ const Login = () => {
                   type="submit"
                   data-mdb-ripple="true"
                   data-mdb-ripple-color="light"
-                  // onClick={navigateToUserView}
-                  onSubmit={loginUserSubmit}
                 >
                   Sign in
                 </button>
@@ -160,7 +142,6 @@ const Login = () => {
                   <p className="text-center font-semibold mx-4 mb-0">OR</p>
                 </div>
 
-                {/* hover:scale-105 */}
                 <a
                   className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md bg-[#ea4335] hover:bg-[#ef7166] hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 
                   ease-in-out w-full flex justify-center items-center mb-3"
