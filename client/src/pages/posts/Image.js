@@ -123,25 +123,41 @@ const Image = () => {
     }
   };
 
-  // create a function that takes the image.name & slices it at index 20 so that it can be used as the title
-  const splitName = (name) => {
-    if (name?.length > 20) {
-      return name.slice(0, 20);
-    } else {
-      return name;
+  // create a function to handle the swipe event & if user does a continuous swipe, it'll only count as one swipe event
+  const handleSwipe = (e) => {
+    let x = e.deltaX;
+    let y = e.deltaY;
+
+    if (x < 0 && Math.abs(x) > Math.abs(y)) {
+      prev();
+    } else if (x > 0 && Math.abs(x) > Math.abs(y)) {
+      next();
     }
   };
 
-  // use the splitName function to set the title
-  const title = splitName(image?.name);
+  // // function to split the name of the image if it's too long
+  // const splitName = (name) => {
+  //   if (name?.length > 20) {
+  //     return name.slice(0, 20);
+  //   } else {
+  //     return name;
+  //   }
+  // };
+
+  // // use the splitName function to set the title
+  // const title = splitName(image?.name);
 
   return (
     <section className="h-full">
       {loading && <p>Loading...</p>}
       <div className="flex flex-col items-center justify-center w-full h-full">
         <div className="px-6">
-          <div className="flex flex-col items-center justify-center w-full">
-            <div className="block justify-between items-center w-full mb-6">
+          <div
+            className="flex flex-col items-center justify-center w-full
+            "
+            onWheel={handleSwipe}
+          >
+            {/* <div className="block justify-between items-center w-full mb-6">
               <div className="flex justify-between">
                 <ul className="flex list-style-none justify-between items-center w-full">
                   <li className="page-item">
@@ -158,7 +174,6 @@ const Image = () => {
                   </li>
                   <p className="text-[#1d161ddd] italic text-sm xs:text-xs overflow-x-auto">
                     {title}
-                    {/* {image?.name} */}
                   </p>
                   <li className="page-item">
                     <a
@@ -174,28 +189,74 @@ const Image = () => {
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> */}
 
-            <img
+            {/* <img
               className="rounded-xl w-full h-full object-cover"
               src={image?.photo}
               alt={image?.name}
-            />
+            /> */}
+
+            {/* add inset arrows on each side of the image that takes user to the prev & next image */}
+
+            <div className="flex flex-col justify-center items-center w-full h-full">
+              <div className="flex justify-center items-center w-full h-full">
+                <div className="absolute left-0 z-10 flex justify-center items-center h-full">
+                  <button
+                    className="w-8 h-8 text-gray rounded-full opacity-75 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                    onClick={prev}
+                  >
+                    <svg
+                      className="w-6 h-6 ml-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 19l-7-7 7-7"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+                <div className="absolute right-0 z-10 flex justify-center items-center h-full">
+                  <button
+                    className="w-8 h-8 text-white-900 rounded-full opacity-75 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                    onClick={next}
+                  >
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 5l7 7-7 7"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+                <img
+                  className="rounded-xl w-full h-full object-cover"
+                  src={image?.photo}
+                  alt={image?.name}
+                />
+              </div>
+            </div>
 
             <div className="flex flex-col md:flex-row justify-between text-center items-center w-full h-auto mt-6">
-              {/* <div>
-                <button
-                  className="mt-1 px-9 py-3 mb-1 bg-gray-700 text-white font-medium text-xs leading-snug uppercase rounded-md shadow-md hover:bg-gray-600 hover:shadow-lg hover:translate-y-[-1px] focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out"
-                  onClick={() => navigate(-1)}
-                >
-                  Back
-                </button>
-              </div> */}
+              <span className="text-[#000000e2] text-md font-bold">
+                {image?.name}
+              </span>{" "}
               <p className="text-black text-sm xs:text-xs mx-2 my-3">
-                <span className="text-[#000000e2] text-md font-bold">
-                  {image?.name}
-                </span>{" "}
-                -{" "}
+                {" "}
                 <span className="text-[#1d161ddd] italic font-light flex-wrap">
                   {image?.prompt}
                 </span>
