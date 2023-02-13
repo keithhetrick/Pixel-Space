@@ -1,10 +1,10 @@
 const Footer = () => {
   return (
-    <footer className="text-center items-center text-white sm:px-8 px-4 py-4 bg-white border-t border-t-[#e6ebf4]">
+    <footer className="text-center items-center text-white sm:px-8 px-6 py-6 bg-white border-t border-t-[#e6ebf4]">
       <div className="flex flex-wrap justify-center">
         <div className="flex text-gray-700 text-[10px] p-4 items-center">
           © 2023 Copyright: &nbsp;
-          <span className="text-[16px] pixel__space__text">
+          <span className="flex text-center items-center text-[16px] mr-[1px] pixel__space__text">
             Pixel Space &nbsp;
           </span>
           <a
@@ -19,7 +19,7 @@ const Footer = () => {
             />
           </a>
         </div>
-        <div className="flex text-gray-700 text-[10px] p-4 items-center">
+        <div className="flex text-gray-700 text-[11px] p-4 items-center">
           <p>Creator: &nbsp;</p>
           <a
             href="https://github.com/keithhetrick"

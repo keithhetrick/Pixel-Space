@@ -19,6 +19,7 @@ export const createUser = asyncHandler(async (req, res) => {
   } catch (err) {
     console.log("ERROR:", err);
 
+    // Check for duplicate
     if (err.code === 11000) {
       res.status(500).json({
         success: false,
@@ -38,6 +39,9 @@ export const createUser = asyncHandler(async (req, res) => {
 export const getAllUsers = asyncHandler(async (req, res) => {
   try {
     const users = await User.find({}).populate("posts");
+    if (!users?.length) {
+      return res.status(404).json({ message: "No users found" });
+    }
 
     // sort by name
     // users.sort((a, b) => {

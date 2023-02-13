@@ -10,7 +10,7 @@ const FormField = ({
 }) => {
   return (
     <div>
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex items-center gap-3 mb-3">
         <label
           htmlFor={name}
           className="block text-sm font-medium text-gray-900"

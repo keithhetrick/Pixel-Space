@@ -11,7 +11,6 @@ import passport from "passport";
 import { Strategy } from "passport-google-oauth20";
 import cookieSession from "cookie-session";
 import morgan from "morgan";
-import bodyParser from "body-parser";
 
 import connectDB from "./config/mongoose.config.js";
 
@@ -95,8 +94,11 @@ function checkedLoggedIn(req, res, next) {
 }
 
 // ADDITIONAL EXPRESS CONFIG
-app.use(express.json());
-app.use(express.urlencoded());
+// app.use(express.bodyParser({ limit: "50mb" }));
+app.use(express.json({ limit: "50mb", extended: true }));
+app.use(
+  express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
+);
 app.use(cors(corsOptions));
 
 // LOGGER

@@ -123,95 +123,109 @@ const Image = () => {
     }
   };
 
+  // create a function that takes the image.name & slices it at index 20 so that it can be used as the title
+  const splitName = (name) => {
+    if (name?.length > 20) {
+      return name.slice(0, 20);
+    } else {
+      return name;
+    }
+  };
+
+  // use the splitName function to set the title
+  const title = splitName(image?.name);
+
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="flex flex-col items-center justify-center w-full h-full">
-          <div className="block justify-between items-center w-full mb-3 -mt-5">
-            <div className="flex justify-between">
-              <ul className="flex list-style-none justify-between items-center w-full">
-                <li className="page-item">
-                  <a
-                    className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 hover:translate-y-[-1px] focus:shadow-none"
-                    href="#!"
-                    aria-label="Next"
-                    onClick={next}
-                  >
-                    <span aria-hidden="true" className="text-sm xs:text-xs">
-                      &laquo; Next
-                    </span>
-                  </a>
-                </li>
-                <p className="text-[#1d161ddd] italic text-sm xs:text-xs">
-                  {image?.name}
-                </p>
-                <li className="page-item">
-                  <a
-                    className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 hover:translate-y-[-1px] focus:shadow-none"
-                    href="#!"
-                    aria-label="Previous"
-                    onClick={prev}
-                  >
-                    <span aria-hidden="true" className="text-sm xs:text-xs">
-                      Prev &raquo;
-                    </span>
-                  </a>
-                </li>
-              </ul>
+    <section className="h-full">
+      {loading && <p>Loading...</p>}
+      <div className="flex flex-col items-center justify-center w-full h-full">
+        <div className="px-6">
+          <div className="flex flex-col items-center justify-center w-full">
+            <div className="block justify-between items-center w-full mb-6">
+              <div className="flex justify-between">
+                <ul className="flex list-style-none justify-between items-center w-full">
+                  <li className="page-item">
+                    <a
+                      className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 bg-gray-100 hover:text-gray-800 hover:bg-gray-200 hover:translate-y-[-1px] focus:shadow-none"
+                      href="#!"
+                      aria-label="Next"
+                      onClick={next}
+                    >
+                      <span aria-hidden="true" className="text-sm xs:text-xs">
+                        &laquo; Next
+                      </span>
+                    </a>
+                  </li>
+                  <p className="text-[#1d161ddd] italic text-sm xs:text-xs overflow-x-auto">
+                    {title}
+                    {/* {image?.name} */}
+                  </p>
+                  <li className="page-item">
+                    <a
+                      className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 bg-gray-100 hover:text-gray-800 hover:bg-gray-200 hover:translate-y-[-1px] focus:shadow-none"
+                      href="#!"
+                      aria-label="Previous"
+                      onClick={prev}
+                    >
+                      <span aria-hidden="true" className="text-sm xs:text-xs">
+                        Prev &raquo;
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
 
-          <img
-            className="rounded-xl w-full object-cover h-auto transform group-hover:translate-y-[-2px]"
-            src={image?.photo}
-            alt={image?.name}
-          />
+            <img
+              className="rounded-xl w-full h-full object-cover"
+              src={image?.photo}
+              alt={image?.name}
+            />
 
-          <div className="flex flex-col md:flex-row justify-between items-center w-full h-auto mt-3">
-            <div>
+            <div className="flex flex-col md:flex-row justify-between text-center items-center w-full h-auto mt-6">
+              {/* <div>
+                <button
+                  className="mt-1 px-9 py-3 mb-1 bg-gray-700 text-white font-medium text-xs leading-snug uppercase rounded-md shadow-md hover:bg-gray-600 hover:shadow-lg hover:translate-y-[-1px] focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out"
+                  onClick={() => navigate(-1)}
+                >
+                  Back
+                </button>
+              </div> */}
+              <p className="text-black text-sm xs:text-xs mx-2 my-3">
+                <span className="text-[#000000e2] text-md font-bold">
+                  {image?.name}
+                </span>{" "}
+                -{" "}
+                <span className="text-[#1d161ddd] italic font-light flex-wrap">
+                  {image?.prompt}
+                </span>
+              </p>
               <button
-                className="mt-1 px-9 py-3 mb-1 bg-gray-700 text-white font-medium text-xs leading-snug uppercase rounded-md shadow-md hover:bg-gray-600 hover:shadow-lg hover:translate-y-[-1px] focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out"
-                onClick={() => navigate(-1)}
+                type="button"
+                onClick={() => downloadImage(image?._id, image?.photo)}
+                className="outline-none bg-transparent border-none"
               >
-                Back
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="fas"
+                  data-icon="download"
+                  className="w-6 mx-auto hover:animate-bounce text-gray-700"
+                  role="img"
+                  xmlns="https://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M216 0h80c13.3 0 24 10.7 24 24v168h87.7c17.8 0 26.7 21.5 14.1 34.1L269.7 378.3c-7.5 7.5-19.8 7.5-27.3 0L90.1 226.1c-12.6-12.6-3.7-34.1 14.1-34.1H192V24c0-13.3 10.7-24 24-24zm296 376v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h146.7l49 49c20.1 20.1 52.5 20.1 72.6 0l49-49H488c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
+                  ></path>
+                </svg>
               </button>
             </div>
-            <p className="text-black text-sm xs:text-xs mx-2 my-3">
-              <span className="text-[#000000e2] text-md font-bold">
-                {image?.name}
-              </span>{" "}
-              -{" "}
-              <span className="text-[#1d161ddd] italic font-light flex-wrap">
-                {image?.prompt}
-              </span>
-            </p>
-            <button
-              type="button"
-              onClick={() => downloadImage(image?._id, image?.photo)}
-              className="outline-none bg-transparent border-none"
-            >
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="download"
-                className="w-6 mx-auto hover:animate-bounce text-gray-700"
-                role="img"
-                xmlns="https://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              >
-                <path
-                  fill="currentColor"
-                  d="M216 0h80c13.3 0 24 10.7 24 24v168h87.7c17.8 0 26.7 21.5 14.1 34.1L269.7 378.3c-7.5 7.5-19.8 7.5-27.3 0L90.1 226.1c-12.6-12.6-3.7-34.1 14.1-34.1H192V24c0-13.3 10.7-24 24-24zm296 376v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h146.7l49 49c20.1 20.1 52.5 20.1 72.6 0l49-49H488c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
-                ></path>
-              </svg>
-            </button>
           </div>
         </div>
-      )}
-    </div>
+      </div>
+    </section>
   );
 };
 

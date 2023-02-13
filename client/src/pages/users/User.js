@@ -93,7 +93,7 @@ const User = () => {
             <div>
               {loading && <p>Loading...</p>}
 
-              <h1 className="font-inter font-bold text-4xl text-gray-700 w-full mb-6">
+              <h1 className="font-inter font-extrabold text-4xl text-[#222328] w-full mb-6">
                 Details for{" "}
                 <span className="italic text-[#6469]">{userName}</span>
               </h1>

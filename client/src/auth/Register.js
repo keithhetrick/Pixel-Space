@@ -26,7 +26,9 @@ const Register = () => {
 
   const createUserUrl = "http://localhost:8000/api/user";
 
-  const createUserSubmit = async () => {
+  const createUserSubmit = async (e) => {
+    e.preventDefault();
+
     try {
       setLoading(true);
       const response = await axios.post(createUserUrl, {
@@ -54,16 +56,18 @@ const Register = () => {
         <div className="flex flex-col items-center justify-center w-full">
           <div>
             {loading && <p>Loading...</p>}
-            <h1 className="font-inter font-bold text-4xl text-gray-700 w-full mb-6">
+            <h1 className="font-inter font-extrabold text-4xl text-[#222328] w-full mb-6">
               Register
             </h1>
           </div>
 
           {errors && (
-            <ErrorMessage
-              variant={errors ? "danger" : "success"}
-              message={errors}
-            />
+            <div className="-mt-[23px]">
+              <ErrorMessage
+                variant={errors ? "danger" : "success"}
+                message={errors}
+              />
+            </div>
           )}
 
           <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">

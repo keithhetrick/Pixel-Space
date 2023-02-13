@@ -7,7 +7,7 @@ import ErrorMessage from "../hooks/useErrorMessage";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,10 +35,10 @@ const Login = () => {
         email: userEmail,
         password: userPassword,
       });
-      setUser({
-        name: response?.data?.data?.name,
-        email: response?.data?.data?.email,
-      });
+      // setUser({
+      //   name: response?.data?.data?.name,
+      //   email: response?.data?.data?.email,
+      // });
       console.log("RESPONSE", response);
       console.log("Name", response?.data?.data?.name);
       console.log("Status", response?.status);
@@ -54,27 +54,29 @@ const Login = () => {
   console.log("MESSAGE VARIANT", errors ? "danger" : "success");
 
   return (
-    <section className="h-screen">
+    <section className="h-full">
       <div className="px-6 text-gray-800">
         <div className="flex flex-col items-center justify-center w-full">
           <div className="flex flex-col items-center justify-center w-full mb-6">
             {loading && <p>Loading...</p>}
-            <h1 className="font-bold text-4xl mb-6 text-gray-800 pixel__space__text">
+            <h1 className="font-extrabold text-5xl mb-6 text-gray-800 pixel__space__text">
               Pixel Space
             </h1>
             <img
               src="pixelspace-icon.png"
-              className="w-20 h-20 rounded-full border-2 border-gray-200 animate-pulse hover:border-none hover:shadow-lg hover:rounded-none hover:animate-bounce ease-in-out transition duration-500 cursor-pointer mb-4
+              className="w-20 h-20 rounded-full border-2 border-gray-200 animate-pulse hover:border-none hover:shadow-lg hover:rounded-none hover:animate-bounce ease-in-out transition duration-500 cursor-pointer
               "
               alt="PixelSpace Logo"
             />
           </div>
 
           {errors && (
-            <ErrorMessage
-              variant={errors ? "danger" : "success"}
-              message={errors}
-            />
+            <div className="-mt-[23px]">
+              <ErrorMessage
+                variant={errors ? "danger" : "success"}
+                message={errors}
+              />
+            </div>
           )}
 
           <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">

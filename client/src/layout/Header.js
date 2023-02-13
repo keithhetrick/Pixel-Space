@@ -9,18 +9,24 @@ const Header = ({ title, link }) => {
   });
 
   return (
-    <header className="w-full flex justify-between items-center bg-white sm:px-8 px-4 py-4 border-b border-b-[#e6ebf4]">
+    <header className="w-full flex justify-between items-center bg-white sm:px-8 px-6 py-6 border-b border-b-[#e6ebf4]">
       <div className="flex flex-col items-center sm:block">
         <div className="flex flex-row items-center justify-center sm:justify-start sm:mb-0">
-          <p className="text-gray-700 text-[10px] -mt-1">
-            <span className="text-[16px] mr-[2px] pixel__space__text">
+          <p className="inline-block text-gray-700 text-[10px] ">
+            <span className="text-[16px] mr-[1px] pt-[2.5px] pb-[2.5px] pixel__space__text">
               Pixel Space{" "}
             </span>
-            powered by:
+            <span className="pt-[8.5px] pb-[3.5px] relative top-[1px]">
+              powered by:
+            </span>
           </p>
         </div>
         <Link to="/">
-          <img src={logo} alt="logo" className="w-24 object-contain" />
+          <img
+            src={logo}
+            alt="logo"
+            className="w-24 p-1 object-contain mt-[1px]"
+          />
         </Link>
       </div>
 

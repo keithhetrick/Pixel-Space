@@ -44,6 +44,27 @@ const AltLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    //   try {
+    //     const response = await axios.post(url, {
+    //       user: user,
+    //       pwd: pwd,
+    //     });
+    //     setUser({
+    //       name: response?.data?.data?.name,
+    //       email: response?.data?.data?.email,
+    //     });
+    //     console.log("RESPONSE", response);
+    //     console.log("Name", response?.data?.data?.name);
+    //     console.log("Status", response?.status);
+    //     navigate(`/user/${response?.data?.data?._id}`);
+    //   } catch (error) {
+    //     setErrMsg(error.response?.data?.message);
+    //     console.log("ERROR", error.response);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
     try {
       const userData = await login({ user, pwd }).unwrap();
       dispatch(setCredentials({ ...userData, user }));
@@ -90,7 +111,7 @@ const AltLogin = () => {
       <h1>Employee Login</h1>
 
       <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username:</label>
+        <label htmlFor="username">Username: </label>
         <input
           type="text"
           id="username"
@@ -101,7 +122,7 @@ const AltLogin = () => {
           required
         />
 
-        <label htmlFor="password">Password:</label>
+        <label htmlFor="password">Password: </label>
         <input
           type="password"
           id="password"

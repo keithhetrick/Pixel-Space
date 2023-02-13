@@ -42,7 +42,9 @@ const ViewUsers = () => {
 
   return (
     <div>
-      <h1 className="font-bold text-[#222328] text-[24px] mb-2">View Users</h1>
+      <h1 className="font-inter font-extrabold text-4xl text-[#222328] w-full mb-6">
+        View Users
+      </h1>
       {/* when user is clicked, take is to specific users ID page */}
       <div>
         {users.length === 0 || !users ? (
