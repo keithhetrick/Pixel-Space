@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { downloadImage } from "../../utils";
+import { useSwipeable } from "react-swipeable";
+
+import { Loader } from "../../components";
 
 import axios from "axios";
 
@@ -124,16 +127,22 @@ const Image = () => {
   };
 
   // create a function to handle the swipe event & if user does a continuous swipe, it'll only count as one swipe event
-  const handleSwipe = (e) => {
-    let x = e.deltaX;
-    let y = e.deltaY;
+  // const handleSwipe = (e) => {
+  //   let x = e.deltaX;
+  //   let y = e.deltaY;
 
-    if (x < 0 && Math.abs(x) > Math.abs(y)) {
-      prev();
-    } else if (x > 0 && Math.abs(x) > Math.abs(y)) {
-      next();
-    }
-  };
+  //   if (x < 0 && Math.abs(x) > Math.abs(y)) {
+  //     prev();
+  //   } else if (x > 0 && Math.abs(x) > Math.abs(y)) {
+  //     next();
+  //   }
+  // };
+
+  // create a function to handle the swipe event using the react-swipeable library
+  const handlers = useSwipeable({
+    onSwipedLeft: () => prev(),
+    onSwipedRight: () => next(),
+  });
 
   // // function to split the name of the image if it's too long
   // const splitName = (name) => {
@@ -149,62 +158,28 @@ const Image = () => {
 
   return (
     <section className="h-full">
-      {loading && <p>Loading...</p>}
       <div className="flex flex-col items-center justify-center w-full h-full">
         <div className="px-6">
           <div
             className="flex flex-col items-center justify-center w-full
             "
-            onWheel={handleSwipe}
+            {...handlers}
           >
-            {/* <div className="block justify-between items-center w-full mb-6">
-              <div className="flex justify-between">
-                <ul className="flex list-style-none justify-between items-center w-full">
-                  <li className="page-item">
-                    <a
-                      className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 bg-gray-100 hover:text-gray-800 hover:bg-gray-200 hover:translate-y-[-1px] focus:shadow-none"
-                      href="#!"
-                      aria-label="Next"
-                      onClick={next}
-                    >
-                      <span aria-hidden="true" className="text-sm xs:text-xs">
-                        &laquo; Next
-                      </span>
-                    </a>
-                  </li>
-                  <p className="text-[#1d161ddd] italic text-sm xs:text-xs overflow-x-auto">
-                    {title}
-                  </p>
-                  <li className="page-item">
-                    <a
-                      className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 bg-gray-100 hover:text-gray-800 hover:bg-gray-200 hover:translate-y-[-1px] focus:shadow-none"
-                      href="#!"
-                      aria-label="Previous"
-                      onClick={prev}
-                    >
-                      <span aria-hidden="true" className="text-sm xs:text-xs">
-                        Prev &raquo;
-                      </span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div> */}
-
+            {loading && (
+              <Loader className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+            )}
             {/* <img
               className="rounded-xl w-full h-full object-cover"
               src={image?.photo}
               alt={image?.name}
             /> */}
 
-            {/* add inset arrows on each side of the image that takes user to the prev & next image */}
-
             <div className="flex flex-col justify-center items-center w-full h-full">
               <div className="flex justify-center items-center w-full h-full">
                 <div className="absolute left-0 z-10 flex justify-center items-center h-full">
                   <button
                     className="w-8 h-8 text-gray rounded-full opacity-75 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-                    onClick={prev}
+                    onClick={next}
                   >
                     <svg
                       className="w-6 h-6 ml-2"
@@ -225,7 +200,7 @@ const Image = () => {
                 <div className="absolute right-0 z-10 flex justify-center items-center h-full">
                   <button
                     className="w-8 h-8 text-white-900 rounded-full opacity-75 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-                    onClick={next}
+                    onClick={prev}
                   >
                     <svg
                       className="w-6 h-6"
