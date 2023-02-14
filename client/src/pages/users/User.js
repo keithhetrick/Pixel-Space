@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../hooks/useErrorMessage";
 
 import axios from "axios";
+import { Loader } from "../../components";
 
 const User = () => {
   const { id } = useParams();
@@ -39,11 +40,12 @@ const User = () => {
 
   const showUpdatedAt = formattedCreatedAt !== formattedUpdatedAt;
 
-  const fetchSingleUserUrl = `http://localhost:8000/api/user/${userId}`;
+  const fetchSingleUserUrl = `http://localhost:8000/api/users/${userId}`;
 
   const fetchSingleUser = async () => {
+    setLoading(true);
+
     try {
-      setLoading(true);
       const response = await axios.get(fetchSingleUserUrl, {
         headers: {
           "Content-Type": "application/json",
@@ -76,23 +78,15 @@ const User = () => {
 
   return (
     <section className="h-full">
-      {userData ? (
+      {loading && (
+        <div className="pb-6 flex justify-center items-center">
+          <Loader />
+        </div>
+      )}
+      {!loading || userData ? (
         <div className="px-6 text-gray-800">
           <div className="flex flex-col items-center justify-center w-full">
-            {/* <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-              <button
-                className="mb-6 mt-1 px-7 py-3 bg-[#6469] text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg hover:translate-y-[-1px] hover:bg-[#b18eb199] focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
-                type="submit"
-                data-mdb-ripple="true"
-                data-mdb-ripple-color="light"
-                onClick={() => navigate(-1)}
-              >
-                Back
-              </button>
-            </div> */}
             <div>
-              {loading && <p>Loading...</p>}
-
               <h1 className="font-inter font-extrabold text-4xl text-[#222328] w-full mb-6">
                 Details for{" "}
                 <span className="italic text-[#6469]">{userName}</span>
@@ -110,43 +104,44 @@ const User = () => {
               {userData ? (
                 <div>
                   <div className="mb-1">
-                    <span className="font-bold text-[#222328] text-[18px]">
+                    <span className="font-bold text-[#222328] text-lg">
                       User: &nbsp;
                     </span>
                     {userName}
                   </div>
                   <div className="mb-1">
-                    <span className="font-bold text-[#222328] text-[18px]">
+                    <span className="font-bold text-[#222328] text-lg">
                       Email: &nbsp;
                     </span>
                     {userEmail}
                   </div>
                   <div className="mb-1">
-                    <span className="font-bold text-[#222328] text-[18px]">
+                    <span className="font-bold text-[#222328] text-lg">
                       Password: &nbsp;
                     </span>
+                    {/* default state of password should be hidden */}
                     <span
-                      className="text-[#222328] text-[18px] blur-sm hover:blur-none cursor-pointer transition duration-150"
+                      className="text-[#222328] text-lg font-normal blur-sm hover:blur-none cursor-pointer transition duration-150"
                       type="password"
                     >
                       {userPassword}
                     </span>
                   </div>
                   <div className="mb-1">
-                    <span className="font-bold text-[#222328] text-[18px]">
+                    <span className="font-bold text-[#222328] text-lg">
                       ID: &nbsp;
                     </span>
                     {userId}
                   </div>
                   <div className="mb-1">
-                    <span className="font-bold text-[#222328] text-[18px]">
+                    <span className="font-bold text-[#222328] text-lg">
                       Created At: &nbsp;
                     </span>
                     {formattedCreatedAt}
                   </div>
                   {showUpdatedAt ? (
                     <div>
-                      <span className="font-bold text-[#222328] text-[18px]">
+                      <span className="font-bold text-[#222328] text-lg">
                         Last update: &nbsp;
                       </span>
                       {formattedUpdatedAt}
@@ -154,7 +149,7 @@ const User = () => {
                   ) : null}
                   <div>
                     <div>
-                      <span className="font-bold text-[#222328] text-[18px]">
+                      <span className="font-bold text-[#222328] text-lg">
                         Posts: &nbsp;
                       </span>
                       {userPosts.length}
@@ -192,7 +187,7 @@ const User = () => {
       ) : (
         <div className="flex flex-col items-center justify-center w-full h-full">
           <h1 className="font-inter font-bold text-4xl text-gray-700 w-full mb-6">
-            No User
+            No User Found
           </h1>
           <button
             className="px-7 py-3 bg-gray-600 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-2000 ease-in-out w-full flex justify-center items-center mb-3l"

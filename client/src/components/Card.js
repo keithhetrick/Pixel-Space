@@ -52,11 +52,6 @@ const Card = ({ _id, name, prompt, photo }) => {
           </button>
         </div>
       </div>
-      {/* {prompt && (
-        <div className="absolute bottom-0 left-0 right-0 rounded-md">
-          <p className="text-black text-xs overflow-y-auto prompt">{name}</p>
-        </div>
-      )} */}
     </div>
   );
 };

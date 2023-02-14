@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import ErrorMessage from "../hooks/useErrorMessage";
+import { Loader } from "../components";
 
 const Register = () => {
   const [userName, setUserName] = useState("");
@@ -24,7 +25,7 @@ const Register = () => {
     button.href = "/user/view";
   }, []);
 
-  const createUserUrl = "http://localhost:8000/api/user";
+  const createUserUrl = "http://localhost:8000/api/users";
 
   const createUserSubmit = async (e) => {
     e.preventDefault();
@@ -39,12 +40,28 @@ const Register = () => {
       });
       console.log("RESPONSE", response);
       setLoading(false);
-      navigate("/");
+      // navigate the new users page
+      navigate(`/user/${response?.data?.data?._id}`);
     } catch (error) {
       setErrors(error.response?.data?.message);
-      setTimeout(() => {
-        setErrors("");
-      }, 6000);
+
+      // if (!userName) {
+      //   setErrors("Please enter your name");
+      // } else if (!userEmail) {
+      //   setErrors("Please enter your email");
+      // } else if (!userPassword) {
+      //   setErrors("Please enter your password");
+      // } else if (!userConfirmPassword) {
+      //   setErrors("Please confirm your password");
+      // } else if (userPassword !== userConfirmPassword) {
+      //   setErrors("Passwords do not match");
+      // } else {
+      //   setErrors(error.response?.data?.message);
+      // }
+
+      // setTimeout(() => {
+      //   setErrors("");
+      // }, 6000);
     } finally {
       setLoading(false);
     }
@@ -55,14 +72,18 @@ const Register = () => {
       <div className="px-6 text-gray-800">
         <div className="flex flex-col items-center justify-center w-full">
           <div>
-            {loading && <p>Loading...</p>}
+            {loading && (
+              <div className="pb-6 flex justify-center items-center">
+                <Loader />
+              </div>
+            )}
             <h1 className="font-inter font-extrabold text-4xl text-[#222328] w-full mb-6">
               Register
             </h1>
           </div>
 
           {errors && (
-            <div className="-mt-[23px]">
+            <div className="-mt-[30px]">
               <ErrorMessage
                 variant={errors ? "danger" : "success"}
                 message={errors}
@@ -80,8 +101,6 @@ const Register = () => {
                   id="name"
                   placeholder="Name"
                   autoComplete="off"
-                  // onFocus={() => setUserFocus(true)}
-                  // onBlur={() => setUserFocus(false)}
                   onChange={(e) => setUserName(e.target.value)}
                 />
               </div>
@@ -94,8 +113,6 @@ const Register = () => {
                   id="email"
                   placeholder="Email address"
                   autoComplete="off"
-                  // onFocus={() => setEmailFocus(true)}
-                  // onBlur={() => setEmailFocus(false)}
                   onChange={(e) => setUserEmail(e.target.value)}
                 />
               </div>
@@ -108,8 +125,6 @@ const Register = () => {
                   id="password"
                   placeholder="Password"
                   autoComplete="off"
-                  // onFocus={() => setPasswordFocus(true)}
-                  // onBlur={() => setPasswordFocus(false)}
                   onChange={(e) => setUserPassword(e.target.value)}
                 />
               </div>
@@ -122,8 +137,6 @@ const Register = () => {
                   id="confirmPassword"
                   placeholder="Confirm Password"
                   autoComplete="off"
-                  // onFocus={() => setConfirmPasswordFocus(true)}
-                  // onBlur={() => setConfirmPasswordFocus(false)}
                   onChange={(e) => setUserConfirmPassword(e.target.value)}
                 />
               </div>

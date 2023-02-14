@@ -126,35 +126,20 @@ const Image = () => {
     }
   };
 
-  // create a function to handle the swipe event & if user does a continuous swipe, it'll only count as one swipe event
-  // const handleSwipe = (e) => {
-  //   let x = e.deltaX;
-  //   let y = e.deltaY;
-
-  //   if (x < 0 && Math.abs(x) > Math.abs(y)) {
-  //     prev();
-  //   } else if (x > 0 && Math.abs(x) > Math.abs(y)) {
-  //     next();
-  //   }
-  // };
-
-  // create a function to handle the swipe event using the react-swipeable library
+  // function to handle the swipe event using the react-swipeable library
   const handlers = useSwipeable({
     onSwipedLeft: () => prev(),
     onSwipedRight: () => next(),
   });
 
-  // // function to split the name of the image if it's too long
-  // const splitName = (name) => {
-  //   if (name?.length > 20) {
-  //     return name.slice(0, 20);
-  //   } else {
-  //     return name;
-  //   }
-  // };
-
-  // // use the splitName function to set the title
-  // const title = splitName(image?.name);
+  // function that allows user to use arrow keys to navigate through posts
+  const handleKeyDown = (e) => {
+    if (e.key === "ArrowLeft") {
+      next();
+    } else if (e.key === "ArrowRight") {
+      prev();
+    }
+  };
 
   return (
     <section className="h-full">
@@ -166,19 +151,19 @@ const Image = () => {
             {...handlers}
           >
             {loading && (
-              <Loader className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+              <div className="pb-6 flex justify-center items-center">
+                <Loader />
+              </div>
             )}
-            {/* <img
-              className="rounded-xl w-full h-full object-cover"
-              src={image?.photo}
-              alt={image?.name}
-            /> */}
 
-            <div className="flex flex-col justify-center items-center w-full h-full">
+            <div
+              className="flex flex-col justify-center items-center w-full h-full"
+              onKeyDown={handleKeyDown}
+            >
               <div className="flex justify-center items-center w-full h-full">
                 <div className="absolute left-0 z-10 flex justify-center items-center h-full">
                   <button
-                    className="w-8 h-8 text-gray rounded-full opacity-75 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                    className="w-8 h-8 text-gray rounded-full opacity-75 hover:translate-y-[-3px] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 ease-in-out"
                     onClick={next}
                   >
                     <svg
@@ -199,7 +184,7 @@ const Image = () => {
                 </div>
                 <div className="absolute right-0 z-10 flex justify-center items-center h-full">
                   <button
-                    className="w-8 h-8 text-white-900 rounded-full opacity-75 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                    className="w-8 h-8 text-white-900 rounded-full opacity-75 hover:translate-y-[-3px] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 ease-in-out"
                     onClick={prev}
                   >
                     <svg

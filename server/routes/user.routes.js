@@ -10,11 +10,11 @@ import {
 
 const router = express.Router();
 
-router.get("/api/user", getAllUsers);
-router.post("/api/user", createUser);
-router.get("/api/user/:id", getUserById);
-router.patch("/api/user/:id", updateUser);
-router.delete("/api/user/:id", deleteUser);
-router.get("/api/user/:id/posts", getUserPosts);
+router.get("/api/users", getAllUsers);
+router.post("/api/users", createUser);
+router.get("/api/users/:id", getUserById);
+router.patch("/api/users/:id", updateUser);
+router.delete("/api/users/:id", deleteUser);
+router.get("/api/users/:id/posts", getUserPosts);
 
 export default router;

@@ -8,14 +8,15 @@ import {
   ViewUsers,
   ErrorLandingPage,
 } from "./pages";
+import Login from "./auth/Login";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
-import Login from "./auth/Login";
+import Layout from "./layout/Layout";
 import Register from "./auth/Register";
 import AltLogin from "./auth/AltLogin";
 import Welcome from "./features/auth/Welcome";
 import RequireAuth from "./features/auth/RequireAuth";
-import Layout from "./layout/Layout";
+import UsersList from "./features/users/UsersList";
 
 function App() {
   return (
@@ -28,20 +29,20 @@ function App() {
             {/* Public Routes */}
             <Route index element={<Home />} />
             <Route path="alt-login" element={<AltLogin />} />
+            <Route path="login" element={<Login />} />
 
             {/* Protected Routes */}
-            <Route element={<RequireAuth />}>
-              <Route path="welcome" element={<Welcome />} />
-            </Route>
+            <Route path="welcome" element={<Welcome />} />
+            <Route path="userslist" element={<UsersList />} />
+            <Route element={<RequireAuth />}></Route>
           </Route>
 
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/image/:id" element={<Image />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/user/:id" element={<User />} />
-          <Route path="/user/view" element={<ViewUsers />} />
+          <Route path="/users/:id" element={<User />} />
+          <Route path="/users/view" element={<ViewUsers />} />
           <Route path="/register/" element={<Register />} />
-          <Route path="/user/:id/edit" element={<EditUser />} />
+          <Route path="/users/:id/edit" element={<EditUser />} />
           <Route path="*" element={<ErrorLandingPage />} />
         </Routes>
       </main>

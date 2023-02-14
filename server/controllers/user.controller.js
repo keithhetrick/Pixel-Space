@@ -15,7 +15,9 @@ export const createUser = asyncHandler(async (req, res) => {
       confirmPassword,
     });
 
-    res.status(200).json({ success: true, data: user });
+    res
+      .status(200)
+      .json({ success: true, data: user, message: `New ${name} created` });
   } catch (err) {
     console.log("ERROR:", err);
 
@@ -147,10 +149,20 @@ export const updateUser = asyncHandler(async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: `Updating user failed - ${err.message}`,
-    });
+    console.log("ERROR:", err);
+
+    // Check for duplicate
+    if (err.code === 11000) {
+      res.status(500).json({
+        success: false,
+        message: `Unable to create user - "${err.keyValue.name}" already exists`,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: `Updating user failed - ${err.message}`,
+      });
+    }
   }
 });
 

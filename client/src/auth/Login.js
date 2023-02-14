@@ -1,16 +1,29 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
+// import axios from "axios";
 
 import ErrorMessage from "../hooks/useErrorMessage";
+import { Loader } from "../components";
+
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../features/auth/authSlice";
+import { useLoginMutation } from "../features/auth/authApiSlice";
 
 const Login = () => {
   const navigate = useNavigate();
-  // const [user, setUser] = useState(null);
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [
+    login,
+    {
+      // eslint-disable-next-line no-unused-vars
+      isLoading,
+    },
+  ] = useLoginMutation();
+  const dispatch = useDispatch();
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
@@ -24,28 +37,40 @@ const Login = () => {
     button.href = "http://localhost:8000/auth/logout";
   }, []);
 
-  // URL'S
-  const loginUrl = "http://localhost:8000/api/login";
-
   const loginUserSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(loginUrl, {
-        email: userEmail,
-        password: userPassword,
-      });
-      // setUser({
-      //   name: response?.data?.data?.name,
-      //   email: response?.data?.data?.email,
-      // });
-      console.log("RESPONSE", response);
-      console.log("Name", response?.data?.data?.name);
-      console.log("Status", response?.status);
-      navigate(`/user/${response?.data?.data?._id}`);
+      const userData = await login({ email: userEmail, password: userPassword })
+        .unwrap()
+        .then((data) => {
+          console.log("DATA", data);
+          return data;
+        });
+
+      dispatch(setCredentials(userData));
+
+      setUserEmail("");
+      setUserPassword("");
+      // navigate(`/user/${userData?.data?._id}`);
+      navigate("/welcome");
+      console.log("NAVIGATE TO WELCOME", navigate("/welcome"));
     } catch (error) {
-      setErrors(error.response?.data?.message);
-      console.log("ERROR", error.response);
+      // const userData = await login({
+      //   email: userEmail,
+      //   password: userPassword,
+      // });
+
+      // if (error?.originalStatus === 401) {
+      //   setErrors("Invalid Credentials");
+      // } else if (userData?.password !== userPassword) {
+      //   setErrors("Incorrect Password");
+      // } else if (userData?.email !== userEmail) {
+      //   setErrors("Incorrect Email");
+      // } else {
+      setErrors(error.data?.message);
+      console.log("ERROR", error.data?.message);
+      // }
     } finally {
       setLoading(false);
     }
@@ -58,7 +83,11 @@ const Login = () => {
       <div className="px-6 text-gray-800">
         <div className="flex flex-col items-center justify-center w-full">
           <div className="flex flex-col items-center justify-center w-full mb-6">
-            {loading && <p>Loading...</p>}
+            {loading && (
+              <div className="pb-6 flex justify-center items-center">
+                <Loader />
+              </div>
+            )}
             <h1 className="font-extrabold text-5xl mb-6 text-gray-800 pixel__space__text">
               Pixel Space
             </h1>

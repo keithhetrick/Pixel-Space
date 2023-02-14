@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ErrorMessage from "../../hooks/useErrorMessage";
 
 import axios from "axios";
+import { Loader } from "../../components";
 
 const EditUser = () => {
   const { id } = useParams();
@@ -20,11 +21,12 @@ const EditUser = () => {
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
 
-  const fetchSingleUserUrl = `http://localhost:8000/api/user/${userId}`;
+  const fetchSingleUserUrl = `http://localhost:8000/api/users/${userId}`;
 
   const fetchSingleUser = async () => {
+    setLoading(true);
+
     try {
-      setLoading(true);
       const response = await axios.get(fetchSingleUserUrl, {
         headers: {
           "Content-Type": "application/json",
@@ -105,11 +107,15 @@ const EditUser = () => {
 
   return (
     <section className="h-full">
-      {userData ? (
+      {loading && (
+        <div className="pb-6 flex justify-center items-center">
+          <Loader />
+        </div>
+      )}
+      {!loading || userData ? (
         <div className="px-6 text-gray-800">
           <div className="flex flex-col items-center justify-center w-full">
             <div>
-              {loading && <p>Loading...</p>}
               <h1 className="font-inter font-bold text-4xl text-gray-700 w-full mb-6">
                 Edit User
               </h1>

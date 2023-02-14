@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import { Loader } from "../../components";
 
 const ViewUsers = () => {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // useHeaderButton title & link
@@ -14,9 +16,11 @@ const ViewUsers = () => {
     button.href = "/";
   }, []);
 
-  const fetchAllUsersUrl = `http://localhost:8000/api/user`;
+  const fetchAllUsersUrl = `http://localhost:8000/api/users`;
 
   const fetchAllUsers = async () => {
+    setLoading(true);
+
     try {
       const response = await axios.get(fetchAllUsersUrl, {
         headers: {
@@ -32,6 +36,8 @@ const ViewUsers = () => {
     } catch (error) {
       console.log("ERROR:", error);
       alert(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,7 +51,11 @@ const ViewUsers = () => {
       <h1 className="font-inter font-extrabold text-4xl text-[#222328] w-full mb-6">
         View Users
       </h1>
-      {/* when user is clicked, take is to specific users ID page */}
+      {loading && (
+        <div className="pb-6 flex justify-center items-center">
+          <Loader />
+        </div>
+      )}
       <div>
         {users.length === 0 || !users ? (
           <p>No users found.</p>

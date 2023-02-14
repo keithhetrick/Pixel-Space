@@ -123,9 +123,13 @@ const CreatePost = () => {
   }, []);
 
   return (
-    // {/* <section className="max-w-7xl mx-auto"> */}
-    <section className="h-full">
+    <section className="h-full ">
       <div className="px-6 text-gray-800">
+        {loading && (
+          <div className="pb-6 flex justify-center items-center">
+            <Loader />
+          </div>
+        )}
         <div className="flex flex-col w-full">
           <div>
             <h1 className="font-extrabold text-[#222328] text-4xl">Create</h1>
