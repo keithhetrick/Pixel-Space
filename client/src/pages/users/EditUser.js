@@ -1,118 +1,115 @@
+import {
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+} from "../../features/users/usersApiSlice";
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import ErrorMessage from "../../hooks/useErrorMessage";
 
-import axios from "axios";
 import { Loader } from "../../components";
 
-const EditUser = () => {
+const EditUser = ({ data }) => {
   const { id } = useParams();
-  const navigate = useNavigate();
 
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState(id);
-  const [userEmail, setUserEmail] = useState("");
-  const [userName, setUserName] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const [userConfirmPassword, setUserConfirmPassword] = useState("");
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const deleteUser = useDeleteUserMutation();
+
+  console.log("EDIT USER PAGE REDUX DATA", data);
+  console.log("EDIT USER PAGE REDUX DATA - USER ID:", id);
+
+  const [userName, setUserName] = useState(
+    data?.data?.name ? data?.data?.name : ""
+  );
+  const [userEmail, setUserEmail] = useState(
+    data?.data?.email ? data?.data?.email : ""
+  );
+  const [userPassword, setUserPassword] = useState(
+    data?.data?.password ? data?.data?.password : ""
+  );
+  const [userConfirmPassword, setUserConfirmPassword] = useState(
+    data?.data?.confirmPassword ? data?.data?.confirmPassword : ""
+  );
+
+  console.log(
+    "EDIT USER PAGE - STATE DATA:",
+    userName,
+    userEmail,
+    userPassword,
+    userConfirmPassword
+  );
+
+  const navigate = useNavigate();
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
 
-  const fetchSingleUserUrl = `http://localhost:8000/api/users/${userId}`;
-
-  const fetchSingleUser = async () => {
-    setLoading(true);
-
-    try {
-      const response = await axios.get(fetchSingleUserUrl, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.status === 200) {
-        const result = response?.data;
-        setUserData(result?.data);
-        setUserId(result?.data._id);
-        setUserEmail(result?.data.email);
-        setUserName(result?.data.name);
-        setUserPassword(result?.data.password);
-        setUserConfirmPassword(result?.data.confirmPassword);
-        console.log("FETCHING USER RESULT:", result?.data);
-      }
-    } catch (error) {
-      setErrors(error);
-      console.log("ERROR:", error);
-      alert(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // set Errors to ErrorMessage component via setErrors
   useEffect(() => {
-    fetchSingleUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (data?.error) {
+      setErrors(data?.error);
+    }
+  }, [data]);
+
+  // PERSIST DATA IN STATE UPON PAGE LOAD/PAGE REFRESH
+  useEffect(() => {
+    if (data?.data?.name) {
+      setUserName(data?.data?.name);
+    }
+    if (data?.data?.email) {
+      setUserEmail(data?.data?.email);
+    }
+    if (data?.data?.password) {
+      setUserPassword(data?.data?.password);
+    }
+    if (data?.data?.confirmPassword) {
+      setUserConfirmPassword(data?.data?.confirmPassword);
+    }
+  }, [data]);
 
   const handleUpdateUserSubmit = async (e) => {
     e.preventDefault();
+
+    if (userPassword !== userConfirmPassword) {
+      setErrors("Passwords do not match");
+      return;
+    }
+
     try {
-      setLoading(true);
-      const response = await axios.patch(fetchSingleUserUrl, {
+      await updateUser({
+        _id: id,
         name: userName,
         email: userEmail,
         password: userPassword,
         confirmPassword: userConfirmPassword,
-      });
-
-      if (response.status === 200) {
-        const result = response.data;
-        console.log("HANDLE UPDATE USER SUBMIT:", result);
-        navigate(`/users/${userId}`);
-      }
+      }).unwrap();
+      navigate("/users/view");
     } catch (error) {
-      setErrors(error.response.data.message);
-      console.log("ERROR", error.response);
-    } finally {
-      setLoading(false);
+      setErrors(error.data?.message);
+      console.log("ERROR", error.data?.message);
     }
   };
 
-  const handleDeleteUserSubmit = async (e) => {
-    e.preventDefault();
+  const handleDeleteUserSubmit = async () => {
     try {
-      setLoading(true);
-      const response = await axios.delete(fetchSingleUserUrl, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.status === 200) {
-        const result = await response.data;
-        console.log("HANDLE DELETE USER SUBMIT:", result);
-        navigate(`/`);
-      }
-    } catch (err) {
-      setErrors(err);
-      console.log("ERROR:", err);
-      alert(err);
-    } finally {
-      setLoading(false);
+      await deleteUser({ _id: data?.data?._id }).unwrap();
+      console.log(`User ${data?.data?._id} deleted`);
+      navigate("/users/view");
+    } catch (error) {
+      setErrors(error.data?.message);
+      console.log("ERROR", error.data?.message);
     }
   };
 
   return (
     <section className="h-full">
-      {loading && (
+      {isLoading && (
         <div className="pb-6 flex justify-center items-center">
           <Loader />
         </div>
       )}
-      {!loading || userData ? (
+      {!isLoading || data ? (
         <div className="px-6 text-gray-800">
           <div className="flex flex-col items-center justify-center w-full">
             <div>
@@ -139,6 +136,7 @@ const EditUser = () => {
                     id="name"
                     placeholder="Name"
                     value={userName || ""}
+                    autoComplete="off"
                     onChange={(e) => setUserName(e.target.value)}
                   />
                 </div>
@@ -152,6 +150,7 @@ const EditUser = () => {
                     id="email"
                     placeholder="Email address"
                     value={userEmail || ""}
+                    autoComplete="off"
                     onChange={(e) => setUserEmail(e.target.value)}
                   />
                 </div>
@@ -165,6 +164,7 @@ const EditUser = () => {
                     id="password"
                     placeholder="Password"
                     value={userPassword || ""}
+                    autoComplete="off"
                     onChange={(e) => setUserPassword(e.target.value)}
                   />
                 </div>
@@ -178,6 +178,7 @@ const EditUser = () => {
                     id="confirmPassword"
                     placeholder="Confirm Password"
                     value={userConfirmPassword || ""}
+                    autoComplete="off"
                     onChange={(e) => setUserConfirmPassword(e.target.value)}
                   />
                 </div>
@@ -207,12 +208,13 @@ const EditUser = () => {
                   </div>
                 </div>
               </form>
+
               <button
                 className="px-7 py-3 bg-gray-600 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
                 type="submit"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
-                onClick={() => navigate(`/users/${userId}`)}
+                onClick={() => navigate(`/users/${data?.data?._id}`)}
               >
                 Cancel
               </button>
@@ -229,7 +231,7 @@ const EditUser = () => {
             type="submit"
             data-mdb-ripple="true"
             data-mdb-ripple-color="light"
-            onClick={() => navigate("/users")}
+            onClick={() => navigate("/users/view")}
           >
             Back
           </button>

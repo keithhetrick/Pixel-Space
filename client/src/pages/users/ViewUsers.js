@@ -8,8 +8,8 @@ import { Loader } from "../../components";
 const ViewUsers = () => {
   const { data: users, isLoading, isSuccess } = useGetUsersQuery();
 
-  console.log("USERS: ", users); // destructured users object
-  console.log("USERS DATA: ", users?.data); // destructured users object
+  console.log("VIEW USERS REDUX: ", users); // destructured users object
+  console.log("VIEW USERS REDUX DATA: ", users?.data); // destructured users object
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");

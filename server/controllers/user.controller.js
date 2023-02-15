@@ -17,7 +17,11 @@ export const createUser = asyncHandler(async (req, res) => {
 
     res
       .status(200)
-      .json({ success: true, data: user, message: `New ${name} created` });
+      .json({
+        success: true,
+        data: user,
+        message: `New user created - ${name}`,
+      });
   } catch (err) {
     console.log("ERROR:", err);
 

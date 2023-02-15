@@ -4,7 +4,7 @@ import {
   CreatePost,
   Image,
   User,
-  EditUser,
+  EditUserWrapper,
   ViewUsers,
   ErrorLandingPage,
 } from "./pages";
@@ -39,7 +39,7 @@ function App() {
             <Route path="welcome" element={<Welcome />} />
             <Route path="users/view" element={<ViewUsers />} />
             <Route path="userslist" element={<UsersList />} />
-            <Route path="users/:id/edit" element={<EditUser />} />
+            <Route path="users/:id/edit" element={<EditUserWrapper />} />
             <Route element={<RequireAuth />}></Route>
 
             {/* Error Routes */}

@@ -12,17 +12,10 @@ const User = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetSingleUserQuery(id);
 
-  console.log("DATA", data);
-  console.log("USER ID", id);
+  console.log("USER PAGE REDUX DATA", data);
+  console.log("USER PAGE REDUX DATA - USER ID:", id);
 
   const navigate = useNavigate();
-
-  // const [loading, setLoading] = useState(false);
-  // const [userId, setUserId] = useState(id);
-  // const [userEmail, setUserEmail] = useState("");
-  // const [userName, setUserName] = useState("");
-  // const [userPassword, setUserPassword] = useState("");
-  // const [userPosts, setUserPosts] = useState([]);
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
@@ -59,42 +52,6 @@ const User = () => {
   const formattedUpdatedAt = formatterDateAndTime(data?.data?.updatedAt);
 
   const showUpdatedAt = formattedCreatedAt !== formattedUpdatedAt;
-
-  // const fetchSingleUserUrl = `http://localhost:8000/api/users/${userId}`;
-
-  // const fetchSingleUser = async () => {
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await axios.get(fetchSingleUserUrl, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-
-  //     if (response.status === 200) {
-  //       const result = response.data;
-  //       setUserData(result?.data);
-  //       setUserId(result?.data._id);
-  //       setUserEmail(result?.data.email);
-  //       setUserName(result?.data.name);
-  //       setUserPassword(result?.data.password);
-  //       setUserPosts(result?.data.posts);
-  //       console.log("RESULT:", result?.data);
-  //     }
-  //   } catch (error) {
-  //     setErrors(error);
-  //     console.log("ERROR:", error);
-  //     alert(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchSingleUser();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   return (
     <section className="h-full">

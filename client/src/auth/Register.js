@@ -1,5 +1,4 @@
 import { useCreateUserMutation } from "../features/users/usersApiSlice";
-import { Link, useNavigate } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 
@@ -7,6 +6,7 @@ import ErrorMessage from "../hooks/useErrorMessage";
 import { Loader } from "../components";
 
 const Register = () => {
+  const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -16,8 +16,6 @@ const Register = () => {
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
-
-  const navigate = useNavigate();
 
   // useHeaderButton title & link
   useEffect(() => {
@@ -43,7 +41,7 @@ const Register = () => {
       })
         .unwrap()
         .then((data) => {
-          console.log("DATA", data);
+          console.log("REGISTER REDUX DATA", data);
           return data;
         });
 
@@ -51,11 +49,8 @@ const Register = () => {
       setUserEmail("");
       setUserPassword("");
       setUserConfirmPassword("");
-      // navigate(`/users/${userData?.data?._id}`);
-      console.log(
-        "NAVIGATE TO USER",
-        navigate(`/users/${userData?.data?._id}`)
-      );
+      setUserId(userData?.data?._id);
+      console.log("USER ID", userId);
     } catch (error) {
       setErrors(error.data?.message);
       console.log("ERROR", error.data?.message);
@@ -88,7 +83,7 @@ const Register = () => {
           )}
 
           <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-            <form>
+            <form onSubmit={createUserSubmit}>
               <div className="mb-6">
                 <input
                   className="form-control block w-full px-4 py-2 text-lg font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -143,7 +138,6 @@ const Register = () => {
                   type="submit"
                   data-mdb-ripple="true"
                   data-mdb-ripple-color="light"
-                  onClick={createUserSubmit}
                 >
                   Sign Up
                 </button>
@@ -154,7 +148,7 @@ const Register = () => {
 
                 <a
                   className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md bg-[#ea4335] hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 
-                ease-in-out w-full flex justify-center items-center mb-3"
+                  ease-in-out w-full flex justify-center items-center mb-3"
                   href="http://localhost:8000/auth/google"
                   role="button"
                   data-mdb-ripple="true"
@@ -176,9 +170,8 @@ const Register = () => {
                 <p className="text-sm font-semibold mt-2 pt-1 mb-0">
                   Already have an account? &nbsp;
                   <a
-                    href="#!"
+                    href="/login"
                     className="text-[#6469ff] hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out hover:underline cursor-pointer"
-                    onClick={() => navigate("/login")}
                   >
                     Sign In
                   </a>
