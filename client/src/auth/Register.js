@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCreateUserMutation } from "../features/users/usersApiSlice";
+import { Link, useNavigate } from "react-router-dom";
 
-import axios from "axios";
+import { useEffect, useState } from "react";
 
 import ErrorMessage from "../hooks/useErrorMessage";
 import { Loader } from "../components";
@@ -11,7 +11,8 @@ const Register = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userConfirmPassword, setUserConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+
+  const [createUser, { isLoading }] = useCreateUserMutation();
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
@@ -22,48 +23,42 @@ const Register = () => {
   useEffect(() => {
     const button = document.querySelector(".header__button");
     button.innerHTML = "See Users";
-    button.href = "/user/view";
+    button.href = "/users/view";
   }, []);
-
-  const createUserUrl = "http://localhost:8000/api/users";
 
   const createUserSubmit = async (e) => {
     e.preventDefault();
 
+    if (userPassword !== userConfirmPassword) {
+      setErrors("Passwords do not match");
+      return;
+    }
+
     try {
-      setLoading(true);
-      const response = await axios.post(createUserUrl, {
+      const userData = await createUser({
         name: userName,
         email: userEmail,
         password: userPassword,
         confirmPassword: userConfirmPassword,
-      });
-      console.log("RESPONSE", response);
-      setLoading(false);
-      // navigate the new users page
-      navigate(`/user/${response?.data?.data?._id}`);
+      })
+        .unwrap()
+        .then((data) => {
+          console.log("DATA", data);
+          return data;
+        });
+
+      setUserName("");
+      setUserEmail("");
+      setUserPassword("");
+      setUserConfirmPassword("");
+      // navigate(`/users/${userData?.data?._id}`);
+      console.log(
+        "NAVIGATE TO USER",
+        navigate(`/users/${userData?.data?._id}`)
+      );
     } catch (error) {
-      setErrors(error.response?.data?.message);
-
-      // if (!userName) {
-      //   setErrors("Please enter your name");
-      // } else if (!userEmail) {
-      //   setErrors("Please enter your email");
-      // } else if (!userPassword) {
-      //   setErrors("Please enter your password");
-      // } else if (!userConfirmPassword) {
-      //   setErrors("Please confirm your password");
-      // } else if (userPassword !== userConfirmPassword) {
-      //   setErrors("Passwords do not match");
-      // } else {
-      //   setErrors(error.response?.data?.message);
-      // }
-
-      // setTimeout(() => {
-      //   setErrors("");
-      // }, 6000);
-    } finally {
-      setLoading(false);
+      setErrors(error.data?.message);
+      console.log("ERROR", error.data?.message);
     }
   };
 
@@ -72,11 +67,12 @@ const Register = () => {
       <div className="px-6 text-gray-800">
         <div className="flex flex-col items-center justify-center w-full">
           <div>
-            {loading && (
+            {isLoading && (
               <div className="pb-6 flex justify-center items-center">
                 <Loader />
               </div>
             )}
+
             <h1 className="font-inter font-extrabold text-4xl text-[#222328] w-full mb-6">
               Register
             </h1>

@@ -1,3 +1,5 @@
+import { pixelspace } from "../assets";
+
 const Footer = () => {
   return (
     <footer className="text-center items-center text-white sm:px-8 px-6 py-6 bg-white border-t border-t-[#e6ebf4]">
@@ -13,8 +15,8 @@ const Footer = () => {
             rel="noreferrer"
           >
             <img
-              src="/pixelspace-icon.png"
-              alt="logo"
+              src={pixelspace}
+              alt="Pixel Space"
               className="w-5 inline-block"
             />
           </a>

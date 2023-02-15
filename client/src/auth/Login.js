@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// import axios from "axios";
-
 import ErrorMessage from "../hooks/useErrorMessage";
 import { Loader } from "../components";
+import { pixelspace } from "../assets";
 
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/auth/authSlice";
@@ -14,15 +13,9 @@ const Login = () => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  const [
-    login,
-    {
-      // eslint-disable-next-line no-unused-vars
-      isLoading,
-    },
-  ] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
 
   // ERRORS VALIDATION
@@ -52,27 +45,14 @@ const Login = () => {
 
       setUserEmail("");
       setUserPassword("");
-      // navigate(`/user/${userData?.data?._id}`);
-      navigate("/welcome");
-      console.log("NAVIGATE TO WELCOME", navigate("/welcome"));
+      navigate(`/users/${userData?.data?._id}`);
+      console.log(
+        "NAVIGATE TO USER",
+        navigate(`/users/${userData?.data?._id}`)
+      );
     } catch (error) {
-      // const userData = await login({
-      //   email: userEmail,
-      //   password: userPassword,
-      // });
-
-      // if (error?.originalStatus === 401) {
-      //   setErrors("Invalid Credentials");
-      // } else if (userData?.password !== userPassword) {
-      //   setErrors("Incorrect Password");
-      // } else if (userData?.email !== userEmail) {
-      //   setErrors("Incorrect Email");
-      // } else {
       setErrors(error.data?.message);
       console.log("ERROR", error.data?.message);
-      // }
-    } finally {
-      setLoading(false);
     }
   };
   console.log("ERRORS STATE", errors);
@@ -83,7 +63,7 @@ const Login = () => {
       <div className="px-6 text-gray-800">
         <div className="flex flex-col items-center justify-center w-full">
           <div className="flex flex-col items-center justify-center w-full mb-6">
-            {loading && (
+            {isLoading && (
               <div className="pb-6 flex justify-center items-center">
                 <Loader />
               </div>
@@ -92,10 +72,10 @@ const Login = () => {
               Pixel Space
             </h1>
             <img
-              src="pixelspace-icon.png"
+              src={pixelspace}
+              alt="Pixel Space"
               className="w-20 h-20 rounded-full border-2 border-gray-200 animate-pulse hover:border-none hover:shadow-lg hover:rounded-none hover:animate-bounce ease-in-out transition duration-500 cursor-pointer
               "
-              alt="PixelSpace Logo"
             />
           </div>
 

@@ -16,8 +16,8 @@ const Image = () => {
 
   useEffect(() => {
     const button = document.querySelector(".header__button");
-    button.innerHTML = "Login";
-    button.href = "/login";
+    button.innerHTML = "Create";
+    button.href = "/create-post";
   }, []);
 
   const getUrlByID = `http://localhost:8000/api/post/${id}`;
@@ -148,7 +148,6 @@ const Image = () => {
           <div
             className="flex flex-col items-center justify-center w-full
             "
-            {...handlers}
           >
             {loading && (
               <div className="pb-6 flex justify-center items-center">
@@ -159,6 +158,7 @@ const Image = () => {
             <div
               className="flex flex-col justify-center items-center w-full h-full"
               onKeyDown={handleKeyDown}
+              {...handlers}
             >
               <div className="flex justify-center items-center w-full h-full">
                 <div className="absolute left-0 z-10 flex justify-center items-center h-full">

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { logo } from "../assets";
+import { openAILogo } from "../assets";
 import { useHeaderButton } from "../hooks/useHeaderButton";
 
 const Header = ({ title, link }) => {
@@ -23,8 +23,8 @@ const Header = ({ title, link }) => {
         </div>
         <Link to="/">
           <img
-            src={logo}
-            alt="logo"
+            src={openAILogo}
+            alt="Open AI Logo"
             className="w-24 p-1 object-contain mt-[1px]"
           />
         </Link>

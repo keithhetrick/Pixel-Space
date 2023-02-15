@@ -71,7 +71,7 @@ const EditUser = () => {
       if (response.status === 200) {
         const result = response.data;
         console.log("HANDLE UPDATE USER SUBMIT:", result);
-        navigate(`/user/${userId}`);
+        navigate(`/users/${userId}`);
       }
     } catch (error) {
       setErrors(error.response.data.message);
@@ -212,7 +212,7 @@ const EditUser = () => {
                 type="submit"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
-                onClick={() => navigate(`/user/${userId}`)}
+                onClick={() => navigate(`/users/${userId}`)}
               >
                 Cancel
               </button>
@@ -229,7 +229,7 @@ const EditUser = () => {
             type="submit"
             data-mdb-ripple="true"
             data-mdb-ripple-color="light"
-            onClick={() => navigate("/user")}
+            onClick={() => navigate("/users")}
           >
             Back
           </button>

@@ -10,6 +10,11 @@ import ErrorMessage from "../../hooks/useErrorMessage";
 
 const CreatePost = () => {
   const navigate = useNavigate();
+  const [
+    loggedInUser,
+    // eslint-disable-next-line
+    setLoggedInUser,
+  ] = useState(null);
 
   const [form, setForm] = useState({
     name: "",
@@ -73,7 +78,7 @@ const CreatePost = () => {
     } else {
       setTimeout(() => {
         setErrors("");
-      }, 6000);
+      }, 10000);
       setErrors("Please enter a prompt");
     }
   };
@@ -94,14 +99,14 @@ const CreatePost = () => {
         console.log(err.response);
         setTimeout(() => {
           setErrors("");
-        }, 6000);
+        }, 10000);
       } finally {
         setLoading(false);
       }
     } else {
       setTimeout(() => {
         setErrors("");
-      }, 6000);
+      }, 10000);
       setErrors("Please enter a prompt and generate an image");
     }
   };
@@ -114,7 +119,7 @@ const CreatePost = () => {
     setRandomPrompt(getRandomPrompt(form.prompt));
   }, [form.prompt]);
 
-  // allow custom validation & disable browser validation
+  // allow custom validation - disable browser validation
   useEffect(() => {
     const forms = document.getElementsByTagName("form");
     for (let i = 0; i < forms.length; i++) {
@@ -137,10 +142,16 @@ const CreatePost = () => {
               Generate an imaginative image through DALL-E AI and share it with
               the community
             </p>
+            {/* if loggedInUser, show user name */}
+            {loggedInUser && (
+              <p className="mt-[1px] pt-3 text-[#666e75] text-sm max-w-[500px]">
+                Logged in as {loggedInUser}
+              </p>
+            )}
           </div>
 
           {errors && (
-            <div className="flex flex-col items-center -mb-[62.5px] mt-[1px] w-auto">
+            <div className="flex flex-col items-center -mb-[47px] mt-[1px] w-auto">
               <ErrorMessage
                 variant={errors ? "danger" : "success"}
                 message={errors}
@@ -182,7 +193,7 @@ const CreatePost = () => {
                 ) : (
                   <img
                     src={preview}
-                    alt="preview"
+                    alt="pixel space"
                     className="w-9/12 h-9/12 object-contain opacity-40"
                   />
                 )}

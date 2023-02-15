@@ -30,20 +30,21 @@ function App() {
             <Route index element={<Home />} />
             <Route path="alt-login" element={<AltLogin />} />
             <Route path="login" element={<Login />} />
+            <Route path="create-post" element={<CreatePost />} />
+            <Route path="image/:id" element={<Image />} />
+            <Route path="users/:id" element={<User />} />
+            <Route path="register/" element={<Register />} />
 
             {/* Protected Routes */}
             <Route path="welcome" element={<Welcome />} />
+            <Route path="users/view" element={<ViewUsers />} />
             <Route path="userslist" element={<UsersList />} />
+            <Route path="users/:id/edit" element={<EditUser />} />
             <Route element={<RequireAuth />}></Route>
-          </Route>
 
-          <Route path="/create-post" element={<CreatePost />} />
-          <Route path="/image/:id" element={<Image />} />
-          <Route path="/users/:id" element={<User />} />
-          <Route path="/users/view" element={<ViewUsers />} />
-          <Route path="/register/" element={<Register />} />
-          <Route path="/users/:id/edit" element={<EditUser />} />
-          <Route path="*" element={<ErrorLandingPage />} />
+            {/* Error Routes */}
+            <Route path="*" element={<ErrorLandingPage />} />
+          </Route>
         </Routes>
       </main>
 
