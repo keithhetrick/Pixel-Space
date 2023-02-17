@@ -10,8 +10,6 @@ const EditUserWrapper = () => {
 
   const { data: user } = useGetSingleUserQuery(id);
 
-  // console.log("EDIT PAGE WRAPPER REDUX DATA", user);
-
   return <>{user ? <EditUser user={user} /> : <Loader />}</>;
 };
 
