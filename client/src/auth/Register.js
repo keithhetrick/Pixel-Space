@@ -4,13 +4,15 @@ import { useEffect, useState } from "react";
 
 import ErrorMessage from "../hooks/useErrorMessage";
 import { Loader } from "../components";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userConfirmPassword, setUserConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const [createUser, { isLoading }] = useCreateUserMutation();
 
@@ -49,8 +51,8 @@ const Register = () => {
       setUserEmail("");
       setUserPassword("");
       setUserConfirmPassword("");
-      setUserId(userData?.data?._id);
-      console.log("USER ID", userId);
+      // console.log("USER ID", userData?.data?._id);
+      navigate(`/users/${userData?.data?._id}`);
     } catch (error) {
       setErrors(error.data?.message);
       console.log("ERROR", error.data?.message);
