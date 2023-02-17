@@ -1,9 +1,9 @@
-import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
+// import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
 
-const usersAdapter = createEntityAdapter({});
+// const usersAdapter = createEntityAdapter({});
 
-const initialState = usersAdapter.getInitialState();
+// const initialState = usersAdapter.getInitialState();
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -20,6 +20,9 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     getUsers: builder.query({
       query: () => "/api/users",
       keepUnusedDataFor: 5,
+      validateStatus: (response, result) => {
+        return response.status === 200 && !result.isError;
+      },
     }),
 
     // READ - get single user
@@ -39,9 +42,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
     // DELETE - delete user
     deleteUser: builder.mutation({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `/api/users/${id}`,
         method: "DELETE",
+        body: { id },
       }),
     }),
   }),
@@ -58,16 +62,16 @@ export const {
 // returns the query result object
 export const selectUsersResult = usersApiSlice.endpoints.getUsers.select();
 
-// creates memoized selectors for the query result object
-const selectUsersData = createSelector(
-  selectUsersResult,
-  (result) => result.data
-);
+// // creates memoized selectors for the query result object
+// const selectUsersData = createSelector(
+//   selectUsersResult,
+//   (result) => result.data
+// );
 
-export const {
-  selectAll: selectAllUsers,
-  selectById: selectUserById,
-  selectIds: selectUserIds,
-} = usersAdapter.getSelectors(
-  (state) => selectUsersData(state) ?? initialState
-);
+// export const {
+//   selectAll: selectAllUsers,
+//   selectById: selectUserById,
+//   selectIds: selectUserIds,
+// } = usersAdapter.getSelectors(
+//   (state) => selectUsersData(state) ?? initialState
+// );

@@ -4,40 +4,30 @@ import {
 } from "../../features/users/usersApiSlice";
 
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import ErrorMessage from "../../hooks/useErrorMessage";
 
 import { Loader } from "../../components";
 
-const EditUser = ({ data }) => {
-  const { id } = useParams();
-
+const EditUser = ({ user }) => {
   const [updateUser, { isLoading }] = useUpdateUserMutation();
-  const deleteUser = useDeleteUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
 
-  console.log("EDIT USER PAGE REDUX DATA", data);
-  console.log("EDIT USER PAGE REDUX DATA - USER ID:", id);
+  // console.log("EDIT USER PAGE REDUX DATA PASSED FROM WRAPPER", user);
+  // console.log("EDIT USER PAGE REDUX DATA - USER ID:", id);
 
   const [userName, setUserName] = useState(
-    data?.data?.name ? data?.data?.name : ""
+    user?.data?.name ? user?.data?.name : ""
   );
   const [userEmail, setUserEmail] = useState(
-    data?.data?.email ? data?.data?.email : ""
+    user?.data?.email ? user?.data?.email : ""
   );
   const [userPassword, setUserPassword] = useState(
-    data?.data?.password ? data?.data?.password : ""
+    user?.data?.password ? user?.data?.password : ""
   );
   const [userConfirmPassword, setUserConfirmPassword] = useState(
-    data?.data?.confirmPassword ? data?.data?.confirmPassword : ""
-  );
-
-  console.log(
-    "EDIT USER PAGE - STATE DATA:",
-    userName,
-    userEmail,
-    userPassword,
-    userConfirmPassword
+    user?.data?.confirmPassword ? user?.data?.confirmPassword : ""
   );
 
   const navigate = useNavigate();
@@ -47,38 +37,41 @@ const EditUser = ({ data }) => {
 
   // set Errors to ErrorMessage component via setErrors
   useEffect(() => {
-    if (data?.error) {
-      setErrors(data?.error);
+    if (user?.error) {
+      setErrors(user?.error);
     }
-  }, [data]);
+  }, [user]);
 
   // PERSIST DATA IN STATE UPON PAGE LOAD/PAGE REFRESH
   useEffect(() => {
-    if (data?.data?.name) {
-      setUserName(data?.data?.name);
+    if (user?.data?.name) {
+      setUserName(user?.data?.name);
     }
-    if (data?.data?.email) {
-      setUserEmail(data?.data?.email);
+    if (user?.data?.email) {
+      setUserEmail(user?.data?.email);
     }
-    if (data?.data?.password) {
-      setUserPassword(data?.data?.password);
+    if (user?.data?.password) {
+      setUserPassword(user?.data?.password);
     }
-    if (data?.data?.confirmPassword) {
-      setUserConfirmPassword(data?.data?.confirmPassword);
+    if (user?.data?.confirmPassword) {
+      setUserConfirmPassword(user?.data?.confirmPassword);
     }
-  }, [data]);
+  }, [user]);
 
   const handleUpdateUserSubmit = async (e) => {
     e.preventDefault();
 
-    if (userPassword !== userConfirmPassword) {
+    if (!userName || !userEmail || !userPassword || !userConfirmPassword) {
+      setErrors("Please fill in all fields");
+      return;
+    } else if (userPassword !== userConfirmPassword) {
       setErrors("Passwords do not match");
       return;
     }
 
     try {
       await updateUser({
-        _id: id,
+        _id: user?.data?._id,
         name: userName,
         email: userEmail,
         password: userPassword,
@@ -91,14 +84,19 @@ const EditUser = ({ data }) => {
     }
   };
 
-  const handleDeleteUserSubmit = async () => {
+  const handleDeleteUserSubmit = async (e) => {
+    e.preventDefault();
+
     try {
-      await deleteUser({ _id: data?.data?._id }).unwrap();
-      console.log(`User ${data?.data?._id} deleted`);
+      await deleteUser({
+        id: user?.data?._id,
+      }).unwrap();
       navigate("/users/view");
+
+      console.log(`User with id ${user?.data?._id} deleted`);
     } catch (error) {
       setErrors(error.data?.message);
-      console.log("ERROR", error.data?.message);
+      console.log("ERROR FROM DELETE", error.data?.message);
     }
   };
 
@@ -109,7 +107,7 @@ const EditUser = ({ data }) => {
           <Loader />
         </div>
       )}
-      {!isLoading || data ? (
+      {!isLoading || user ? (
         <div className="px-6 text-gray-800">
           <div className="flex flex-col items-center justify-center w-full">
             <div>
@@ -214,7 +212,7 @@ const EditUser = ({ data }) => {
                 type="submit"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
-                onClick={() => navigate(`/users/${data?.data?._id}`)}
+                onClick={() => navigate(`/users/${user?.data?._id}`)}
               >
                 Cancel
               </button>

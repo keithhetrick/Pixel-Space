@@ -10,10 +10,16 @@ import { Loader } from "../../components";
 
 const User = () => {
   const { id } = useParams();
-  const { data, isLoading } = useGetSingleUserQuery(id);
+  const { data, isLoading, refetch } = useGetSingleUserQuery(id, {
+    refetchOnMountOrArgChange: true,
+  });
 
-  console.log("USER PAGE REDUX DATA", data);
-  console.log("USER PAGE REDUX DATA - USER ID:", id);
+  // console.log("USER PAGE REDUX DATA", data);
+  // console.log("USER PAGE REDUX DATA - USER ID:", id);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const navigate = useNavigate();
 

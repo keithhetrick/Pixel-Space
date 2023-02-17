@@ -6,10 +6,21 @@ import ErrorMessage from "../../hooks/useErrorMessage";
 import { Loader } from "../../components";
 
 const ViewUsers = () => {
-  const { data: users, isLoading, isSuccess } = useGetUsersQuery();
+  const {
+    data: users,
+    isLoading,
+    isSuccess,
+    refetch,
+  } = useGetUsersQuery({
+    refetchOnMountOrArgChange: true,
+  });
 
-  console.log("VIEW USERS REDUX: ", users); // destructured users object
-  console.log("VIEW USERS REDUX DATA: ", users?.data); // destructured users object
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  // console.log("VIEW USERS REDUX: ", users); // destructured users object
+  // console.log("VIEW USERS REDUX DATA: ", users?.data); // destructured users object
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
