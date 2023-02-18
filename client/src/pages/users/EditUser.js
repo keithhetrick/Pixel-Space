@@ -205,7 +205,7 @@ const EditUser = ({ user }) => {
                 </div>
 
                 {/* Edit Posts */}
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <label htmlFor="posts">Posts</label>
                   <div className="flex flex-col">
                     {user?.data?.posts?.map((post) => (
@@ -251,7 +251,7 @@ const EditUser = ({ user }) => {
                       </div>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="text-center lg:text-left">
                   <button

@@ -23,17 +23,8 @@ const User = () => {
 
   const navigate = useNavigate();
 
-  // handleImageClick function takes takes user to the Image page of the clicked image based on the image ID
-  const handleImageClick = (data) => {
-    // map through all posts inside the data object
-    const imageID = data?.data?.posts?.map((post) => {
-      // return the index of the clicked image
-      return post._id;
-    });
-    console.log("IMAGE ID: ", imageID);
-
-    // navigate to the Image page of the clicked image
-    navigate(`/image/${imageID[0]}`);
+  const handleUserClick = (id) => {
+    navigate(`/image/${id}`);
   };
 
   // ERRORS VALIDATION
@@ -85,8 +76,7 @@ const User = () => {
           <div className="flex flex-col items-center justify-center w-full">
             <div>
               <h1 className="font-inter font-extrabold text-4xl text-[#222328] w-full mb-6">
-                Details for{" "}
-                <span className="italic text-gray-400">{data.data?.name}</span>
+                {data.data?.name}
               </h1>
             </div>
 
@@ -99,20 +89,25 @@ const User = () => {
 
             <main className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
               {data ? (
-                <div>
-                  <div className="mb-1">
-                    <span className="font-bold text-[#222328] text-lg">
-                      User: &nbsp;
-                    </span>
-                    {data.data?.name}
-                  </div>
-                  <div className="mb-1">
-                    <span className="font-bold text-[#222328] text-lg">
-                      Email: &nbsp;
-                    </span>
-                    {data.data?.email}
-                  </div>
-                  {/* <div className="mb-1">
+                <div className="mb-6 flex flex-col w-full">
+                  <div
+                    className="
+                  border border-[#222328] border-opacity-10 rounded-xl p-4
+                  "
+                  >
+                    <div className="mb-1">
+                      <span className="font-bold text-[#222328] text-lg">
+                        User: &nbsp;
+                      </span>
+                      {data.data?.name}
+                    </div>
+                    <div className="mb-1">
+                      <span className="font-bold text-[#222328] text-lg">
+                        Email: &nbsp;
+                      </span>
+                      {data.data?.email}
+                    </div>
+                    {/* <div className="mb-1">
                     <span className="font-bold text-[#222328] text-lg">
                       Password: &nbsp;
                     </span>
@@ -120,53 +115,53 @@ const User = () => {
                       {data.data?.password}
                     </span>
                   </div> */}
-                  <div>
+                    {/* <div>
                     <span className="font-bold text-[#222328] text-lg">
                       ID: &nbsp;
                     </span>
                     {data.data?._id}
-                  </div>
-                  <div className="mb-1">
-                    <span className="font-bold text-[#222328] text-lg">
-                      Created At: &nbsp;
-                    </span>
-                    {formattedCreatedAt}
-                  </div>
-                  {showUpdatedAt ? (
+                  </div> */}
                     <div className="mb-1">
                       <span className="font-bold text-[#222328] text-lg">
-                        Updated At: &nbsp;
+                        Created At: &nbsp;
                       </span>
-                      {formattedUpdatedAt}
+                      {formattedCreatedAt}
                     </div>
-                  ) : null}
-                  <div className="mb-1">
-                    <span className="font-bold text-[#222328] text-lg">
-                      Posts: &nbsp;
-                    </span>
-                    {data.data?.posts?.length}
+                    {showUpdatedAt ? (
+                      <div className="mb-1">
+                        <span className="font-bold text-[#222328] text-lg">
+                          Updated At: &nbsp;
+                        </span>
+                        {formattedUpdatedAt}
+                      </div>
+                    ) : null}
                   </div>
 
-                  <div className="flex flex-col gap-3 my-3 items-center justify-center w-full">
+                  <div className="flex flex-col gap-3 mt-3 mb-6 items-center justify-center w-full">
+                    <div>
+                      <span className="font-bold text-[#222328] text-lg">
+                        Posts: &nbsp;
+                      </span>
+                      {data.data?.posts?.length}
+                    </div>
+
                     {data.data?.posts?.length > 0
                       ? data.data?.posts?.map((post) => (
                           <div
                             key={post._id}
-                            className="rounded-xl group p-4 flex flex-col items-center justify-center relative w-5/6 shadow-card hover:translate-y-[-1px] hover:shadow-cardhover card transition duration-200 cursor-pointer
+                            className="rounded-xl group p-4 flex flex-col items-center justify-center relative w-full shadow-card hover:shadow-lg hover:translate-y-[-1px] transition duration-200 card cursor-pointer
                             border border-[#222328] border-opacity-10 gap-3
                             "
-                            onClick={() => handleImageClick(data)}
+                            onClick={() => handleUserClick(post?._id)}
                           >
-                            <div className="text-[#222328] text-normal text-center">
+                            <div className="text-[#222328] text-sm text-center">
                               {post?.prompt}
                             </div>
                             <div className="text-[#222328] text-[10px] italic">
                               {formatterDateAndTime(post?.createdAt)}
                             </div>
                             <img
-                              className="rounded-xl w-5/6 h-1/2 object-cover transition duration-200 cursor-pointer mb-6
-                              
-                              "
+                              className="rounded-xl w-full object-cover focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 cursor-pointer"
                               src={post?.photo}
                               alt={post?.prompt}
                             ></img>
