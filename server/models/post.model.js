@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const PostSchema = new mongoose.Schema(
   {
-    firstname: {
+    name: {
       type: String,
       required: [true, "Name is required"],
     },
