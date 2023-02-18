@@ -80,12 +80,11 @@ const ViewUsers = () => {
                       No Posts
                     </p>
                   ) : (
-                    user.posts.map((post) => (
-                      <div key={post._id}>
-                        <p>{post.title}</p>
-                        <p>{post.body}</p>
-                      </div>
-                    ))
+                    <p className="text-[#222328] italic text-[14px] mr-1">
+                      {user.posts.length === 1
+                        ? `${user.posts.length} Post`
+                        : `${user.posts.length} Posts`}
+                    </p>
                   )}
                 </div>
               </Link>

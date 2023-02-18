@@ -14,7 +14,7 @@ const User = () => {
     refetchOnMountOrArgChange: true,
   });
 
-  // console.log("USER PAGE REDUX DATA", data);
+  console.log("USER PAGE REDUX DATA", data);
   // console.log("USER PAGE REDUX DATA - USER ID:", id);
 
   useEffect(() => {
@@ -22,6 +22,34 @@ const User = () => {
   }, [refetch]);
 
   const navigate = useNavigate();
+
+  // handleImageClick function takes takes user to the Image page of the clicked image based on the image ID
+  const handleImageClick = (data) => {
+    // map through all posts inside the data object
+    const imageID = data?.data?.posts?.map((post) => {
+      // return the image ID of the clicked image
+      return post._id;
+    });
+    console.log("IMAGE ID: ", imageID);
+
+    // split the imageID array & filter out everything but the the single image ID of the clicked image & return that ID into a new array
+    const singleImageID = imageID
+      ?.toString()
+      .split(",")
+      .filter((id) => id);
+
+    console.log("SINGLE IMAGE ID: ", singleImageID);
+
+    //  create a foor loop taht goes through the singleImageID array & returns the index of the clicked image
+    // for (let i = 0; i < singleImageID.length; i++) {
+    //   if (singleImageID[i] === id) {
+    //     return singleImageID[i];
+    //   }
+    // }
+
+    // navigate(`/image/${singleImageID}`);
+    navigate(`/image/${singleImageID[0]}`);
+  };
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
@@ -99,14 +127,14 @@ const User = () => {
                     </span>
                     {data.data?.email}
                   </div>
-                  <div className="mb-1">
+                  {/* <div className="mb-1">
                     <span className="font-bold text-[#222328] text-lg">
                       Password: &nbsp;
                     </span>
                     <span className="font-normal text-base blur-sm hover:blur-none cursor-pointer transition duration-150">
                       {data.data?.password}
                     </span>
-                  </div>
+                  </div> */}
                   <div>
                     <span className="font-bold text-[#222328] text-lg">
                       ID: &nbsp;
@@ -139,13 +167,20 @@ const User = () => {
                       ? data.data?.posts?.map((post) => (
                           <div
                             key={post._id}
-                            className="flex flex-col items-center justify-center w-full"
+                            className="flex flex-col items-center justify-center w-full h-full gap-3"
                           >
-                            <div>{post?.name}</div>
-                            <div>{post?.prompt}</div>
-                            <div>{post?._id}</div>
-                            <div>{post?.createdAt}</div>
-                            <div>{post?.updatedAt}</div>
+                            <div className="text-[#222328] text-sm">
+                              {post?.prompt}
+                            </div>
+                            <div className="text-[#222328] text-xs italic">
+                              {formatterDateAndTime(post?.createdAt)}
+                            </div>
+                            <img
+                              onClick={() => handleImageClick(data)}
+                              className="rounded-xl w-1/2 h-1/2 object-cover cursor-pointer mb-6"
+                              src={post?.photo}
+                              alt={post?.prompt}
+                            ></img>
                           </div>
                         ))
                       : null}

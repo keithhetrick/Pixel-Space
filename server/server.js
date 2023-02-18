@@ -116,6 +116,7 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/api/login", (req, res) => {
+  console.log("\nCurrent user is:", req.user);
   res.status(200).json({
     message: "Hello!!! You found the login route 🔥",
   });

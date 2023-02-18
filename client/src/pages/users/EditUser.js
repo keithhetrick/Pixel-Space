@@ -14,7 +14,7 @@ const EditUser = ({ user }) => {
   const [updateUser, { isLoading }] = useUpdateUserMutation();
   const [deleteUser] = useDeleteUserMutation();
 
-  // console.log("EDIT USER PAGE REDUX DATA PASSED FROM WRAPPER", user);
+  console.log("EDIT USER PAGE REDUX DATA PASSED FROM WRAPPER", user);
   // console.log("EDIT USER PAGE REDUX DATA - USER ID:", id);
 
   const [userName, setUserName] = useState(
@@ -29,6 +29,18 @@ const EditUser = ({ user }) => {
   const [userConfirmPassword, setUserConfirmPassword] = useState(
     user?.data?.confirmPassword ? user?.data?.confirmPassword : ""
   );
+  const [userPosts, setUserPosts] = useState(
+    user?.data?.posts ? user?.data?.posts : []
+  );
+
+  const [userPrompts, setUserPrompts] = useState(
+    user?.data?.prompt ? user?.data?.prompt : []
+  );
+
+  console.log(userPosts);
+
+  // const userPrompts = userPosts.map((post) => post.prompt);
+  // const userImages = userPosts.map((post) => post.image);
 
   const navigate = useNavigate();
 
@@ -80,12 +92,21 @@ const EditUser = ({ user }) => {
       navigate("/users/view");
     } catch (error) {
       setErrors(error.data?.message);
+
       console.log("ERROR", error.data?.message);
     }
   };
 
   const handleDeleteUserSubmit = async (e) => {
     e.preventDefault();
+
+    // if user has posts, do not allow them to delete their account
+    if (userPosts.length > 0) {
+      setErrors("Cannot delete a user with posts");
+      return;
+    } else {
+      setErrors("");
+    }
 
     try {
       await deleteUser({
@@ -117,10 +138,12 @@ const EditUser = ({ user }) => {
             </div>
 
             {errors && (
-              <ErrorMessage
-                variant={errors ? "danger" : "success"}
-                message={errors}
-              />
+              <div className="-mt-[23px]">
+                <ErrorMessage
+                  variant={errors ? "danger" : "success"}
+                  message={errors}
+                />
+              </div>
             )}
 
             <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
@@ -181,9 +204,58 @@ const EditUser = ({ user }) => {
                   />
                 </div>
 
+                {/* Edit Posts */}
+                <div className="mb-6">
+                  <label htmlFor="posts">Posts</label>
+                  <div className="flex flex-col">
+                    {user?.data?.posts?.map((post) => (
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            name="posts"
+                            // id={post?._id}
+                            value={post?._id}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setUserPosts([...userPosts, e.target.value]);
+                              } else {
+                                setUserPosts(
+                                  userPosts.filter(
+                                    (post) => post !== e.target.value
+                                  )
+                                );
+                              }
+                            }}
+                          />
+
+                          <input
+                            className="form-control block w-[450px] px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none ml-3 text-[9px] italic"
+                            type="text"
+                            name="posts"
+                            // id={post?._id}
+                            placeholder={post?.prompt}
+                            value={userPrompts}
+                            autoComplete="off"
+                            onChange={(e) => {
+                              setUserPrompts(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <img
+                          src={post?.photo}
+                          alt={post?.title}
+                          className="w-10 h-10 rounded-md"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="text-center lg:text-left">
                   <button
-                    className="mb-6 px-7 py-3 bg-[#6469] text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg hover:bg-[#b18eb199] focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
+                    className="-mt-1 mb-6 px-7 py-3 bg-[#6469] text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg hover:bg-[#b18eb199] focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
                     type="submit"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="light"

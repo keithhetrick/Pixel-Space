@@ -3,6 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 import asyncHandler from "express-async-handler";
 
 import Post from "../models/post.model.js";
+import User from "../models/user.model.js";
 
 dotenv.config();
 
@@ -77,7 +78,17 @@ export const getPostById = asyncHandler(async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
+    // const user = await User.findById(req.params.id).populate("posts");
+    // const post = await Post.findById(req.params.id);
+
+    // console.log("user", user);
+    // console.log("post", post);
+
+    // const posts = user.posts;
+
     res.status(200).json({ success: true, data: post });
+
+    console.log("post", post);
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -135,7 +146,7 @@ export const updatePostUser = asyncHandler(async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "Updating post failed, please try again",
+      message: `Updating post failed, ${err}`,
     });
   }
 });

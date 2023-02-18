@@ -15,7 +15,6 @@ const UserSchema = new mongoose.Schema(
       minLength: [3, "Email must be at least 3 characters long"],
       maxLength: [255, "Email must be at most 255 characters long"],
       unique: true,
-      // regex check for email
       match: [
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
         "Please enter a valid email",
@@ -36,7 +35,7 @@ const UserSchema = new mongoose.Schema(
     },
     posts: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Post",
       },
     ],
@@ -44,13 +43,7 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-UserSchema.pre("save", async function (next) {
-  if (this.password !== this.confirmPassword) {
-    next(new Error("Passwords do not match"));
-  }
-});
-
-// Add foreign Id from Post as posts in the form of a one-to-many relationship to the UserSchema model
+// allow the Id to be referenced in the Post model
 UserSchema.virtual("post", {
   ref: "Post",
   localField: "_id",

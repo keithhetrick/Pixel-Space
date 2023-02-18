@@ -15,13 +15,11 @@ export const createUser = asyncHandler(async (req, res) => {
       confirmPassword,
     });
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        data: user,
-        message: `New user created - ${name}`,
-      });
+    res.status(200).json({
+      success: true,
+      data: user,
+      message: `New user created - ${name}`,
+    });
   } catch (err) {
     console.log("ERROR:", err);
 
@@ -103,7 +101,7 @@ export const updateUser = asyncHandler(async (req, res) => {
         email,
         password,
         confirmPassword,
-        // posts,
+        posts,
       },
       { new: true }
     );
@@ -136,7 +134,7 @@ export const updateUser = asyncHandler(async (req, res) => {
       user.email = req.body.email || user.email;
       user.password = req.body.password || user.password;
       user.confirmPassword = req.body.confirmPassword || user.confirmPassword;
-      // user.posts = req.body.posts || user.posts;
+      user.posts = req.body.posts || user.posts;
     }
 
     const updatedUser = await user.save();
@@ -149,7 +147,7 @@ export const updateUser = asyncHandler(async (req, res) => {
         email: updatedUser.email,
         password: updatedUser.password,
         confirmPassword: updatedUser.confirmPassword,
-        // posts: updatedUser.posts,
+        posts: updatedUser.posts,
       },
     });
   } catch (err) {
@@ -175,8 +173,20 @@ export const deleteUser = asyncHandler(async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     res.status(200).json({ success: true, data: user });
   } catch (err) {
+    // if user has posts, throw error saying user has posts
+    if (err.message.includes("posts")) {
+      return res.status(500).json({
+        success: false,
+        message: `User has posts and cannot be deleted`,
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: `Deleting user failed - ${err.message}`,
