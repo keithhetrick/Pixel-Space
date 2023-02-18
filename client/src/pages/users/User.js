@@ -27,28 +27,13 @@ const User = () => {
   const handleImageClick = (data) => {
     // map through all posts inside the data object
     const imageID = data?.data?.posts?.map((post) => {
-      // return the image ID of the clicked image
+      // return the index of the clicked image
       return post._id;
     });
     console.log("IMAGE ID: ", imageID);
 
-    // split the imageID array & filter out everything but the the single image ID of the clicked image & return that ID into a new array
-    const singleImageID = imageID
-      ?.toString()
-      .split(",")
-      .filter((id) => id);
-
-    console.log("SINGLE IMAGE ID: ", singleImageID);
-
-    //  create a foor loop taht goes through the singleImageID array & returns the index of the clicked image
-    // for (let i = 0; i < singleImageID.length; i++) {
-    //   if (singleImageID[i] === id) {
-    //     return singleImageID[i];
-    //   }
-    // }
-
-    // navigate(`/image/${singleImageID}`);
-    navigate(`/image/${singleImageID[0]}`);
+    // navigate to the Image page of the clicked image
+    navigate(`/image/${imageID[0]}`);
   };
 
   // ERRORS VALIDATION
@@ -162,22 +147,26 @@ const User = () => {
                     {data.data?.posts?.length}
                   </div>
 
-                  <div className="flex flex-col items-center justify-center w-full">
+                  <div className="flex flex-col gap-3 my-3 items-center justify-center w-full">
                     {data.data?.posts?.length > 0
                       ? data.data?.posts?.map((post) => (
                           <div
                             key={post._id}
-                            className="flex flex-col items-center justify-center w-full h-full gap-3"
+                            className="rounded-xl group p-4 flex flex-col items-center justify-center relative w-5/6 shadow-card hover:translate-y-[-1px] hover:shadow-cardhover card transition duration-200 cursor-pointer
+                            border border-[#222328] border-opacity-10 gap-3
+                            "
+                            onClick={() => handleImageClick(data)}
                           >
-                            <div className="text-[#222328] text-sm">
+                            <div className="text-[#222328] text-normal text-center">
                               {post?.prompt}
                             </div>
-                            <div className="text-[#222328] text-xs italic">
+                            <div className="text-[#222328] text-[10px] italic">
                               {formatterDateAndTime(post?.createdAt)}
                             </div>
                             <img
-                              onClick={() => handleImageClick(data)}
-                              className="rounded-xl w-1/2 h-1/2 object-cover cursor-pointer mb-6"
+                              className="rounded-xl w-5/6 h-1/2 object-cover transition duration-200 cursor-pointer mb-6
+                              
+                              "
                               src={post?.photo}
                               alt={post?.prompt}
                             ></img>
