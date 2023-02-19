@@ -41,10 +41,7 @@ function App() {
             <Route path="users/view" element={<ViewUsers />} />
             <Route path="userslist" element={<UsersList />} />
             <Route path="users/:id/edit" element={<EditUserWrapper />} />
-            <Route
-              path="users/:id?/posts/:id?"
-              element={<UserPostsWrapper />}
-            />
+            <Route path="users/:id/posts/*" element={<UserPostsWrapper />} />
             <Route element={<RequireAuth />}></Route>
 
             {/* Error Routes */}

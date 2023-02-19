@@ -1,30 +1,21 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { Loader } from "../../components";
 
-const UsersPosts = ({ user }) => {
+const UsersPosts = ({ user, passImageId }) => {
   const [
     loading,
     // eslint-disable-next-line no-unused-vars
     setLoading,
   ] = useState(false);
 
-  const _id = user?.data?._id;
-
-  const navigate = useNavigate();
-
-  console.log("user:", user);
-
   const posts = user?.data?.posts;
-  console.log("posts:", posts);
 
-  // send user to clicked post
   const handlePostClick = (id) => {
-    console.log("id:", id);
-    console.log("user Id:", _id);
-    navigate(`/users/${_id}/posts/${id}`);
+    passImageId(id);
   };
+
+  // console.log("Hello from UsersAllPosts!");
 
   const postsList = posts?.map((post) => {
     return (

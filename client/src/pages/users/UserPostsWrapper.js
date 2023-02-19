@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 import UsersAllPosts from "./UsersAllPosts";
 import UserSinglePost from "./UserSinglePost";
 import { useGetSingleUserQuery } from "../../features/users/usersApiSlice";
+
 import { Loader } from "../../components";
-import { useState } from "react";
 
 const UserPostsWrapper = () => {
   const { id } = useParams();
@@ -12,19 +13,32 @@ const UserPostsWrapper = () => {
   const { data: user } = useGetSingleUserQuery(id);
 
   const passImageIdToUserSinglePost = (imageId) => {
-    console.log("imageId:", imageId);
+    console.log("setSingleImageId from UserPostsWrapper:", imageId);
     setSingleImageId(imageId);
   };
 
-  console.log("singleimageId:", singleimageId);
+  console.log("singleimageId from UserPostsWrapper:", singleimageId);
+
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (singleimageId) {
+  //     navigate(`/user/${id}/posts/${singleimageId}`);
+  //     console.log("URL:", window.location.href);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [singleimageId]);
 
   return (
     <>
-      {/* if user clicks on a specfic image, use "UserSinglePost", otherwise use "UserAllPosts" - send imageId data from UsersAllPosts to UserSinglePost for navigation */}
       {user ? (
         <>
-          {user.post ? (
-            <UserSinglePost user={user} imageId={singleimageId} />
+          {singleimageId ? (
+            <UserSinglePost
+              user={user}
+              imageId={singleimageId}
+              passImageIdToUserSinglePost={passImageIdToUserSinglePost}
+            />
           ) : (
             <UsersAllPosts
               user={user}
