@@ -11,6 +11,8 @@ const Register = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userConfirmPassword, setUserConfirmPassword] = useState("");
+  // let userRole choose between user or admin
+  const [userRole, setUserRole] = useState(0);
 
   const navigate = useNavigate();
 
@@ -40,6 +42,7 @@ const Register = () => {
         email: userEmail,
         password: userPassword,
         confirmPassword: userConfirmPassword,
+        role: userRole,
       })
         .unwrap()
         .then((data) => {
@@ -51,6 +54,18 @@ const Register = () => {
       setUserEmail("");
       setUserPassword("");
       setUserConfirmPassword("");
+      // setUserRole to the value of the dropdown menu
+      setUserRole(userRole);
+
+      // assign user role to 0 if userRole is not 1
+      if (userRole !== 1) {
+        setUserRole(0);
+      } else {
+        setUserRole(1);
+      }
+
+      console.log("ROLE", userRole);
+
       // console.log("USER ID", userData?.data?._id);
       navigate(`/users/${userData?.data?._id}`);
     } catch (error) {
@@ -132,6 +147,19 @@ const Register = () => {
                   autoComplete="off"
                   onChange={(e) => setUserConfirmPassword(e.target.value)}
                 />
+              </div>
+
+              {/* let user choose between user (which equals 0) or admin (which equals 1) */}
+              <div className="mb-6">
+                <select
+                  className="form-control block w-full px-4 py-2 text-lg font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  name="role"
+                  id="role"
+                  onChange={(e) => setUserRole(e.target.value)}
+                >
+                  <option value="0">User</option>
+                  <option value="1">Admin</option>
+                </select>
               </div>
 
               <div className="text-center lg:text-left">

@@ -16,6 +16,8 @@ export const createUser = asyncHandler(async (req, res) => {
       roles: [0],
     });
 
+    console.log("\nPASSWORD BEFORE HASHING", password);
+
     if (!user || !email || !password || !confirmPassword) {
       return res.status(400).json({
         success: false,
@@ -23,8 +25,9 @@ export const createUser = asyncHandler(async (req, res) => {
       });
     }
 
-    // automatically fill roles array with default of the Number 0
-    if (!roles) {
+    if (roles) {
+      user.roles = roles;
+    } else {
       user.roles = [0];
     }
 
@@ -35,6 +38,13 @@ export const createUser = asyncHandler(async (req, res) => {
         return "admin";
       }
     });
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    user.password = hashedPassword;
+
+    console.log("\nPASSWORD AFTER HASHING", hashedPassword);
 
     res.status(200).json({
       success: true,
@@ -69,33 +79,10 @@ export const getAllUsers = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: "No users found" });
     }
 
-    // sort user by name
-    // users.sort((a, b) => {
-    //   const nameA = a.name.toUpperCase();
-    //   const nameB = b.name.toUpperCase();
-
-    //   if (nameA < nameB) {
-    //     return -1;
-    //   }
-    //   if (nameA > nameB) {
-    //     return 1;
-    //   }
-    //   return 0;
-    // });
-
     // sort user by newest first
     users.sort((a, b) => {
       return new Date(b.createdAt) - new Date(a.createdAt);
     });
-
-    // sort role by highest number first & return only the highest role
-    // users.forEach((user) => {
-    //   user.roles.sort((a, b) => {
-    //     return b - a;
-    //   });
-
-    //   user.roles = user.roles[0];
-    // });
 
     res.status(200).json({ success: true, data: users });
   } catch (err) {
@@ -181,6 +168,12 @@ export const updateUser = asyncHandler(async (req, res) => {
     //   });
     // }
 
+    // hash password & confirmPassword
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // user.password = hashedPassword;
+    // user.confirmPassword = hashedPassword;
+
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
@@ -189,6 +182,12 @@ export const updateUser = asyncHandler(async (req, res) => {
       user.roles = req.body.roles || user.roles;
       user.posts = req.body.posts || user.posts;
     }
+
+    console.log(
+      "\nPASSWORD & CONFIRM PASSWORD: ",
+      user.password,
+      user.confirmPassword
+    );
 
     const updatedUser = await user.save();
 

@@ -19,13 +19,12 @@ const EditUser = ({ user }) => {
 
   let [isAdmin, setIsAdmin] = useState(false);
 
-  if (user?.data?.roles.includes(1)) {
-    isAdmin = true;
-  } else {
-    isAdmin = false;
-  }
-
-  console.log("ADMIN", isAdmin);
+  // set isAdmin to true if user is admin under role field if roles array includes 1
+  useEffect(() => {
+    if (user?.data?.roles.includes(1)) {
+      setIsAdmin(true);
+    }
+  }, [user]);
 
   const [userName, setUserName] = useState(
     user?.data?.name ? user?.data?.name : ""
@@ -46,6 +45,19 @@ const EditUser = ({ user }) => {
   const [userPrompts, setUserPrompts] = useState(
     user?.data?.prompt ? user?.data?.prompt : []
   );
+
+  // const [userRoles, setUserRoles] = useState(
+  //   user?.data?.roles ? user?.data?.roles : []
+  // );
+
+  // // convert userRolesvalues from dropdown to numbers for the roles array
+  // const convertRoles = (roles) => {
+  //   const role = {
+  //     User: 0,
+  //     Admin: 1,
+  //   };
+  //   return role[roles];
+  // };
 
   console.log(userPosts);
 
@@ -221,6 +233,25 @@ const EditUser = ({ user }) => {
                   />
                 </div>
 
+                {/* put dropdown userRoles here & use convertRoles to convert into usable data for the database */}
+                {/* <div className="mb-6">
+                  <label htmlFor="role">Role</label>
+                  <select
+                    className="form-control block w-full px-4 py-2 text-lg font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    name="role"
+                    id="role"
+                    value={userRoles || ""}
+                    onChange={(e) => setUserRoles(e.target.value)}
+                  >
+                    <option value="">Select a role</option>
+                    {userRoles?.map((role) => (
+                      <option key={role} value={role}>
+                        {role}
+                      </option>
+                    ))}
+                  </select>
+                </div> */}
+
                 {/* Edit Posts */}
                 {/* <div className="mb-6">
                   <label htmlFor="posts">Posts</label>
@@ -271,6 +302,12 @@ const EditUser = ({ user }) => {
                 </div> */}
 
                 <div className="text-center lg:text-left">
+                  {!isAdmin && (
+                    <div className="text-red-600 font-medium text-sm leading-snug uppercase  focus:outline-none transition duration-200 ease-in-out w-full flex justify-center items-center mb-6">
+                      Can only be deleted by an admin
+                    </div>
+                  )}
+
                   <button
                     className="-mt-1 mb-6 px-7 py-3 bg-[#6469] text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg hover:bg-[#b18eb199] focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
                     type="submit"
@@ -280,8 +317,7 @@ const EditUser = ({ user }) => {
                     Update User
                   </button>
 
-                  {/* if isAdmin is true, show "Delete User", otherwise leave null - also, toggle between Delete User button & showDeleteModal */}
-                  {isAdmin && (
+                  {isAdmin && !showDeleteModal && (
                     <button
                       className="px-7 py-3 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
                       type="button"
@@ -289,8 +325,6 @@ const EditUser = ({ user }) => {
                       data-mdb-ripple-color="light"
                       data-mdb-toggle="modal"
                       data-mdb-target="#deleteUserModal"
-                      // add handleDeleteModal function
-
                       onClick={handleDeleteModal}
                     >
                       Delete User
@@ -305,7 +339,7 @@ const EditUser = ({ user }) => {
                       aria-labelledby="deleteUserModalLabel"
                       aria-hidden="true"
                     >
-                      <div className="modal-dialog modal-dialog-centered">
+                      <div className="modal-dialog modal-dialog-centered -mt-6">
                         <div className="modal-content">
                           <div className="modal-header">
                             <button
@@ -352,15 +386,15 @@ const EditUser = ({ user }) => {
                 </div>
               </form>
 
-              <button
+              <a
                 className="px-7 py-3 bg-gray-600 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
+                href={`/users/${user?.data?._id}`}
                 type="submit"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
-                onClick={() => navigate(`/users/${user?.data?._id}`)}
               >
                 Cancel
-              </button>
+              </a>
             </main>
           </div>
         </div>
@@ -369,15 +403,15 @@ const EditUser = ({ user }) => {
           <h1 className="font-inter font-bold text-4xl text-gray-700 w-full mb-6">
             No User
           </h1>
-          <button
+          <a
             className="px-7 py-3 bg-gray-600 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
+            href="/users/view"
             type="submit"
             data-mdb-ripple="true"
             data-mdb-ripple-color="light"
-            onClick={() => navigate("/users/view")}
           >
             Back
-          </button>
+          </a>
         </div>
       )}
     </section>

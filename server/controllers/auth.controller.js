@@ -51,9 +51,44 @@ export const userLogin = asyncHandler(async (req, res) => {
       .json({ success: false, message: "Invalid credentials" });
   }
 
-  res
-    .status(200)
-    .json({ success: true, data: candidate, message: "Login successful" });
+  // const match = await bcrypt.compare(password, candidate.password);
+
+  // if (!match) {
+  //   return res
+  //     .status(401)
+  //     .json({ success: false, message: "Invalid credentials" });
+  // }
+
+  const accessToken = jwt.sign(
+    {
+      UserInfo: {
+        username: candidate.username,
+        roles: candidate.roles,
+      },
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "15m" }
+  );
+
+  const refreshToken = jwt.sign(
+    { username: candidate.username },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "7d" }
+  );
+
+  // Set refresh token as a cookie
+  res.cookie("jwt", refreshToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+
+  res.status(200).json({
+    success: true,
+    data: candidate,
+    message: "Login successful",
+    accessToken,
+  });
 });
 
 export const refreshCookie = (req, res) => {

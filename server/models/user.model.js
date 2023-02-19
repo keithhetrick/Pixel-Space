@@ -51,14 +51,6 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// allow the Id to be referenced in the Post model
-// UserSchema.virtual("post", {
-//   ref: "Post",
-//   localField: "_id",
-//   foreignField: "userId",
-//   justOne: false,
-// });
-
 const User = mongoose.model("User", UserSchema);
 
 export default User;

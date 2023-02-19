@@ -30,11 +30,6 @@ const PostSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// PostSchema.pre("find", function (next) {
-//   this.populate("nameRef");
-//   next();
-// });
-
 PostSchema.pre("find", function (next) {
   this.populate("userRef");
   next();
