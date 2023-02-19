@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -44,12 +44,12 @@ const UserSchema = new mongoose.Schema(
 );
 
 // allow the Id to be referenced in the Post model
-UserSchema.virtual("post", {
-  ref: "Post",
-  localField: "_id",
-  foreignField: "userId",
-  justOne: false,
-});
+// UserSchema.virtual("post", {
+//   ref: "Post",
+//   localField: "_id",
+//   foreignField: "userId",
+//   justOne: false,
+// });
 
 const User = mongoose.model("User", UserSchema);
 

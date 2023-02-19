@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 const PostSchema = new mongoose.Schema(
   {
@@ -6,6 +6,12 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: [true, "Name is required"],
     },
+
+    // name: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "User",
+    // },
+
     prompt: {
       type: String,
       required: [true, "Prompt is required"],
@@ -14,7 +20,7 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: [true, "Photo is needed"],
     },
-    userId: {
+    userRef: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
@@ -22,12 +28,19 @@ const PostSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// allow the Id to be referenced in the User model
-PostSchema.virtual("user", {
-  ref: "User",
-  localField: "_id",
-  foreignField: "posts",
-  justOne: true,
+PostSchema.pre("find", function (next) {
+  this.populate("userRef");
+  next();
+});
+
+PostSchema.pre("findById", function (next) {
+  this.populate("userRef");
+  next();
+});
+
+PostSchema.pre("findByIdAndUpdate", function (next) {
+  this.populate("userRef");
+  next();
 });
 
 const Post = mongoose.model("Post", PostSchema);

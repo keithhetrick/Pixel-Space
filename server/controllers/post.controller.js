@@ -22,19 +22,14 @@ cloudinary.config({
 // Create a new post
 export const createPost = asyncHandler(async (req, res) => {
   try {
-    const {
-      name,
-      prompt,
-      photo,
-      // user
-    } = req.body;
+    const { name, prompt, photo, userRef } = req.body;
     const photoUrl = await cloudinary.uploader.upload(photo);
 
     const newPost = await Post.create({
       name,
       prompt,
       photo: photoUrl.url,
-      // user,
+      userRef,
     });
 
     res.status(200).json({ success: true, data: newPost });
@@ -76,15 +71,9 @@ export const getAllPosts = asyncHandler(async (req, res) => {
 // Get a post by id
 export const getPostById = asyncHandler(async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
-
-    // const user = await User.findById(req.params.id).populate("posts");
     // const post = await Post.findById(req.params.id);
 
-    // console.log("user", user);
-    // console.log("post", post);
-
-    // const posts = user.posts;
+    const post = await Post.findById(req.params.id).populate("userRef");
 
     res.status(200).json({ success: true, data: post });
 
@@ -100,11 +89,11 @@ export const getPostById = asyncHandler(async (req, res) => {
 // Update a post's name
 export const updatePostName = asyncHandler(async (req, res) => {
   try {
-    const { name } = req.body;
+    const { userRef } = req.body;
 
     const post = await Post.findByIdAndUpdate(
       req.params.id,
-      { name },
+      { userRef },
       { new: true }
     );
 
@@ -134,11 +123,11 @@ export const deletePost = asyncHandler(async (req, res) => {
 // Update a post's relational User
 export const updatePostUser = asyncHandler(async (req, res) => {
   try {
-    const { user } = req.body;
+    const { userRef } = req.body;
 
     const post = await Post.findByIdAndUpdate(
       req.params.id,
-      { user },
+      { userRef },
       { new: true }
     );
 
@@ -154,9 +143,9 @@ export const updatePostUser = asyncHandler(async (req, res) => {
 // Get a post's relational User
 export const getPostUser = asyncHandler(async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate("user");
+    const post = await Post.findById(req.params.id).populate("userRef");
 
-    res.status(200).json({ success: true, data: post.user });
+    res.status(200).json({ success: true, data: post.userRef });
   } catch (err) {
     res.status(500).json({
       success: false,

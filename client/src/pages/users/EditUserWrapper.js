@@ -3,8 +3,6 @@ import EditUser from "./EditUser";
 import { useGetSingleUserQuery } from "../../features/users/usersApiSlice";
 import { Loader } from "../../components";
 
-import React from "react";
-
 const EditUserWrapper = () => {
   const { id } = useParams();
 

@@ -3,6 +3,7 @@ import CreatePost from "./posts/CreatePost";
 import Image from "./posts/Image";
 import User from "./users/User";
 import EditUserWrapper from "./users/EditUserWrapper";
+import UserPostsWrapper from "./users/UserPostsWrapper";
 import ViewUsers from "./users/ViewUsers";
 import ErrorLandingPage from "./ErrorLandingPage";
 
@@ -12,6 +13,7 @@ export {
   Image,
   User,
   EditUserWrapper,
+  UserPostsWrapper,
   ViewUsers,
   ErrorLandingPage,
 };
