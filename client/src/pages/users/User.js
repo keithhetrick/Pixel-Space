@@ -27,6 +27,28 @@ const User = () => {
     navigate(`/image/${id}`);
   };
 
+  // return the highest number to determine the role & return the role name
+  const getRole = (roles) => {
+    const highestRole = Math.max(...roles);
+    const role = {
+      // if no role is found, return "User"
+      0: "User",
+      1: "Admin",
+    };
+    return role[highestRole];
+  };
+
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // set isAdmin to true if user is admin under role field if roles array includes 1
+  useEffect(() => {
+    if (data?.data?.roles.includes(1)) {
+      setIsAdmin(true);
+    }
+  }, [data]);
+
+  console.log("isAdmin: ", isAdmin);
+
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
 
@@ -72,7 +94,7 @@ const User = () => {
       )}
 
       {!isLoading || data ? (
-        <div className="px-6 text-gray-800">
+        <div className="text-gray-800">
           <div className="flex flex-col items-center justify-center w-full">
             <div>
               <h1 className="font-inter font-extrabold text-4xl text-[#222328] w-full mb-6">
@@ -106,6 +128,12 @@ const User = () => {
                         Email: &nbsp;
                       </span>
                       {data.data?.email}
+                    </div>
+                    <div>
+                      <span className="font-bold text-[#222328] text-lg">
+                        Role: &nbsp;
+                      </span>
+                      {getRole(data.data?.roles)}
                     </div>
                     {/* <div className="mb-1">
                     <span className="font-bold text-[#222328] text-lg">

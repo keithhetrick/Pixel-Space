@@ -2,12 +2,14 @@ import mongoose from "mongoose";
 
 const PostSchema = new mongoose.Schema(
   {
+    // use the name from the user model as an enum for the post model under the name field
     name: {
       type: String,
       required: [true, "Name is required"],
     },
 
-    // name: {
+    // make a nameRef field as an enum that allows the user to select a name from the user model
+    // nameRef: {
     //   type: mongoose.Schema.Types.ObjectId,
     //   ref: "User",
     // },
@@ -27,6 +29,11 @@ const PostSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// PostSchema.pre("find", function (next) {
+//   this.populate("nameRef");
+//   next();
+// });
 
 PostSchema.pre("find", function (next) {
   this.populate("userRef");

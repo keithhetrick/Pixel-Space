@@ -33,6 +33,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "Confirm password is required"],
     },
+
+    roles: [
+      {
+        type: Number,
+        default: 0,
+      },
+    ],
+
     posts: [
       {
         type: mongoose.Schema.Types.ObjectId,

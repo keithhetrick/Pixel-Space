@@ -19,8 +19,15 @@ const ViewUsers = () => {
     refetch();
   }, [refetch]);
 
-  // console.log("VIEW USERS REDUX: ", users); // destructured users object
-  // console.log("VIEW USERS REDUX DATA: ", users?.data); // destructured users object
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (users?.data?.roles?.includes(1)) {
+      setIsAdmin(true);
+    }
+  }, [users]);
+
+  console.log("isAdmin: ", isAdmin);
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
@@ -73,6 +80,12 @@ const ViewUsers = () => {
                   {user.name}
                 </h2>
                 <p>{user.email}</p>
+                {/* if an admin, show "Admin" - else leave blank */}
+                {user.roles.includes(1) ? (
+                  <p className="text-[#ff4e4e] italic text-[14px] mr-1">
+                    Admin
+                  </p>
+                ) : null}
 
                 <div>
                   {user.posts.length === 0 || !user.posts ? (

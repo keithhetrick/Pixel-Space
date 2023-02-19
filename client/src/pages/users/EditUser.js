@@ -17,6 +17,16 @@ const EditUser = ({ user }) => {
   console.log("EDIT USER PAGE REDUX DATA PASSED FROM WRAPPER", user);
   // console.log("EDIT USER PAGE REDUX DATA - USER ID:", id);
 
+  let [isAdmin, setIsAdmin] = useState(false);
+
+  if (user?.data?.roles.includes(1)) {
+    isAdmin = true;
+  } else {
+    isAdmin = false;
+  }
+
+  console.log("ADMIN", isAdmin);
+
   const [userName, setUserName] = useState(
     user?.data?.name ? user?.data?.name : ""
   );
@@ -121,6 +131,13 @@ const EditUser = ({ user }) => {
     }
   };
 
+  // delete modal
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const handleDeleteModal = () => {
+    setShowDeleteModal(!showDeleteModal);
+  };
+
   return (
     <section className="h-full">
       {isLoading && (
@@ -129,7 +146,7 @@ const EditUser = ({ user }) => {
         </div>
       )}
       {!isLoading || user ? (
-        <div className="px-6 text-gray-800">
+        <div className="text-gray-800 w-full">
           <div className="flex flex-col items-center justify-center w-full">
             <div>
               <h1 className="font-inter font-bold text-4xl text-gray-700 w-full mb-6">
@@ -146,7 +163,7 @@ const EditUser = ({ user }) => {
               </div>
             )}
 
-            <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
+            <main className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
               <form onSubmit={handleUpdateUserSubmit}>
                 <div className="mb-6">
                   <label htmlFor="name">Name</label>
@@ -263,15 +280,71 @@ const EditUser = ({ user }) => {
                     Update User
                   </button>
 
-                  <button
-                    className="px-7 py-3 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
-                    type="submit"
-                    data-mdb-ripple="true"
-                    data-mdb-ripple-color="light"
-                    onClick={handleDeleteUserSubmit}
-                  >
-                    Delete User
-                  </button>
+                  {/* if isAdmin is true, show "Delete User", otherwise leave null - also, toggle between Delete User button & showDeleteModal */}
+                  {isAdmin && (
+                    <button
+                      className="px-7 py-3 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
+                      type="button"
+                      data-mdb-ripple="true"
+                      data-mdb-ripple-color="light"
+                      data-mdb-toggle="modal"
+                      data-mdb-target="#deleteUserModal"
+                      // add handleDeleteModal function
+
+                      onClick={handleDeleteModal}
+                    >
+                      Delete User
+                    </button>
+                  )}
+
+                  {showDeleteModal && (
+                    <div
+                      className="modal fade"
+                      id="deleteUserModal"
+                      tabIndex="-1"
+                      aria-labelledby="deleteUserModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <button
+                              type="button"
+                              className="btn-close"
+                              data-mdb-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                          <div className="modal-body">
+                            Are you sure you want to delete this user?
+                          </div>
+                          <div
+                            className="modal-footer flex justify-evenly mt-4"
+                            onClick={handleDeleteModal}
+                          >
+                            <button
+                              type="button"
+                              className="btn btn-secondary
+                              px-7 py-3 bg-[#6469] text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out
+                              "
+                              data-mdb-dismiss="modal"
+                            >
+                              Cancel
+                            </button>
+
+                            <button
+                              type="button"
+                              className="btn btn-danger px-7 py-3 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out"
+                              data-mdb-dismiss="modal"
+                              onClick={handleDeleteUserSubmit}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
                     <p className="text-center font-semibold mx-4 mb-0">OR</p>
@@ -288,7 +361,7 @@ const EditUser = ({ user }) => {
               >
                 Cancel
               </button>
-            </div>
+            </main>
           </div>
         </div>
       ) : (

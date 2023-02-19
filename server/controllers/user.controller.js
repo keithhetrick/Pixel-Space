@@ -6,26 +6,47 @@ import jwt from "jsonwebtoken";
 // Create a new user
 export const createUser = asyncHandler(async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password, confirmPassword, roles } = req.body;
 
     const user = await User.create({
       name,
       email,
       password,
       confirmPassword,
+      roles: [0],
+    });
+
+    if (!user || !email || !password || !confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    // automatically fill roles array with default of the Number 0
+    if (!roles) {
+      user.roles = [0];
+    }
+
+    const roleTitle = user.roles.map((role) => {
+      if (role === 0) {
+        return "user";
+      } else if (role === 1) {
+        return "admin";
+      }
     });
 
     res.status(200).json({
       success: true,
       data: user,
-      message: `New user created - ${name}`,
+      message: `New '${roleTitle}' created - ${name}`,
     });
   } catch (err) {
     console.log("ERROR:", err);
 
     // Check for duplicate
     if (err.code === 11000) {
-      res.status(500).json({
+      res.status(409).json({
         success: false,
         message: `Unable to create user - "${err.keyValue.name}" already exists`,
       });
@@ -42,12 +63,13 @@ export const createUser = asyncHandler(async (req, res) => {
 // Get all users
 export const getAllUsers = asyncHandler(async (req, res) => {
   try {
-    const users = await User.find({}).populate("posts");
+    const users = await User.find({}).select("-password").populate("posts");
+
     if (!users?.length) {
       return res.status(404).json({ message: "No users found" });
     }
 
-    // sort by name
+    // sort user by name
     // users.sort((a, b) => {
     //   const nameA = a.name.toUpperCase();
     //   const nameB = b.name.toUpperCase();
@@ -61,10 +83,19 @@ export const getAllUsers = asyncHandler(async (req, res) => {
     //   return 0;
     // });
 
-    // sort by newest first
+    // sort user by newest first
     users.sort((a, b) => {
       return new Date(b.createdAt) - new Date(a.createdAt);
     });
+
+    // sort role by highest number first & return only the highest role
+    // users.forEach((user) => {
+    //   user.roles.sort((a, b) => {
+    //     return b - a;
+    //   });
+
+    //   user.roles = user.roles[0];
+    // });
 
     res.status(200).json({ success: true, data: users });
   } catch (err) {
@@ -91,7 +122,7 @@ export const getUserById = asyncHandler(async (req, res) => {
 
 export const updateUser = asyncHandler(async (req, res) => {
   try {
-    const { name, email, password, confirmPassword, posts } = req.body;
+    const { name, email, password, confirmPassword, roles, posts } = req.body;
 
     // all fields dont have to be provided while updating
     const user = await User.findByIdAndUpdate(
@@ -101,11 +132,32 @@ export const updateUser = asyncHandler(async (req, res) => {
         email,
         password,
         confirmPassword,
+        roles,
         posts,
       },
       { new: true }
     );
 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // check for duplicate email exists
+    const candidate = await User.findOne({ email })
+      .collation({
+        locale: "en",
+        strength: 2,
+      })
+      .exec();
+
+    if (candidate && candidate._id.toString() !== req.params.id) {
+      return res.status(409).json({
+        success: false,
+        message: `Unable to update user - "${email}" already exists`,
+      });
+    }
+
+    // check if password and confirmPassword match
     if (password !== confirmPassword) {
       res.status(500).json({
         success: false,
@@ -134,6 +186,7 @@ export const updateUser = asyncHandler(async (req, res) => {
       user.email = req.body.email || user.email;
       user.password = req.body.password || user.password;
       user.confirmPassword = req.body.confirmPassword || user.confirmPassword;
+      user.roles = req.body.roles || user.roles;
       user.posts = req.body.posts || user.posts;
     }
 
@@ -153,11 +206,16 @@ export const updateUser = asyncHandler(async (req, res) => {
   } catch (err) {
     console.log("ERROR:", err);
 
-    // Check for duplicate
-    if (err.code === 11000) {
-      res.status(500).json({
+    // check for duplicate
+    if (err.code === 11000 && err.keyValue.email === req.body.email) {
+      res.status(409).json({
         success: false,
-        message: `Unable to create user - "${err.keyValue.name}" already exists`,
+        message: `Unable to update user - "${err.keyValue.email}" already exists`,
+      });
+    } else if (err.code === 11000 && err.keyValue.name === req.body.name) {
+      res.status(409).json({
+        success: false,
+        message: `Unable to update user - "${err.keyValue.name}" already exists`,
       });
     } else {
       res.status(500).json({
