@@ -15,7 +15,9 @@
 //   return HeaderButton;
 // };
 
-export const useHeaderButton = ({ title, link }) => {
+// MAIN LOGIC THAT IS BEING USED IN THE COMPONENT
+
+const useHeaderButton = ({ title, link }) => {
   return (
     <a
       href={link}
@@ -25,3 +27,26 @@ export const useHeaderButton = ({ title, link }) => {
     </a>
   );
 };
+
+// import { useEffect } from "react";
+
+// const useHeaderButton = ({ title, link }) => {
+//   // make a function that will set the header button title & link - use Link from react-router-dom to link to home page and let it be able to be changed in any component/url that uses this hook
+//   const setHeaderButton = () => {
+//     const headerButton = document.querySelector(".header__button");
+//     headerButton.innerHTML = title;
+//     headerButton.setAttribute("href", link);
+//   };
+
+//   useEffect(
+//     () => {
+//       setHeaderButton();
+//     },
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//     [title, link]
+//   );
+
+//   return setHeaderButton;
+// };
+
+export default useHeaderButton;

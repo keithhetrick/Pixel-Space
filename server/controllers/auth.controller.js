@@ -51,7 +51,7 @@ export const userLogin = asyncHandler(async (req, res) => {
       .json({ success: false, message: "Invalid credentials" });
   }
 
-  // const match = await bcrypt.compare(password, candidate.password);
+  const match = await bcrypt.compare(password, candidate.password);
 
   if (!match) {
     return res

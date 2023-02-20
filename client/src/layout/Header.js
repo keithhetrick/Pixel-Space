@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { openAILogo } from "../assets";
-import { useHeaderButton } from "../hooks/useHeaderButton";
+import useHeaderButton from "../hooks/useHeaderButton";
 // import { useGetSingleUserQuery } from "../features/users/usersApiSlice";
 // import { useEffect, useState } from "react";
 
@@ -9,8 +9,8 @@ const Header = ({ title, link, allUsers, singleUser }) => {
   // console.log("APP - user: ", userData);
   // console.log("APP - user?.data?.id: ", userData?.data?.id);
 
-  console.log("HEADER - allUsers: ", allUsers);
-  console.log("HEADER - singleUser: ", singleUser);
+  // console.log("HEADER - allUsers: ", allUsers);
+  // console.log("HEADER - singleUser: ", singleUser);
 
   const headerButton = useHeaderButton({
     title: title || "Create",

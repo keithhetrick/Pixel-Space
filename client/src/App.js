@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import {
   Home,
   CreatePost,
+  GetPosts,
   Image,
   User,
   EditUserWrapper,
@@ -27,6 +28,7 @@ function App() {
           <Route path="alt-login" element={<AltLogin />} />
           <Route path="login" element={<Login />} />
           <Route path="create-post" element={<CreatePost />} />
+          <Route path="posts" element={<GetPosts />} />
           <Route path="image/:id" element={<Image />} />
           <Route path="register/" element={<Register />} />
 

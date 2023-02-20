@@ -1,29 +1,29 @@
 import { Outlet } from "react-router-dom";
 
-import {
-  useGetUsersQuery,
-  useGetSingleUserQuery,
-} from "../features/users/usersApiSlice";
+// import {
+//   useGetUsersQuery,
+//   useGetSingleUserQuery,
+// } from "../features/users/usersApiSlice";
 
 import Header from "./Header";
 import Footer from "./Footer";
 
 const Layout = () => {
-  const { data: allUsers } = useGetUsersQuery({});
+  // const { data: allUsers } = useGetUsersQuery({});
 
-  console.log("APP - users: ", allUsers);
-  console.log("APP - users?.data?.id: ", allUsers?.data?.id);
+  // console.log("APP - users: ", allUsers);
+  // console.log("APP - users?.data?.id: ", allUsers?.data?.id);
 
-  const { data: singleUser } = useGetSingleUserQuery({});
+  // const { data: singleUser } = useGetSingleUserQuery({});
 
-  console.log("APP - user: ", singleUser);
-  console.log("APP - user?.data?.id: ", singleUser?.data?.id);
+  // console.log("APP - user: ", singleUser);
+  // console.log("APP - user?.data?.id: ", singleUser?.data?.id);
 
   return (
     <>
-      <Header allUsers={allUsers} singleUser={singleUser} />
+      <Header />
       <main className="sm:p-8 px-4 py-8 w-full min-h-[calc(95vh-73px)]">
-        <Outlet allUsers={allUsers} singleUser={singleUser} />
+        <Outlet />
       </main>
       <Footer />
     </>

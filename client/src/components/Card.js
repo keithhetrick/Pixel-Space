@@ -1,8 +1,28 @@
+// import { useGetUsersQuery } from "../features/users/usersApiSlice";
+
 import { useNavigate } from "react-router-dom";
 import { downloadImage } from "../utils";
 
 const Card = ({ _id, name, prompt, photo }) => {
   const navigate = useNavigate();
+
+  // const { data: users } = useGetUsersQuery();
+
+  // // console.log("users: ", users);
+
+  // // hard coded user id
+  // const userId = "63f07c77fcea2ade6caf2e41";
+
+  // const userRef = users?.data?.map((user) => {
+  //   if (user._id === userId) {
+  //     return user;
+  //   }
+
+  //   return null;
+  // });
+
+  // console.log("userRef: ", userRef);
+
   const handleImageClick = () =>
     navigate(`/image/${_id}`, { state: { image: photo, prompt, name, _id } });
 

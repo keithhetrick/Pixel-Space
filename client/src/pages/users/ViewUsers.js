@@ -4,21 +4,9 @@ import { useEffect, useState } from "react";
 
 import ErrorMessage from "../../hooks/useErrorMessage";
 import { Loader } from "../../components";
-import { useHeaderButton } from "../../hooks/useHeaderButton";
 
 const ViewUsers = () => {
-  const {
-    data: users,
-    isLoading,
-    isSuccess,
-    // refetch,
-  } = useGetUsersQuery({
-    // refetchOnMountOrArgChange: true,
-  });
-
-  // useEffect(() => {
-  //   refetch();
-  // }, [refetch]);
+  const { data: users, isLoading, isSuccess } = useGetUsersQuery({});
 
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -41,7 +29,11 @@ const ViewUsers = () => {
   }, [users]);
 
   // useHeaderButton title & link, use Link from react-router-dom to link to home page
-  useHeaderButton("Home", "/");
+  useEffect(() => {
+    const button = document.querySelector(".header__button");
+    button.innerHTML = "Create";
+    button.href = "/create-post";
+  }, []);
 
   return (
     <section className="userslist">
