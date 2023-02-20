@@ -21,6 +21,7 @@ const Home = () => {
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState(null);
 
+  // set headerButton title & link - use Link from react-router-dom to link to home page
   useEffect(() => {
     const button = document.querySelector(".header__button");
     button.innerHTML = "Create";

@@ -29,16 +29,10 @@ const CreatePost = () => {
 
   // change useHeaderButton title & link if not logged in
   useEffect(() => {
-    if (!loggedIn) {
-      const button = document.querySelector(".header__button");
-      button.innerHTML = "Login";
-      button.href = "/login";
-    } else {
-      const button = document.querySelector(".header__button");
-      button.innerHTML = "Create";
-      button.href = "/create-post";
-    }
-  }, [loggedIn]);
+    const button = document.querySelector(".header__button");
+    button.innerHTML = "Login";
+    button.href = "/login";
+  }, []);
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");

@@ -20,7 +20,7 @@ const Login = () => {
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
 
-  console.log("ERRORS", errors);
+  // console.log("ERRORS", errors);
 
   // useHeaderButton title & link
   useEffect(() => {

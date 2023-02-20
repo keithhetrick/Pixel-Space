@@ -52,7 +52,7 @@ npm install
 3. Create a .env file in the server directory and add the following:
 
 ```sh
-PORT=8000
+PORT=8000 || <your_port_number>
 MONGODB_URL=<your_mongoDB_uri> => can be created via MongoDB Atlas
 NODE_ENV=<development> || <production>
 ACCESS_TOKEN_SECRET=<your_access_token_secret> => can be generated inside Node shell via the following command: require('crypto').randomBytes(64).toString('hex')

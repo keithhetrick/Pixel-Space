@@ -1,8 +1,17 @@
 import { Link } from "react-router-dom";
 import { openAILogo } from "../assets";
 import { useHeaderButton } from "../hooks/useHeaderButton";
+// import { useGetSingleUserQuery } from "../features/users/usersApiSlice";
+// import { useEffect, useState } from "react";
 
-const Header = ({ title, link }) => {
+const Header = ({ title, link, allUsers, singleUser }) => {
+  // const { data: userData } = useGetSingleUserQuery({});
+  // console.log("APP - user: ", userData);
+  // console.log("APP - user?.data?.id: ", userData?.data?.id);
+
+  console.log("HEADER - allUsers: ", allUsers);
+  console.log("HEADER - singleUser: ", singleUser);
+
   const headerButton = useHeaderButton({
     title: title || "Create",
     link: link || "/create-post",
@@ -28,6 +37,15 @@ const Header = ({ title, link }) => {
             className="w-24 p-1 object-contain mt-[1px]"
           />
         </Link>
+      </div>
+
+      <div>
+        {/* show user name here */}
+        <p className="text-gray-700 text-[10px] ">
+          <span className="text-[16px] mr-[1px] pt-[2.5px] pb-[2.5px] pixel__space__text">
+            {/* test */}
+          </span>
+        </p>
       </div>
 
       <headerButton.type {...headerButton.props} />

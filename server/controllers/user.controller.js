@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
+import Post from "../models/post.model.js";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 // Create a new user
 export const createUser = asyncHandler(async (req, res) => {
@@ -111,19 +111,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   try {
     const { name, email, password, confirmPassword, roles, posts } = req.body;
 
-    // all fields dont have to be provided while updating
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      {
-        name,
-        email,
-        password,
-        confirmPassword,
-        roles,
-        posts,
-      },
-      { new: true }
-    );
+    const user = await User.findById(req.params.id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -144,13 +132,8 @@ export const updateUser = asyncHandler(async (req, res) => {
       });
     }
 
-    // check if password and confirmPassword match
-    if (password !== confirmPassword) {
-      res.status(500).json({
-        success: false,
-        message: "Passwords do not match",
-      });
-    }
+    user.name = name;
+    user.email = email;
 
     // ignore "posts" if not provided
     // if (!posts) {
@@ -168,28 +151,37 @@ export const updateUser = asyncHandler(async (req, res) => {
     //   });
     // }
 
-    // hash password & confirmPassword
-    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("\nPASSWORD BEFORE UPDATE:", password);
 
-    // user.password = hashedPassword;
-    // user.confirmPassword = hashedPassword;
-
-    if (user) {
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
-      user.password = req.body.password || user.password;
-      user.confirmPassword = req.body.confirmPassword || user.confirmPassword;
-      user.roles = req.body.roles || user.roles;
-      user.posts = req.body.posts || user.posts;
+    if (password) {
+      // check to see if password is the same as confirmPassword
+      // if (password !== confirmPassword) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+      user.confirmPassword = hashedPassword;
     }
 
-    console.log(
-      "\nPASSWORD & CONFIRM PASSWORD: ",
-      user.password,
-      user.confirmPassword
+    const userObject = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        name,
+        email,
+        password,
+        confirmPassword,
+        roles,
+        posts,
+      },
+      { new: true }
     );
 
-    const updatedUser = await user.save();
+    console.log(
+      "\nPASSWORD & CONFIRM PASSWORD AFTER UPDATE:",
+      user.password,
+      user.confirmPassword,
+      "\n"
+    );
+
+    const updatedUser = await userObject.save();
 
     res.status(200).json({
       success: true,
@@ -229,6 +221,15 @@ export const updateUser = asyncHandler(async (req, res) => {
 export const deleteUser = asyncHandler(async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
+
+    const post = await Post.findOne({ user: req.params.id }).lean().exec();
+
+    if (post) {
+      return res.status(400).json({
+        success: false,
+        message: `User has posts and cannot be deleted`,
+      });
+    }
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

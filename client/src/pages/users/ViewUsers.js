@@ -4,20 +4,21 @@ import { useEffect, useState } from "react";
 
 import ErrorMessage from "../../hooks/useErrorMessage";
 import { Loader } from "../../components";
+import { useHeaderButton } from "../../hooks/useHeaderButton";
 
 const ViewUsers = () => {
   const {
     data: users,
     isLoading,
     isSuccess,
-    refetch,
+    // refetch,
   } = useGetUsersQuery({
-    refetchOnMountOrArgChange: true,
+    // refetchOnMountOrArgChange: true,
   });
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [refetch]);
 
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -39,12 +40,8 @@ const ViewUsers = () => {
     }
   }, [users]);
 
-  // useHeaderButton title & link
-  useEffect(() => {
-    const button = document.querySelector(".header__button");
-    button.innerHTML = "Home";
-    button.href = "/";
-  }, []);
+  // useHeaderButton title & link, use Link from react-router-dom to link to home page
+  useHeaderButton("Home", "/");
 
   return (
     <section className="userslist">
