@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -50,6 +51,25 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+UserSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+// UserSchema.pre("find", async function (next) {
+//   this.populate("posts");
+//   next();
+// });
+
+// UserSchema.pre("findById", async function (next) {
+//   this.populate("posts");
+//   next();
+// });
+
+// UserSchema.pre("findByIdAndUpdate", async function (next) {
+//   this.populate("posts");
+//   next();
+// });
 
 const User = mongoose.model("User", UserSchema);
 

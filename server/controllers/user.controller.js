@@ -3,7 +3,7 @@ import Post from "../models/post.model.js";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 
-// Create a new user
+// CREATE - Create a new user
 export const createUser = asyncHandler(async (req, res) => {
   try {
     const { name, email, password, confirmPassword, roles } = req.body;
@@ -15,8 +15,6 @@ export const createUser = asyncHandler(async (req, res) => {
       confirmPassword,
       roles: [0],
     });
-
-    console.log("\nPASSWORD BEFORE HASHING", password);
 
     if (!user || !email || !password || !confirmPassword) {
       return res.status(400).json({
@@ -44,15 +42,13 @@ export const createUser = asyncHandler(async (req, res) => {
 
     user.password = hashedPassword;
 
-    console.log("\nPASSWORD AFTER HASHING", hashedPassword);
-
     res.status(200).json({
       success: true,
       data: user,
       message: `New '${roleTitle}' created - ${name}`,
     });
   } catch (err) {
-    console.log("ERROR:", err);
+    console.error("\nERROR:", err);
 
     // Check for duplicate
     if (err.code === 11000) {
@@ -70,7 +66,7 @@ export const createUser = asyncHandler(async (req, res) => {
   }
 });
 
-// Get all users
+// READ - Get all users
 export const getAllUsers = asyncHandler(async (req, res) => {
   try {
     const users = await User.find({}).select("-password").populate("posts");
@@ -93,7 +89,7 @@ export const getAllUsers = asyncHandler(async (req, res) => {
   }
 });
 
-// Get a user by id
+// READ - get a user by id
 export const getUserById = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate("posts");
@@ -107,11 +103,12 @@ export const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
+// UPDATE - Update a user by id
 export const updateUser = asyncHandler(async (req, res) => {
   try {
     const { name, email, password, confirmPassword, roles, posts } = req.body;
 
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).exec();
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -125,7 +122,7 @@ export const updateUser = asyncHandler(async (req, res) => {
       })
       .exec();
 
-    if (candidate && candidate._id.toString() !== req.params.id) {
+    if (candidate && candidate?._id.toString() !== req.params.id) {
       return res.status(409).json({
         success: false,
         message: `Unable to update user - "${email}" already exists`,
@@ -135,27 +132,17 @@ export const updateUser = asyncHandler(async (req, res) => {
     user.name = name;
     user.email = email;
 
-    // ignore "posts" if not provided
-    // if (!posts) {
-    //   delete user.posts;
-    // }
+    if (posts) {
+      user.posts = posts;
+    } else if (!posts?.length) {
+      user.posts = [];
+    }
 
-    // if (posts) {
-    //   user.posts.push(req.body.posts);
-    // } else if (posts === []) {
-    //   user.posts = [];
-    // } else {
-    //   res.status(500).json({
-    //     success: false,
-    //     message: "Posts already exists",
-    //   });
-    // }
-
-    console.log("\nPASSWORD BEFORE UPDATE:", password);
+    if (roles) {
+      user.roles = roles;
+    }
 
     if (password) {
-      // check to see if password is the same as confirmPassword
-      // if (password !== confirmPassword) {
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;
       user.confirmPassword = hashedPassword;
@@ -174,13 +161,6 @@ export const updateUser = asyncHandler(async (req, res) => {
       { new: true }
     );
 
-    console.log(
-      "\nPASSWORD & CONFIRM PASSWORD AFTER UPDATE:",
-      user.password,
-      user.confirmPassword,
-      "\n"
-    );
-
     const updatedUser = await userObject.save();
 
     res.status(200).json({
@@ -193,9 +173,10 @@ export const updateUser = asyncHandler(async (req, res) => {
         confirmPassword: updatedUser.confirmPassword,
         posts: updatedUser.posts,
       },
+      message: `User "${updatedUser.name}" updated`,
     });
   } catch (err) {
-    console.log("ERROR:", err);
+    console.error("\nERROR:", err);
 
     // check for duplicate
     if (err.code === 11000 && err.keyValue.email === req.body.email) {
@@ -217,7 +198,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
-// Delete a user
+// DELETE - Delete a user
 export const deleteUser = asyncHandler(async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -252,7 +233,7 @@ export const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
-// Get a user's relational posts
+// READ - Get a user's posts
 export const getUserPosts = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate("posts");
@@ -262,6 +243,82 @@ export const getUserPosts = asyncHandler(async (req, res) => {
     res.status(500).json({
       success: false,
       message: `Fetching user posts failed - ${err.message}`,
+    });
+  }
+});
+
+// CREATE - when Post is created, add post's Id to the user's posts
+export const postToUserPosts = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).populate("posts");
+
+    const post = await Post.findById({ _id: req.params.id });
+
+    // get all available posts
+    const posts = await Post.find({});
+    // filter out posts that aren't the post we're trying to add & return new array with only the Id we want
+    const filteredPosts = posts.filter((post) => post._id !== req.params.id);
+    console.log("filteredPosts:", filteredPosts);
+
+    // check if post is already in user's posts
+    const postExists = user.posts.some((post) => filteredPosts.includes(post));
+
+    if (postExists) {
+      return res.status(400).json({
+        success: false,
+        message: `Post already exists in user's posts`,
+      });
+    }
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    user.posts.push(post);
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      data: user.posts,
+      message: `Post added to ${user.name}'s posts`,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: `Adding post to user posts failed - ${err.message}`,
+    });
+  }
+});
+
+// DELETE - Delete a post from a user's posts
+export const deleteUserPost = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).populate("posts");
+
+    const post = await Post.findById(req.params.postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const postIndex = user.posts.findIndex(
+      (post) => post._id.toString() === req.params.postId
+    );
+
+    user.posts.splice(postIndex, 1);
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      data: user.posts,
+      message: `Post deleted from ${user.name}'s posts`,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: `Deleting user post failed - ${err.message}`,
     });
   }
 });

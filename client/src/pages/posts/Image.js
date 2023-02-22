@@ -67,7 +67,6 @@ const Image = () => {
         );
         // get the previous post
         const prevPost = response.data.data[index - 1];
-        console.log("PREV POST:", prevPost);
 
         if (index > 0) {
           setImage(prevPost);
@@ -106,7 +105,6 @@ const Image = () => {
         );
         // get the next post
         const nextPost = response.data.data[index + 1];
-        console.log("NEXT POST:", nextPost);
 
         if (index < size - 1) {
           setImage(nextPost);

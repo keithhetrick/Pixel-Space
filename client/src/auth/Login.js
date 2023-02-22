@@ -9,13 +9,22 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/auth/authSlice";
 import { useLoginMutation } from "../features/auth/authApiSlice";
 
+import usePersist from "../hooks/usePersist";
+
 const Login = () => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [persist, setPersist] = usePersist();
 
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
+
+  // const userData = useLoginMutation();
+
+  // console.log("USER DATA", userData);
+
+  const handleToggle = () => setPersist((prev) => !prev);
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
@@ -33,29 +42,30 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const userData = await login({ email: userEmail, password: userPassword })
-        .unwrap()
-        .then((data) => {
-          console.log("DATA", data);
-          return data;
-        });
+      // const userData = await login({ email: userEmail, password: userPassword })
+      const { accessToken } = await login({
+        email: userEmail,
+        password: userPassword,
+      }).unwrap();
 
-      dispatch(setCredentials(userData));
+      // dispatch(setCredentials(userData));
+      dispatch(setCredentials({ accessToken }));
+
+      // console.log("ACCESS TOKEN", accessToken);
+      // console.log("USER EMAIL", userEmail);
 
       setUserEmail("");
       setUserPassword("");
-      navigate(`/users/${userData?.data?._id}`);
-      console.log(
-        "NAVIGATE TO USER",
-        navigate(`/users/${userData?.data?._id}`)
-      );
+      // navigate(`/users/${userData?.data?._id}`);
+      // console.log("NAVIGATE TO USER PROFILE", userData?.data?._id);
+      navigate(`/`);
     } catch (error) {
       setErrors(error.data?.message);
       console.log("ERROR", error.data?.message);
     }
   };
-  console.log("ERRORS STATE", errors);
-  console.log("MESSAGE VARIANT", errors ? "danger" : "success");
+  // console.log("ERRORS STATE", errors);
+  // console.log("MESSAGE VARIANT", errors ? "danger" : "success");
 
   return (
     <section className="h-full">
@@ -120,6 +130,8 @@ const Login = () => {
                     name="remember-checkbox"
                     id="remember-checkbox"
                     autoComplete="off"
+                    onChange={handleToggle}
+                    checked={persist}
                   />
                   <label
                     className="form-check-label inline-block text-gray-800 text-sm leading-snug cursor-pointer"

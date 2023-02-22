@@ -51,12 +51,9 @@ export const userLogin = asyncHandler(async (req, res) => {
       .json({ success: false, message: "Invalid credentials" });
   }
 
-  const match = await bcrypt.compare(password, candidate.password);
+  const isMatch = await bcrypt.compare(password, candidate.password);
 
-  if (!match) {
-    return res
-      .status(401)
-      .json({ success: false, message: "Invalid credentials" });
+  if (candidate && isMatch) {
   }
 
   const accessToken = jwt.sign(

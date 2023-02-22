@@ -3,7 +3,6 @@ import { v2 as cloudinary } from "cloudinary";
 import asyncHandler from "express-async-handler";
 
 import Post from "../models/post.model.js";
-import User from "../models/user.model.js";
 
 dotenv.config();
 
@@ -19,7 +18,7 @@ cloudinary.config({
   api_secret: CLOUDINARY_API_SECRET,
 });
 
-// Create a new post
+// CREATE - Create a new post
 export const createPost = asyncHandler(async (req, res) => {
   try {
     const { name, prompt, photo, userRef } = req.body;
@@ -54,7 +53,7 @@ export const createPost = asyncHandler(async (req, res) => {
   }
 });
 
-//
+// READ - Get all posts
 export const getAllPosts = asyncHandler(async (req, res) => {
   try {
     const posts = await Post.find({});
@@ -68,7 +67,7 @@ export const getAllPosts = asyncHandler(async (req, res) => {
   }
 });
 
-// Get a post by id
+// READ - Get a post by id
 export const getPostById = asyncHandler(async (req, res) => {
   try {
     // const post = await Post.findById(req.params.id);
@@ -86,7 +85,7 @@ export const getPostById = asyncHandler(async (req, res) => {
   }
 });
 
-// Update a post's name
+// UPDATE - Update a post's name
 export const updatePostName = asyncHandler(async (req, res) => {
   try {
     const { userRef } = req.body;
@@ -106,7 +105,7 @@ export const updatePostName = asyncHandler(async (req, res) => {
   }
 });
 
-// Delete a post
+// DELETE - Delete a post
 export const deletePost = asyncHandler(async (req, res) => {
   try {
     const post = await Post.findByIdAndDelete(req.params.id);
@@ -120,7 +119,7 @@ export const deletePost = asyncHandler(async (req, res) => {
   }
 });
 
-// Update a post's relational User
+// UPDATE - Update a post's User
 export const updatePostUser = asyncHandler(async (req, res) => {
   try {
     const { userRef } = req.body;
@@ -140,7 +139,7 @@ export const updatePostUser = asyncHandler(async (req, res) => {
   }
 });
 
-// Get a post's relational User
+// READ - Get a post's User
 export const getPostUser = asyncHandler(async (req, res) => {
   try {
     const post = await Post.findById(req.params.id).populate("userRef");

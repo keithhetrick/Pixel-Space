@@ -10,6 +10,7 @@ import {
   ViewUsers,
   ErrorLandingPage,
 } from "./pages";
+import { ROLES } from "./config/roles";
 import Login from "./auth/Login";
 import Layout from "./layout/Layout";
 import Register from "./auth/Register";
@@ -25,12 +26,12 @@ function App() {
         <Route path="/" element={<Layout />}>
           {/* Public Routes */}
           <Route index element={<Home />} />
-          <Route path="alt-login" element={<AltLogin />} />
           <Route path="login" element={<Login />} />
           <Route path="create-post" element={<CreatePost />} />
+          <Route path="alt-login" element={<AltLogin />} />
           <Route path="posts" element={<GetPosts />} />
           <Route path="image/:id" element={<Image />} />
-          <Route path="register/" element={<Register />} />
+          <Route path="register" element={<Register />} />
 
           {/* Protected Routes */}
           <Route path="/users">
@@ -42,7 +43,9 @@ function App() {
           </Route>
 
           <Route path="welcome" element={<Welcome />} />
-          <Route element={<RequireAuth />}></Route>
+          <Route
+            element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}
+          ></Route>
 
           {/* Error Routes */}
           <Route path="*" element={<ErrorLandingPage />} />
