@@ -18,6 +18,11 @@ const Image = () => {
     const button = document.querySelector(".header__button");
     button.innerHTML = "Create";
     button.href = "/create-post";
+
+    return () => {
+      button.innerHTML = "";
+      button.href = "";
+    };
   }, []);
 
   const getUrlByID = `http://localhost:8000/api/post/${id}`;
@@ -139,6 +144,13 @@ const Image = () => {
     }
   };
 
+  // function that sends user to the profile of the user who created the post
+  const handleProfileClick = () => {
+    if (!image?.userRef?._id) {
+      navigate("/404-not-found");
+    } else navigate(`/users/${image?.userRef?._id}`);
+  };
+
   return (
     <section className="h-full">
       <div className="flex flex-col items-center justify-center w-full h-full">
@@ -210,7 +222,10 @@ const Image = () => {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between text-center items-center w-full h-auto mt-6">
-              <span className="text-[#000000e2] text-md font-bold">
+              <span
+                className="text-[#000000e2] text-md font-bold cursor-pointer hover:translate-y-[-2px] transition duration-200 ease-in-out"
+                onClick={handleProfileClick}
+              >
                 {image?.name}
               </span>{" "}
               <p className="text-black text-sm xs:text-xs mx-2 my-3">

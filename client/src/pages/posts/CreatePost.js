@@ -16,7 +16,6 @@ const CreatePost = () => {
 
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    // set userRefId as the default value for the name field
     name: "",
     prompt: "",
     photo: "",
@@ -45,14 +44,14 @@ const CreatePost = () => {
       (user) => user.name === selectedUser
     );
     setUserRefId(selectedUserId._id);
-    console.log("selectedUserId: ", selectedUserId._id);
+    // console.log("selectedUserId: ", selectedUserId._id);
 
     // set the selected user name as the default value for the name field
     setForm({ ...form, name: selectedUser });
-    console.log("selectedUser: ", selectedUser);
+    // console.log("selectedUser: ", selectedUser);
   };
 
-  console.log("NAME: ", form.name);
+  // console.log("NAME: ", form.name);
 
   const navigate = useNavigate();
   const [
@@ -70,6 +69,11 @@ const CreatePost = () => {
     const button = document.querySelector(".header__button");
     button.innerHTML = "Login";
     button.href = "/login";
+
+    return () => {
+      button.innerHTML = "";
+      button.href = "";
+    };
   }, []);
 
   // ERRORS VALIDATION
@@ -84,19 +88,19 @@ const CreatePost = () => {
     setForm({ ...form, prompt: randomPrompt });
   };
 
-  const pushToUsersPost = async () => {
-    const response = await axios.post(
-      `http://localhost:8000/api/users/${userRefId}/posts`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        posts: form,
-      }
-    );
-    const data = await response.data;
-    console.log("\nPUST POST data: ", data);
-  };
+  // const pushToUsersPosts = async () => {
+  //   const response = await axios.post(
+  //     `http://localhost:8000/api/users/${userRefId}/posts`,
+  //     {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       posts: form,
+  //     }
+  //   );
+  //   const data = await response.data;
+  //   console.log("\nPUSH POST data: ", data);
+  // };
 
   // URL'S
   const postUrl = "http://localhost:8000/api/dalle";
@@ -117,7 +121,7 @@ const CreatePost = () => {
         setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
       } catch (err) {
         setErrors(err.response?.data?.message);
-        console.log(err.response);
+        console.error(err.response);
       } finally {
         setGeneratingImg(false);
       }
@@ -145,7 +149,7 @@ const CreatePost = () => {
 
         console.log("\nPOST DATA response: ", response);
 
-        pushToUsersPost();
+        // pushToUsersPosts();
 
         navigate("/");
       } catch (err) {
@@ -178,7 +182,7 @@ const CreatePost = () => {
     setRandomPrompt(getRandomPrompt(form.prompt));
   }, [form.prompt]);
 
-  // allow custom validation - disable browser validation
+  // disable default html browser validation - allow for custom validation
   useEffect(() => {
     const forms = document.getElementsByTagName("form");
     for (let i = 0; i < forms.length; i++) {
@@ -232,7 +236,7 @@ const CreatePost = () => {
                     onChange={handleSelect}
                     onClick={handleChange}
                   >
-                    <option value="" disabled selected>
+                    <option defaultValue={true} value="Select User">
                       Select User
                     </option>
                     {userName &&

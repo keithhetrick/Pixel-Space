@@ -49,6 +49,7 @@ const Header = ({ title, link, allUsers, singleUser }) => {
       </div>
 
       <headerButton.type {...headerButton.props} />
+      {/* <HeaderButton title={title} link={link} /> */}
     </header>
   );
 };

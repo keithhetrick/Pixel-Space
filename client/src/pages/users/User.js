@@ -10,20 +10,10 @@ import { Loader } from "../../components";
 
 const User = () => {
   const { id } = useParams();
-  const {
-    data,
-    isLoading,
-    // refetch
-  } = useGetSingleUserQuery(id, {
-    // refetchOnMountOrArgChange: true,
-  });
+  const { data, isLoading } = useGetSingleUserQuery(id, {});
 
-  console.log("USER PAGE REDUX DATA", data);
+  // console.log("USER PAGE REDUX DATA", data);
   // console.log("USER PAGE REDUX DATA - USER ID:", id);
-
-  // useEffect(() => {
-  //   refetch();
-  // }, [refetch]);
 
   const navigate = useNavigate();
 
@@ -42,6 +32,7 @@ const User = () => {
     return role[highestRole];
   };
 
+  // eslint-disable-next-line no-unused-vars
   const [isAdmin, setIsAdmin] = useState(false);
 
   // set isAdmin to true if user is admin under role field if roles array includes 1
@@ -51,7 +42,7 @@ const User = () => {
     }
   }, [data]);
 
-  console.log("isAdmin: ", isAdmin);
+  // console.log("isAdmin: ", isAdmin);
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
@@ -68,6 +59,11 @@ const User = () => {
     const button = document.querySelector(".header__button");
     button.innerHTML = "Create";
     button.href = "/create-post";
+
+    return () => {
+      button.innerHTML = "";
+      button.href = "";
+    };
   }, []);
 
   const formatterDateAndTime = (date) => {
@@ -230,22 +226,7 @@ const User = () => {
             </main>
           </div>
         </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center w-full h-full">
-          <h1 className="font-inter font-bold text-4xl text-gray-700 w-full mb-6">
-            No User Found
-          </h1>
-          <button
-            className="px-7 py-3 bg-gray-600 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-2000 ease-in-out w-full flex justify-center items-center mb-3l"
-            type="submit"
-            data-mdb-ripple="true"
-            data-mdb-ripple-color="light"
-            onClick={() => navigate("/users/view")}
-          >
-            Back
-          </button>
-        </div>
-      )}
+      ) : null}
     </section>
   );
 };

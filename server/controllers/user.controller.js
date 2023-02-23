@@ -247,34 +247,23 @@ export const getUserPosts = asyncHandler(async (req, res) => {
   }
 });
 
-// CREATE - when Post is created, add post's Id to the user's posts
+// CREATE - when Post is created, add post's ObjectId to the user's posts
 export const postToUserPosts = asyncHandler(async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate("posts");
+    const user = await User.findById(req.params.id);
 
-    const post = await Post.findById({ _id: req.params.id });
-
-    // get all available posts
-    const posts = await Post.find({});
-    // filter out posts that aren't the post we're trying to add & return new array with only the Id we want
-    const filteredPosts = posts.filter((post) => post._id !== req.params.id);
-    console.log("filteredPosts:", filteredPosts);
-
-    // check if post is already in user's posts
-    const postExists = user.posts.some((post) => filteredPosts.includes(post));
-
-    if (postExists) {
-      return res.status(400).json({
-        success: false,
-        message: `Post already exists in user's posts`,
-      });
-    }
+    const post = await Post.findOne(
+      { _id: req.params.postId },
+      (err, foundUser) => {
+        console.log("\nFOUND USER:", foundUser);
+      }
+    );
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    user.posts.push(post);
+    user.posts = [...user.posts, post._id];
 
     await user.save();
 

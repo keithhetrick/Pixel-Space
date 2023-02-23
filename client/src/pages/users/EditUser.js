@@ -4,7 +4,7 @@ import {
 } from "../../features/users/usersApiSlice";
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import ErrorMessage from "../../hooks/useErrorMessage";
 
@@ -14,7 +14,7 @@ const EditUser = ({ user }) => {
   const [updateUser, { isLoading }] = useUpdateUserMutation();
   const [deleteUser] = useDeleteUserMutation();
 
-  console.log("EDIT USER PAGE REDUX DATA PASSED FROM WRAPPER", user);
+  // console.log("EDIT USER PAGE REDUX DATA PASSED FROM WRAPPER", user);
   // console.log("EDIT USER PAGE REDUX DATA - USER ID:", id);
 
   let [isAdmin, setIsAdmin] = useState(false);
@@ -38,10 +38,13 @@ const EditUser = ({ user }) => {
   const [userConfirmPassword, setUserConfirmPassword] = useState(
     user?.data?.confirmPassword ? user?.data?.confirmPassword : ""
   );
+
+  // eslint-disable-next-line no-unused-vars
   const [userPosts, setUserPosts] = useState(
     user?.data?.posts ? user?.data?.posts : []
   );
 
+  // eslint-disable-next-line no-unused-vars
   const [userPrompts, setUserPrompts] = useState(
     user?.data?.prompt ? user?.data?.prompt : []
   );
@@ -59,7 +62,7 @@ const EditUser = ({ user }) => {
   //   return role[roles];
   // };
 
-  console.log(userPosts);
+  // console.log(userPosts);
 
   // const userPrompts = userPosts.map((post) => post.prompt);
   // const userImages = userPosts.map((post) => post.image);
@@ -115,7 +118,7 @@ const EditUser = ({ user }) => {
     } catch (error) {
       setErrors(error.data?.message);
 
-      console.log("ERROR", error.data?.message);
+      console.error("ERROR", error.data?.message);
     }
   };
 
@@ -136,10 +139,10 @@ const EditUser = ({ user }) => {
       }).unwrap();
       navigate("/users/view");
 
-      console.log(`User with id ${user?.data?._id} deleted`);
+      // console.log(`User with id ${user?.data?._id} deleted`);
     } catch (error) {
       setErrors(error.data?.message);
-      console.log("ERROR FROM DELETE", error.data?.message);
+      console.error("ERROR FROM DELETE", error.data?.message);
     }
   };
 
@@ -386,34 +389,19 @@ const EditUser = ({ user }) => {
                 </div>
               </form>
 
-              <a
+              <Link
+                to={`/users/${user?.data?._id}`}
                 className="px-7 py-3 bg-gray-600 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
-                href={`/users/${user?.data?._id}`}
                 type="submit"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
               >
                 Cancel
-              </a>
+              </Link>
             </main>
           </div>
         </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center w-full h-full">
-          <h1 className="font-inter font-bold text-4xl text-gray-700 w-full mb-6">
-            No User
-          </h1>
-          <a
-            className="px-7 py-3 bg-gray-600 text-white font-medium text-sm leading-snug uppercase rounded-md shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-200 ease-in-out w-full flex justify-center items-center mb-3l"
-            href="/users/view"
-            type="submit"
-            data-mdb-ripple="true"
-            data-mdb-ripple-color="light"
-          >
-            Back
-          </a>
-        </div>
-      )}
+      ) : null}
     </section>
   );
 };

@@ -1,53 +1,49 @@
-// import { useGetUsersQuery } from "../features/users/usersApiSlice";
-
 import { useNavigate } from "react-router-dom";
 import { downloadImage } from "../utils";
 
-const Card = ({ _id, name, prompt, photo }) => {
+const Card = ({ _id, name, prompt, photo, userRef }) => {
   const navigate = useNavigate();
 
-  // const { data: users } = useGetUsersQuery();
+  // console.log("Card.js: ", _id, name, prompt, photo, userRef);
+  // console.log("UserREF: ", userRef?._id);
 
-  // // console.log("users: ", users);
-
-  // // hard coded user id
-  // const userId = "63f07c77fcea2ade6caf2e41";
-
-  // const userRef = users?.data?.map((user) => {
-  //   if (user._id === userId) {
-  //     return user;
-  //   }
-
-  //   return null;
-  // });
-
-  // console.log("userRef: ", userRef);
-
-  const handleImageClick = () =>
+  const handleImageClick = () => {
     navigate(`/image/${_id}`, { state: { image: photo, prompt, name, _id } });
+  };
 
-  const handleUserClick = () => navigate(`/user/${_id}`);
+  // send the user to the user's profile page via the userRef, if no user, send to 404
+  const handleUserClick = () => {
+    if (!userRef) {
+      navigate("/404-not-found");
+    } else navigate(`/users/${userRef?._id}`, { state: { userRef } });
+  };
 
   return (
-    <div
-      className="rounded-xl group p-4 relative shadow-card hover:shadow-cardhover card transition duration-500 cursor-pointer"
-      onClick={handleImageClick}
-    >
+    <div className="rounded-xl group p-4 relative shadow-card hover:shadow-cardhover card transition duration-500 cursor-pointer">
       <img
         className="rounded-xl w-full object-cover h-auto transform group-hover:translate-y-[-2px] 
         hover:shadow-lg transition duration-200"
         src={photo}
         alt={prompt}
+        onClick={handleImageClick}
       />
       <div className="group-hover:flex flex-col max-h-[94.5%] hidden absolute bottom-0 left-0 right-0 bg-[#10131f] m-2 p-4 rounded-md">
         <p className="text-white text-sm overflow-y-auto prompt">{prompt}</p>
 
         <div className="mt-5 flex justify-between items-center gap-2">
           <div className="flex items-center gap-2" onClick={handleUserClick}>
-            <div className="w-7 h-7 rounded-full object-cover bg-green-700 flex justify-center items-center text-white text-xs font-bold">
+            <div
+              className="w-7 h-7 rounded-full object-cover bg-green-700 flex justify-center items-center text-white text-xs font-bold hover:transition duration-200 hover:scale-110
+            "
+            >
               {name[0]}
             </div>
-            <p className="text-white text-sm">{name}</p>
+            <p
+              className="text-white text-sm hover:transition duration-200 hover:scale-105 
+            "
+            >
+              {name}
+            </p>
           </div>
           <button
             type="button"

@@ -33,6 +33,11 @@ const ViewUsers = () => {
     const button = document.querySelector(".header__button");
     button.innerHTML = "Create";
     button.href = "/create-post";
+
+    return () => {
+      button.innerHTML = "";
+      button.href = "";
+    };
   }, []);
 
   return (
