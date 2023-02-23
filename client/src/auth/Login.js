@@ -52,7 +52,7 @@ const Login = () => {
       dispatch(setCredentials({ accessToken }));
 
       // console.log("ACCESS TOKEN", accessToken);
-      // console.log("USER EMAIL", userEmail);
+      console.log("USER EMAIL", userEmail);
 
       setUserEmail("");
       setUserPassword("");

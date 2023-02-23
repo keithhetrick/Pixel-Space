@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+// import { useGetUsersQuery } from "../features/users/usersApiSlice";
+
+import { useEffect, useState } from "react";
 import { Card, FormField, Loader } from "../components";
 
 import axios from "axios";
@@ -14,12 +16,38 @@ const RenderCards = ({ data, title }) => {
 };
 
 const Home = () => {
+  // const { data: users } = useGetUsersQuery();
+  // console.log("USERS", users);
+
+  // const filteredUsers = users?.data?.filter(
+  //   (user) => user._id !== users?.data?.id
+  // );
+  // console.log("FILTERED USERS", filteredUsers);
+
+  // const hardCodedUser = users?.data?.find(
+  //   (user) => user._id === "63f07c77fcea2ade6caf2e41"
+  // );
+
+  // console.log("HARDCODED USER", hardCodedUser);
+
+  // const userLoggedIn = users?.data?.find(
+  //   (user) => user._id === users?.data?.id
+  // );
+
   const [loading, setLoading] = useState(false);
   const [allPosts, setAllPosts] = useState(null);
 
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState(null);
+
+  // const [loggedInUser, setLoggedInUser] = useState(null);
+
+  // useEffect(() => {
+  //   setLoggedInUser(hardCodedUser);
+  // }, [hardCodedUser]);
+
+  // console.log("LOGGED IN USER", loggedInUser);
 
   // set headerButton title & link - use Link from react-router-dom to link to home page
   useEffect(() => {
@@ -79,6 +107,12 @@ const Home = () => {
 
   return (
     <section className="max-w-7xl mx-auto">
+      {/* {loggedInUser && (
+        <h3 className="font-bold text-[#222328] text-center sm:text-left text-normal pb-3">
+          Welcome back, {loggedInUser.name}!
+        </h3>
+      )} */}
+
       <div>
         <h1 className="font-extrabold text-[#222328] text-2xl pb-3 contents">
           The{" "}

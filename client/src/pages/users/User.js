@@ -15,6 +15,8 @@ const User = () => {
   // console.log("USER PAGE REDUX DATA", data);
   // console.log("USER PAGE REDUX DATA - USER ID:", id);
 
+  // sort posts by date
+
   const navigate = useNavigate();
 
   const handleUserClick = (id) => {

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { downloadImage } from "../utils";
 
@@ -6,6 +7,19 @@ const Card = ({ _id, name, prompt, photo, userRef }) => {
 
   // console.log("Card.js: ", _id, name, prompt, photo, userRef);
   // console.log("UserREF: ", userRef?._id);
+
+  const currentName = useRef();
+  useEffect(() => {
+    if (userRef) {
+      currentName.current = userRef.name;
+    } else {
+      currentName.current = name;
+    }
+
+    return () => {
+      currentName.current = null;
+    };
+  }, [userRef, name]);
 
   const handleImageClick = () => {
     navigate(`/image/${_id}`, { state: { image: photo, prompt, name, _id } });
@@ -36,13 +50,13 @@ const Card = ({ _id, name, prompt, photo, userRef }) => {
               className="w-7 h-7 rounded-full object-cover bg-green-700 flex justify-center items-center text-white text-xs font-bold hover:transition duration-200 hover:scale-110
             "
             >
-              {name[0]}
+              {currentName.current?.charAt(0)}
             </div>
             <p
               className="text-white text-sm hover:transition duration-200 hover:scale-105 
             "
             >
-              {name}
+              {currentName.current}
             </p>
           </div>
           <button

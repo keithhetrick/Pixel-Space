@@ -1,9 +1,8 @@
 import { Outlet } from "react-router-dom";
 
-// import {
-//   useGetUsersQuery,
-//   useGetSingleUserQuery,
-// } from "../features/users/usersApiSlice";
+import // useGetUsersQuery,
+// useGetSingleUserQuery,
+"../features/users/usersApiSlice";
 
 import Header from "./Header";
 import Footer from "./Footer";

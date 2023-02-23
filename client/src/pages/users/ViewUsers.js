@@ -8,6 +8,7 @@ import { Loader } from "../../components";
 const ViewUsers = () => {
   const { data: users, isLoading, isSuccess } = useGetUsersQuery({});
 
+  // eslint-disable-next-line no-unused-vars
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
@@ -16,7 +17,7 @@ const ViewUsers = () => {
     }
   }, [users]);
 
-  console.log("isAdmin: ", isAdmin);
+  // console.log("isAdmin: ", isAdmin);
 
   // ERRORS VALIDATION
   const [errors, setErrors] = useState("");
