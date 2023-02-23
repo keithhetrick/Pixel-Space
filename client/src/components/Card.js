@@ -1,24 +1,24 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { downloadImage } from "../utils";
 
 const Card = ({ _id, name, prompt, photo, userRef }) => {
   const navigate = useNavigate();
 
+  const [userNameRef, setUserNameRef] = useState("");
+
   // console.log("Card.js: ", _id, name, prompt, photo, userRef);
   // console.log("UserREF: ", userRef?._id);
 
-  const currentName = useRef();
+  // sets Post name to current userRef - automatically updates when userRef/user data changes
   useEffect(() => {
     if (userRef) {
-      currentName.current = userRef.name;
+      setUserNameRef(userRef.name);
     } else {
-      currentName.current = name;
+      setUserNameRef(name);
     }
 
-    return () => {
-      currentName.current = null;
-    };
+    // console.log("\nCard.js name: ", name, "\n\nCard.js userRef:", userRef);
   }, [userRef, name]);
 
   const handleImageClick = () => {
@@ -50,13 +50,13 @@ const Card = ({ _id, name, prompt, photo, userRef }) => {
               className="w-7 h-7 rounded-full object-cover bg-green-700 flex justify-center items-center text-white text-xs font-bold hover:transition duration-200 hover:scale-110
             "
             >
-              {currentName.current?.charAt(0)}
+              {userNameRef?.charAt(0)}
             </div>
             <p
               className="text-white text-sm hover:transition duration-200 hover:scale-105 
             "
             >
-              {currentName.current}
+              {userNameRef}
             </p>
           </div>
           <button

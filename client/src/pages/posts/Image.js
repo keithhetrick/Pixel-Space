@@ -13,6 +13,7 @@ const Image = () => {
 
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
+  const [userNameRef, setUserNameRef] = useState("");
 
   useEffect(() => {
     const button = document.querySelector(".header__button");
@@ -39,6 +40,9 @@ const Image = () => {
 
       if (response.status === 200) {
         setImage(response.data.data);
+
+        // set current userRef to the name who created the post
+        setUserNameRef(response.data.data.userRef.name);
       } else {
         navigate("/404");
       }
@@ -226,7 +230,7 @@ const Image = () => {
                 className="text-[#000000e2] text-md font-bold cursor-pointer hover:translate-y-[-2px] transition duration-200 ease-in-out"
                 onClick={handleProfileClick}
               >
-                {image?.name}
+                {userNameRef}
               </span>{" "}
               <p className="text-black text-sm xs:text-xs mx-2 my-3">
                 {" "}

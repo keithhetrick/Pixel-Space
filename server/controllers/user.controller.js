@@ -42,6 +42,11 @@ export const createUser = asyncHandler(async (req, res) => {
 
     user.password = hashedPassword;
 
+    // create a posts array for the user
+    user.posts = [];
+
+    await user.save();
+
     res.status(200).json({
       success: true,
       data: user,
@@ -80,6 +85,13 @@ export const getAllUsers = asyncHandler(async (req, res) => {
       return new Date(b.createdAt) - new Date(a.createdAt);
     });
 
+    // sort posts by newest first
+    // users.forEach((user) => {
+    //   user.posts.sort((a, b) => {
+    //     return new Date(b.createdAt) - new Date(a.createdAt);
+    //   });
+    // });
+
     res.status(200).json({ success: true, data: users });
   } catch (err) {
     res.status(500).json({
@@ -93,6 +105,11 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 export const getUserById = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate("posts");
+
+    // sort posts by newest first
+    user.posts.sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
 
     res.status(200).json({ success: true, data: user });
   } catch (err) {
@@ -247,23 +264,18 @@ export const getUserPosts = asyncHandler(async (req, res) => {
   }
 });
 
-// CREATE - when Post is created, add post's ObjectId to the user's posts
+// CREATE - add a post's ObjectId to the user's posts array
 export const postToUserPosts = asyncHandler(async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate("posts");
 
-    const post = await Post.findOne(
-      { _id: req.params.postId },
-      (err, foundUser) => {
-        console.log("\nFOUND USER:", foundUser);
-      }
-    );
+    const post = await Post.findById(req.params.postId);
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    user.posts = [...user.posts, post._id];
+    user.posts.push(post);
 
     await user.save();
 
