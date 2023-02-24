@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+// import mongoosePaginate from "mongoose-paginate-v2";
 
 const PostSchema = new mongoose.Schema(
   {
@@ -38,6 +39,29 @@ PostSchema.pre("findByIdAndUpdate", function (next) {
   next();
 });
 
+// PostSchema.plugin(mongoosePaginate);
+
 const Post = mongoose.model("Post", PostSchema);
+
+// const options = {
+//   page: 1,
+//   limit: 10,
+//   collation: {
+//     locale: "en",
+//   },
+// };
+
+// Post.paginate({}, options, function (err, result) {
+//   result.docs;
+//   result.totalDocs = 100;
+//   result.limit = 10;
+//   result.page = 1;
+//   result.totalPages = 10;
+//   result.hasNextPage = true;
+//   result.nextPage = 2;
+//   result.hasPrevPage = false;
+//   result.prevPage = null;
+//   result.pagingCounter = 1;
+// });
 
 export default Post;

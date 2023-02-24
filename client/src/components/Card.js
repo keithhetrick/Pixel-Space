@@ -10,10 +10,13 @@ const Card = ({ _id, name, prompt, photo, userRef }) => {
   // console.log("Card.js: ", _id, name, prompt, photo, userRef);
   // console.log("UserREF: ", userRef?._id);
 
+  // convert image to thumbnail for faster loading
+  const thumbnail = photo.replace("upload/", "upload/w_300/");
+
   // sets Post name to current userRef - automatically updates when userRef/user data changes
   useEffect(() => {
     if (userRef) {
-      setUserNameRef(userRef.name);
+      setUserNameRef(userRef?.name);
     } else {
       setUserNameRef(name);
     }
@@ -37,7 +40,7 @@ const Card = ({ _id, name, prompt, photo, userRef }) => {
       <img
         className="rounded-xl w-full object-cover h-auto transform group-hover:translate-y-[-2px] 
         hover:shadow-lg transition duration-200"
-        src={photo}
+        src={thumbnail}
         alt={prompt}
         onClick={handleImageClick}
       />

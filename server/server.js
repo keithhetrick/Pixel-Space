@@ -166,7 +166,7 @@ app.use(notFound);
 // error & exception handling
 process.on("uncaughtException", (err) => {
   console.log("\nUNCAUGHT EXCEPTION! Shutting down...");
-  console.log(err.name, err.message);
+  console.error(err.name, err.message);
   process.exit(1);
 });
 

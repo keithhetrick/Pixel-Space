@@ -56,7 +56,7 @@ export const createPost = asyncHandler(async (req, res) => {
 // READ - Get all posts
 export const getAllPosts = asyncHandler(async (req, res) => {
   try {
-    const posts = await Post.find({});
+    const posts = await Post.find().populate("userRef");
 
     res.status(200).json({ success: true, data: posts });
   } catch (err) {
@@ -76,7 +76,7 @@ export const getPostById = asyncHandler(async (req, res) => {
 
     res.status(200).json({ success: true, data: post });
 
-    console.log("post", post);
+    console.log("\nSingle Post", post);
   } catch (err) {
     res.status(500).json({
       success: false,

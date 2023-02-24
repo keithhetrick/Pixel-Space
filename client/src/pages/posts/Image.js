@@ -39,10 +39,14 @@ const Image = () => {
       });
 
       if (response.status === 200) {
-        setImage(response.data.data);
+        setImage(response?.data?.data);
 
         // set current userRef to the name who created the post
-        setUserNameRef(response.data.data.userRef.name);
+        if (response?.data?.data?.userRef?.name) {
+          setUserNameRef(response?.data?.data?.userRef?.name);
+        } else {
+          setUserNameRef(response?.data?.data?.name);
+        }
       } else {
         navigate("/404");
       }

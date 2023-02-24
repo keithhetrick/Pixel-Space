@@ -38,9 +38,9 @@ export const createUser = asyncHandler(async (req, res) => {
     });
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
-    user.password = hashedPassword;
+    // user.password = hashedPassword;
 
     // create a posts array for the user
     user.posts = [];
