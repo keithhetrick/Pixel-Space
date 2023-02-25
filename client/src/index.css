@@ -12,6 +12,32 @@ html {
   background-color: #f9fafe;
 }
 
+/* Dark Mode */
+html[data-theme="dark"] {
+  filter: invert(1) hue-rotate(180deg);
+  transition: color 500ms;
+  transition: filter 500ms;
+}
+/* have images remain normal on dark mode */
+html[data-theme="dark"] img {
+  filter: invert(1) hue-rotate(180deg);
+  transition: color 500ms;
+  transition: filter 500ms;
+}
+
+html[data-theme="dark"] .header__logo {
+  filter: invert(0) hue-rotate(180deg);
+  transition: color 500ms;
+  transition: filter 500ms;
+}
+
+/* Light Mode */
+html[data-theme="light"] {
+  filter: invert(0) hue-rotate(0deg);
+  transition: color 500ms;
+  transition: filter 500ms;
+}
+
 .pixel__space__text {
   font-family: "Dancing Script", cursive;
 }

@@ -84,6 +84,13 @@ const Image = () => {
         if (index > 0) {
           setImage(prevPost);
           navigate(`/image/${prevPost._id}`);
+
+          // set current userRef to the name who created the post
+          if (prevPost?.userRef?.name) {
+            setUserNameRef(prevPost?.userRef?.name);
+          } else {
+            setUserNameRef(prevPost?.name);
+          }
         } else {
           // if the index of the current post is 0, then loop back around to the front & set the state to the first post
           setImage(response.data.data[size - 1]);
@@ -122,6 +129,13 @@ const Image = () => {
         if (index < size - 1) {
           setImage(nextPost);
           navigate(`/image/${nextPost._id}`);
+
+          // set current userRef to the name who created the post
+          if (nextPost?.userRef?.name) {
+            setUserNameRef(nextPost?.userRef?.name);
+          } else {
+            setUserNameRef(nextPost?.name);
+          }
         } else {
           // if the index of the current post is the last post, then loop back around to the front & set the state to the first post
           setImage(response.data.data[0]);
@@ -153,7 +167,9 @@ const Image = () => {
   };
 
   // function that sends user to the profile of the user who created the post
+  // but first output "you a dum"
   const handleProfileClick = () => {
+    console.log("u a dum");
     if (!image?.userRef?._id) {
       navigate("/404-not-found");
     } else navigate(`/users/${image?.userRef?._id}`);
@@ -161,25 +177,34 @@ const Image = () => {
 
   return (
     <section className="h-full">
-      <div className="flex flex-col items-center justify-center w-full h-full">
-        <div className="px-6">
-          <div
-            className="flex flex-col items-center justify-center w-full
-            "
-          >
-            {loading && (
-              <div className="pb-6 flex justify-center items-center">
-                <Loader />
-              </div>
-            )}
+      <div className="flex flex-col h-full items-center justify-center w-full">
+        {/* <button onClick={() => navigate(-1)}>Exit</button> */}
+        {loading && (
+          <div className="pb-6 flex justify-center items-center">
+            <Loader />
+          </div>
+        )}
 
+        <div className="flex h-full w-full">
+          <div
+            className="flex flex-col h-full items-center justify-center p-5"
+            style={{
+              margin: "0 auto",
+              borderRadius: "20px",
+              background: "rgb(200, 200, 200)",
+              // boxShadow: "10px 5px 5px 5px grey",
+            }}
+          >
+            <p className="text-[#1d161ddd] text-xs italic flex-wrap text-center">
+              {image?.prompt}
+            </p>
             <div
-              className="flex flex-col justify-center items-center w-full h-full"
+              className="flex flex-1 items-center justify-center w-full "
               onKeyDown={handleKeyDown}
               {...handlers}
             >
-              <div className="flex justify-center items-center w-full h-full">
-                <div className="absolute left-0 z-10 flex justify-center items-center h-full">
+              <div className="flex relative justify-center items-center w-full h-full">
+                <div className="absolute -left-5 z-10 flex justify-center items-center h-full">
                   <button
                     className="w-8 h-8 text-gray rounded-full opacity-75 hover:translate-y-[-3px] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 ease-in-out"
                     onClick={next}
@@ -200,7 +225,7 @@ const Image = () => {
                     </svg>
                   </button>
                 </div>
-                <div className="absolute right-0 z-10 flex justify-center items-center h-full">
+                <div className="absolute -right-5 z-10 flex justify-center items-center h-full">
                   <button
                     className="w-8 h-8 text-white-900 rounded-full opacity-75 hover:translate-y-[-3px] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 ease-in-out"
                     onClick={prev}
@@ -222,26 +247,21 @@ const Image = () => {
                   </button>
                 </div>
                 <img
-                  className="rounded-xl w-full h-full object-cover"
+                  className="flex flex-1 rounded-xl p-5 w-5/6 h-5/6"
                   src={image?.photo}
                   alt={image?.name}
                 />
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between text-center items-center w-full h-auto mt-6">
+            <div className="flex flex-row justify-between text-center items-center w-5/6 h-auto">
               <span
                 className="text-[#000000e2] text-md font-bold cursor-pointer hover:translate-y-[-2px] transition duration-200 ease-in-out"
                 onClick={handleProfileClick}
               >
                 {userNameRef}
-              </span>{" "}
-              <p className="text-black text-sm xs:text-xs mx-2 my-3">
-                {" "}
-                <span className="text-[#1d161ddd] italic font-light flex-wrap">
-                  {image?.prompt}
-                </span>
-              </p>
+              </span>
+
               <button
                 type="button"
                 onClick={() => downloadImage(image?._id, image?.photo)}
