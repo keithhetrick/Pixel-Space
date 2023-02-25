@@ -21,7 +21,7 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <main className="sm:p-8 px-4 py-8 w-full min-h-[calc(95vh-73px)]">
+      <main className="sm:p-8 px-4 py-8 w-full min-h-[calc(91vh-73px)]">
         <Outlet />
       </main>
       <Footer />

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { downloadImage } from "../../utils";
 import { useSwipeable } from "react-swipeable";
 
+import ErrorMessage from "../../hooks/useErrorMessage";
 import { Loader } from "../../components";
 
 import axios from "axios";
@@ -14,6 +15,16 @@ const Image = () => {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [userNameRef, setUserNameRef] = useState("");
+
+  // ERRORS VALIDATION
+  const [errors, setErrors] = useState("");
+
+  // set Errors to ErrorMessage component via setErrors
+  useEffect(() => {
+    if (image?.error) {
+      setErrors(image?.error);
+    }
+  }, [image]);
 
   useEffect(() => {
     const button = document.querySelector(".header__button");
@@ -177,25 +188,41 @@ const Image = () => {
 
   return (
     <section className="h-full">
-      <div className="flex flex-col h-full items-center justify-center w-full">
-        {/* <button onClick={() => navigate(-1)}>Exit</button> */}
+      <div className="flex flex-col h-full items-center justify-center w-full mx-auto">
+        {/* <div className="w-full flex justify-start">
+          <button
+            className="text-[#1d161ddd] border hover:border-[#1d161ddd] border-[#1d161ddd] rounded-xl p-2 text-sm font-semibold hover:bg-[#1d161ddd] hover:text-white transition duration-200
+          "
+            onClick={() => navigate(-1)}
+          >
+            Exit
+          </button>
+        </div> */}
+
         {loading && (
           <div className="pb-6 flex justify-center items-center">
             <Loader />
           </div>
         )}
 
+        {errors && (
+          <ErrorMessage
+            variant={errors ? "danger" : "success"}
+            message={errors}
+          />
+        )}
+
         <div className="flex h-full w-full">
           <div
-            className="flex flex-col h-full items-center justify-center p-5"
+            className="frounded-xl group p-4 flex flex-col items-center justify-center relative w-full shadow-card hover:shadow-lg hover:translate-y-[-0.5px] transition duration-200 card cursor-pointer
+            border border-[#222328] border-opacity-10 gap-3"
             style={{
               margin: "0 auto",
               borderRadius: "20px",
-              background: "rgb(200, 200, 200)",
-              // boxShadow: "10px 5px 5px 5px grey",
+              // background: "rgb(200, 200, 200)",
             }}
           >
-            <p className="text-[#1d161ddd] text-xs italic flex-wrap text-center">
+            <p className="text-[#1d161ddd] text-sm italic flex-wrap text-center">
               {image?.prompt}
             </p>
             <div
@@ -204,7 +231,7 @@ const Image = () => {
               {...handlers}
             >
               <div className="flex relative justify-center items-center w-full h-full">
-                <div className="absolute -left-5 z-10 flex justify-center items-center h-full">
+                <div className="absolute -left-4 sm:left-1 z-10 flex justify-center items-center h-full">
                   <button
                     className="w-8 h-8 text-gray rounded-full opacity-75 hover:translate-y-[-3px] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 ease-in-out"
                     onClick={next}
@@ -225,7 +252,7 @@ const Image = () => {
                     </svg>
                   </button>
                 </div>
-                <div className="absolute -right-5 z-10 flex justify-center items-center h-full">
+                <div className="absolute -right-4 sm:right-1 z-10 flex justify-center items-center h-full">
                   <button
                     className="w-8 h-8 text-white-900 rounded-full opacity-75 hover:translate-y-[-3px] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 ease-in-out"
                     onClick={prev}
@@ -247,7 +274,7 @@ const Image = () => {
                   </button>
                 </div>
                 <img
-                  className="flex flex-1 rounded-xl p-5 w-5/6 h-5/6"
+                  className="rounded-xl w-5/6 object-cover focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 cursor-pointer"
                   src={image?.photo}
                   alt={image?.name}
                 />
