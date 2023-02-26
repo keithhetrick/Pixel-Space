@@ -77,7 +77,7 @@ const Header = ({ title, link, allUsers, singleUser }) => {
         </Link>
       </div>
 
-      <div className="flex flex-row items-center gap-3 sm:gap-6">
+      <div className="flex flex-row items-center gap-6">
         <button
           type="button"
           className="focus:outline-none"
@@ -86,7 +86,7 @@ const Header = ({ title, link, allUsers, singleUser }) => {
           {darkMode ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-gray-800 dark:text-gray-400 animate-pulse hover:translate-y-[-1px] hover:text-gray-500 rounded-full transition duration-200 ease-in-out"
+              className="h-6 w-6 text-gray-800 dark:text-gray-400 animate-pulse active:animate-ping hover:text-gray-500 rounded-full transition  ease-in-out"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -101,7 +101,7 @@ const Header = ({ title, link, allUsers, singleUser }) => {
           ) : (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-gray-800 dark:text-gray-300 animate-pulse hover:translate-y-[-1px] hover:text-gray-500 rounded-full transition duration-200 ease-in-out"
+              className="h-6 w-6 text-gray-800 dark:text-gray-300 animate-pulse active:animate-ping hover:text-gray-500 rounded-full transition ease-in-out"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
