@@ -42,6 +42,25 @@ html[data-theme="light"] {
   font-family: "Dancing Script", cursive;
 }
 
+/*
+.preview__img img - dark mode setting
+ */
+
+#root
+  > div
+  > main
+  > section
+  > div
+  > div
+  > form
+  > div.flex.flex-col.gap-5
+  > div.relative.bg-gray-50.border.border-gray-300.text-gray-900.text-sm.rounded-lg.focus\:ring-blue-500.focus\:border-blue-500.w-64.p-3.h-64.flex.justify-center.items-center.hover\:border-gray-400.cursor-pointer.transition.duration-200
+  > img {
+  filter: invert(0) hue-rotate(0deg);
+  transition: color 500ms;
+  transition: filter 500ms;
+}
+
 @media screen and (min-width: 480px) {
   .card:nth-child(7n + 1) {
     grid-column: auto/span 2;

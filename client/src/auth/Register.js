@@ -46,7 +46,7 @@ const Register = () => {
       })
         .unwrap()
         .then((data) => {
-          console.log("REGISTER REDUX DATA", data);
+          // console.log("REGISTER REDUX DATA", data);
           return data;
         });
 
@@ -70,12 +70,12 @@ const Register = () => {
       navigate(`/users/${userData?.data?._id}`);
     } catch (error) {
       setErrors(error.data?.message);
-      console.log("ERROR", error.data?.message);
+      console.error("ERROR", error.data?.message);
     }
   };
 
   return (
-    <section className="h-full">
+    <section className="h-full w-full">
       <div className="px-6 text-gray-800">
         <div className="flex flex-col items-center justify-center w-full">
           <div>

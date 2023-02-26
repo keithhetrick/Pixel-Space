@@ -1,6 +1,6 @@
 const useErrorMessage = ({ variant, message }) => {
-  console.log("variant:", variant);
-  console.log("message:", message);
+  // console.log("variant:", variant);
+  // console.log("message:", message);
 
   // add a line break after each comment
   const formattedMessage = message.split(/,|-/).map((msg, i) => (

@@ -4,7 +4,7 @@ import jwtDecode from "jwt-decode";
 
 const useAuth = () => {
   const token = useSelector(selectCurrentToken);
-  console.log("TOKEN", token);
+  // console.log("TOKEN", token);
 
   let isAdmin = false;
   let isUser = false;
@@ -12,7 +12,7 @@ const useAuth = () => {
 
   if (token) {
     const decoded = jwtDecode(token);
-    console.log("\nDECODED JWT", decoded);
+    // console.log("\nDECODED JWT", decoded);
 
     const { email, roles } = decoded.UserInfo;
 

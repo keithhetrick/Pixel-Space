@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { downloadImage } from "../../utils";
 import { useSwipeable } from "react-swipeable";
 
@@ -67,10 +67,6 @@ const Image = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchImage();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const prev = async () => {
     setLoading(true);
@@ -162,6 +158,10 @@ const Image = () => {
     }
   };
 
+  useEffect(() => {
+    fetchImage();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   // function to handle the swipe event using the react-swipeable library
   const handlers = useSwipeable({
     onSwipedLeft: () => prev(),
@@ -180,24 +180,34 @@ const Image = () => {
   // function that sends user to the profile of the user who created the post
   // but first output "you a dum"
   const handleProfileClick = () => {
-    console.log("u a dum");
     if (!image?.userRef?._id) {
       navigate("/404-not-found");
     } else navigate(`/users/${image?.userRef?._id}`);
   };
 
   return (
-    <section className="h-full">
-      <div className="flex flex-col h-full items-center justify-center w-full mx-auto">
-        {/* <div className="w-full flex justify-start">
-          <button
-            className="text-[#1d161ddd] border hover:border-[#1d161ddd] border-[#1d161ddd] rounded-xl p-2 text-sm font-semibold hover:bg-[#1d161ddd] hover:text-white transition duration-200
-          "
-            onClick={() => navigate(-1)}
-          >
-            Exit
-          </button>
-        </div> */}
+    <section className="w-full">
+      <div className="flex flex-col h-full items-center justify-center w-full">
+        <div className="exit__button absolute top-0 left-0 m-4 hover:transform hover:translate-y-[-2px] transition duration-200">
+          <Link to="/">
+            <button className="bg-[#222328] text-white rounded-full p-[6px]">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+            </button>
+          </Link>
+        </div>
 
         {loading && (
           <div className="pb-6 flex justify-center items-center">
@@ -214,26 +224,21 @@ const Image = () => {
 
         <div className="flex h-full w-full">
           <div
-            className="frounded-xl group p-4 flex flex-col items-center justify-center relative w-full shadow-card hover:shadow-lg hover:translate-y-[-0.5px] transition duration-200 card cursor-pointer
-            border border-[#222328] border-opacity-10 gap-3"
-            style={{
-              margin: "0 auto",
-              borderRadius: "20px",
-              // background: "rgb(200, 200, 200)",
-            }}
+            className="h-full w-11/12 rounded-xl group p-4 flex flex-col items-center justify-center relative shadow-card hover:shadow-lg hover:translate-y-[-0.5px] transition duration-200 card cursor-pointer
+            border border-[#222328] border-opacity-10 gap-3 m-auto"
           >
             <p className="text-[#1d161ddd] text-sm italic flex-wrap text-center">
               {image?.prompt}
             </p>
             <div
-              className="flex flex-1 items-center justify-center w-full "
+              className="items-center justify-center w-full flex-1 relative"
               onKeyDown={handleKeyDown}
               {...handlers}
             >
-              <div className="flex relative justify-center items-center w-full h-full">
-                <div className="absolute -left-4 sm:left-1 z-10 flex justify-center items-center h-full">
+              <div className="h-full w-full absolute">
+                <div className="absolute -left-12 sm:-left-20 z-10 flex justify-center items-center h-full">
                   <button
-                    className="w-8 h-8 text-gray rounded-full opacity-75 hover:translate-y-[-3px] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 ease-in-out"
+                    className="w-8 h-8 text-gray rounded-full opacity-75 hover:animate-bounce  focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 ease-in-out"
                     onClick={next}
                   >
                     <svg
@@ -252,9 +257,9 @@ const Image = () => {
                     </svg>
                   </button>
                 </div>
-                <div className="absolute -right-4 sm:right-1 z-10 flex justify-center items-center h-full">
+                <div className="absolute -right-[3.25rem] sm:-right-20 z-10 flex justify-center items-center h-full">
                   <button
-                    className="w-8 h-8 text-white-900 rounded-full opacity-75 hover:translate-y-[-3px] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 ease-in-out"
+                    className="w-8 h-8 text-white-900 rounded-full opacity-75 hover:animate-bounce  focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 ease-in-out"
                     onClick={prev}
                   >
                     <svg
@@ -273,15 +278,19 @@ const Image = () => {
                     </svg>
                   </button>
                 </div>
-                <img
-                  className="rounded-xl w-5/6 object-cover focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition duration-200 cursor-pointer"
-                  src={image?.photo}
-                  alt={image?.name}
-                />
+              </div>
+              <div className="absolute flex h-full items-center justify-center w-full">
+                <div className="flex h-full justify-center">
+                  <img
+                    className="object-contain rounded-xl"
+                    src={image?.photo}
+                    alt={image?.name}
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-row justify-between text-center items-center w-5/6 h-auto">
+            <div className="flex flex-row justify-between text-center items-center w-full h-auto">
               <span
                 className="text-[#000000e2] text-md font-bold cursor-pointer hover:translate-y-[-2px] transition duration-200 ease-in-out"
                 onClick={handleProfileClick}

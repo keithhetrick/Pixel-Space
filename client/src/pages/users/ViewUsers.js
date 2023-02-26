@@ -42,7 +42,7 @@ const ViewUsers = () => {
   }, []);
 
   return (
-    <section className="userslist">
+    <section className="w-full">
       <h1 className="font-inter font-extrabold text-4xl text-[#222328] w-full mb-6">
         View Users
       </h1>

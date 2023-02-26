@@ -18,7 +18,7 @@ const connectDB = async (DB) => {
 };
 
 mongoose.connection.on("error", (err) => {
-  console.log("\nERROR:", err);
+  console.error("\nERROR:", err);
   logEvents(
     `\n${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
     "mongoErrLog.log"

@@ -88,7 +88,7 @@ const User = () => {
   const showUpdatedAt = formattedCreatedAt !== formattedUpdatedAt;
 
   return (
-    <section className="h-full">
+    <section className="h-full w-full">
       {isLoading && (
         <div className="pb-6 flex justify-center items-center">
           <Loader />

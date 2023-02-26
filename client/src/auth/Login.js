@@ -52,7 +52,7 @@ const Login = () => {
       dispatch(setCredentials({ accessToken }));
 
       // console.log("ACCESS TOKEN", accessToken);
-      console.log("USER EMAIL", userEmail);
+      // console.log("USER EMAIL", userEmail);
 
       setUserEmail("");
       setUserPassword("");
@@ -61,14 +61,14 @@ const Login = () => {
       navigate(`/`);
     } catch (error) {
       setErrors(error.data?.message);
-      console.log("ERROR", error.data?.message);
+      console.error("ERROR", error.data?.message);
     }
   };
   // console.log("ERRORS STATE", errors);
   // console.log("MESSAGE VARIANT", errors ? "danger" : "success");
 
   return (
-    <section className="h-full">
+    <section className="h-full w-full">
       <div className="px-6 text-gray-800">
         <div className="flex flex-col items-center justify-center w-full">
           <div className="flex flex-col items-center justify-center w-full mb-6">

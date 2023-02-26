@@ -79,6 +79,18 @@ const EditUser = ({ user }) => {
     }
   }, [user]);
 
+  // useHeaderButton title & link
+  useEffect(() => {
+    const button = document.querySelector(".header__button");
+    button.innerHTML = "Create";
+    button.href = "/create-post";
+
+    return () => {
+      button.innerHTML = "";
+      button.href = "";
+    };
+  }, []);
+
   // PERSIST DATA IN STATE UPON PAGE LOAD/PAGE REFRESH
   useEffect(() => {
     if (user?.data?.name) {
@@ -154,7 +166,7 @@ const EditUser = ({ user }) => {
   };
 
   return (
-    <section className="h-full">
+    <section className="h-full w-full">
       {isLoading && (
         <div className="pb-6 flex justify-center items-center">
           <Loader />

@@ -25,7 +25,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
             dispatch(apiSlice.util.resetApiState());
           }, 1000);
         } catch (error) {
-          console.log("\nLOGOUT ERROR", error);
+          console.error("\nLOGOUT ERROR", error);
         }
       },
     }),
@@ -42,7 +42,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
           const { accessToken } = data;
           dispatch(setCredentials({ accessToken }));
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
       },
     }),

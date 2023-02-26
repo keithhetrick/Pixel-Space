@@ -165,7 +165,7 @@ app.use(notFound);
 
 // error & exception handling
 process.on("uncaughtException", (err) => {
-  console.log("\nUNCAUGHT EXCEPTION! Shutting down...");
+  console.error("\nUNCAUGHT EXCEPTION! Shutting down...");
   console.error(err.name, err.message);
   process.exit(1);
 });
@@ -178,7 +178,7 @@ const startServer = async () => {
       console.log(`\nListening on port ${PORT} on ${ENVIRONMENT} mode`)
     );
   } catch (error) {
-    console.log("\nERROR:", error);
+    console.error("\nERROR:", error);
   }
 };
 startServer();

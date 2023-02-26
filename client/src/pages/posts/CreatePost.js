@@ -147,7 +147,7 @@ const CreatePost = () => {
 
         await response.data;
 
-        console.log("\nPOST DATA response: ", response);
+        // console.log("\nPOST DATA response: ", response);
 
         // pushToUsersPosts();
 
@@ -155,7 +155,7 @@ const CreatePost = () => {
       } catch (err) {
         setErrors(err.response?.data?.message);
         if (!form.name) setErrors("Please enter a name to post your image");
-        console.log(err.response);
+        console.error(err.response);
 
         if (!form.prompt) {
           setErrors("Please enter a prompt and generate an image");
@@ -191,8 +191,8 @@ const CreatePost = () => {
   }, []);
 
   return (
-    <section className="h-full ">
-      <div className="px-6 text-gray-800">
+    <section className="h-full w-full">
+      <div className="text-gray-800">
         {loading && (
           <div className="pb-6 flex justify-center items-center">
             <Loader />
@@ -262,7 +262,7 @@ const CreatePost = () => {
                   handleSurpriseMe={handleSurpriseMe}
                 />
 
-                <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center hover:border-gray-400 cursor-pointer transition duration-200">
+                <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center hover:border-gray-400 hover:animate-pulse cursor-pointer transition duration-200">
                   {form.photo ? (
                     <img
                       src={form.photo}
@@ -273,7 +273,7 @@ const CreatePost = () => {
                     <img
                       src={preview}
                       alt="pixel space"
-                      className="w-9/12 h-9/12 object-contain opacity-40"
+                      className="w-9/12 h-9/12 object-contain opacity-40 "
                     />
                   )}
 

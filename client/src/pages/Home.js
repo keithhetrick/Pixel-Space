@@ -106,7 +106,7 @@ const Home = () => {
   };
 
   return (
-    <section className="max-w-7xl mx-auto">
+    <section className="max-w-7xl mx-auto w-full">
       {/* {loggedInUser && (
         <h3 className="font-bold text-[#222328] text-center sm:text-left text-normal pb-3">
           Welcome back, {loggedInUser.name}!

@@ -13,21 +13,11 @@ const UserPostsWrapper = () => {
   const { data: user } = useGetSingleUserQuery(id);
 
   const passImageIdToUserSinglePost = (imageId) => {
-    console.log("setSingleImageId from UserPostsWrapper:", imageId);
+    // console.log("setSingleImageId from UserPostsWrapper:", imageId);
     setSingleImageId(imageId);
   };
 
-  console.log("singleimageId from UserPostsWrapper:", singleimageId);
-
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (singleimageId) {
-  //     navigate(`/user/${id}/posts/${singleimageId}`);
-  //     console.log("URL:", window.location.href);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [singleimageId]);
+  // console.log("singleimageId from UserPostsWrapper:", singleimageId);
 
   return (
     <>

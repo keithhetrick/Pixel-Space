@@ -33,7 +33,7 @@ export const createImage = asyncHandler(async (req, res) => {
 
     res.status(200).json({ photo: image });
   } catch (error) {
-    console.log("\nERROR: ", error);
+    console.error("\nERROR: ", error);
     res.status(500).send(error?.response.data.error.message);
   }
 });

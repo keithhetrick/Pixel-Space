@@ -8,11 +8,11 @@ import { useGetPostsQuery } from "../../pages/posts/postsApiSlice";
 const GetPosts = () => {
   const { data: postsData } = useGetPostsQuery();
 
-  console.log("postsData: ", postsData);
+  // console.log("postsData: ", postsData);
 
   const posts = postsData?.data;
 
-  console.log("posts: ", posts);
+  // console.log("posts: ", posts);
 
   const postList = posts?.map((post) => (
     <div key={post._id}>

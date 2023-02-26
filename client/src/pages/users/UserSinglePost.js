@@ -11,10 +11,10 @@ const UserSinglePost = ({ user, imageId }) => {
   const prevPost = () => {
     // get the index of the current post
     const index = getAllPosts.findIndex((post) => post._id === imageId);
-    console.log("index from prevPost:", index);
+    // console.log("index from prevPost:", index);
     // get the prev post
     const prevPost = getAllPosts[index - 1];
-    console.log("prevPost from prevPost:", prevPost);
+    // console.log("prevPost from prevPost:", prevPost);
 
     // if there is no prev post, dont do anything
     if (!prevPost) return;
@@ -27,10 +27,10 @@ const UserSinglePost = ({ user, imageId }) => {
   const nextPost = () => {
     // get the index of the current post
     const index = getAllPosts.findIndex((post) => post._id === imageId);
-    console.log("index from nextPost:", index);
+    // console.log("index from nextPost:", index);
     // get the next post
     const nextPost = getAllPosts[index + 1];
-    console.log("nextPost from nextPost:", nextPost);
+    // console.log("nextPost from nextPost:", nextPost);
 
     // if there is no next post, dont do anything
     if (!nextPost) return;
@@ -49,7 +49,7 @@ const UserSinglePost = ({ user, imageId }) => {
 
   const post = user?.data?.posts?.filter((post) => post._id === imageId)[0];
 
-  console.log("post from UserSinglePost:", post);
+  // console.log("post from UserSinglePost:", post);
 
   return (
     <section className="h-full">
