@@ -55,6 +55,21 @@ const Header = ({ title, link, allUsers, singleUser }) => {
     }
   }, [darkMode]);
 
+  // const aboutMe = {
+  //   name: "Keith Hetrick",
+  //   title: "Full Stack Developer",
+  //   contact: {
+  //     email: "keithjhetrick@gmail.com",
+  //     github: "https://github.com/keithhetrick",
+  //     wikipedia: "https://en.wikipedia.org/wiki/Keith_Hetrick",
+  //   },
+  //   description:
+  //     "I'm a full stack developer with a passion for creating beautiful, responsive websites and applications. I'm also a Grammy-nominated songwriter & music producer, as well as a certified Permaculture Designer & certificed Master Gardener for the great state of Tennessee. Essentially - I make music, grow food, and code...not necessarily in that order.",
+  // };
+  // console.log(aboutMe);
+
+  // I'm currently working on a few projects, including a social media platform for musicians, a music production app, and a gardening app. I'm also working on a few other projects that I can't talk about yet. I'm always looking for new opportunities, so if you have any questions or would like to work together, please feel free to reach out
+
   return (
     <header className="w-full flex justify-between items-center bg-white px-4 py-6 sm:px-8 border-b border-b-[#e6ebf4]">
       <div className="flex flex-col items-center sm:block">
