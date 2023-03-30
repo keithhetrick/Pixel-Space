@@ -1,4 +1,4 @@
-# PixelSpace-FullStack-App
+# Pixel Space
 
 This is a full stack application that uses the Dall-E API to generate images from text prompts. The application is built using React, Node, Express, and MongoDB. Images are stored in Cloudinary (a cloud-based image and video management service), and the generated image-urls are stored in a MongoDB database, for easy access & sharability. Swipeabity is implemented on the Image page using the React-Swipeable package, and the app is deployed on AWS EC2.
 
